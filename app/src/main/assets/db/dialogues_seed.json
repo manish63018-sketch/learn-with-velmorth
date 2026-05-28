@@ -1,0 +1,125 @@
+{
+  "dialogues": [
+    { "id": "greet_morning_01", "trigger": "app_open_morning", "text": "Good morning! Ready to grow today? 🌿", "emotion": "happy", "category": "greeting", "targetLangLine": "おはようございます！", "weight": 3 },
+    { "id": "greet_morning_02", "trigger": "app_open_morning", "text": "Rise and shine, scholar! Your forest awaits! 🌅", "emotion": "excited", "category": "greeting", "targetLangLine": "おはよう！", "weight": 2 },
+    { "id": "greet_morning_03", "trigger": "app_open_morning", "text": "Morning! The best learners start their day early 🌱", "emotion": "proud", "category": "greeting", "weight": 2 },
+    { "id": "greet_afternoon_01", "trigger": "app_open_afternoon", "text": "Good afternoon! Time for some learning! ☀️", "emotion": "happy", "category": "greeting", "targetLangLine": "こんにちは！", "weight": 3 },
+    { "id": "greet_afternoon_02", "trigger": "app_open_afternoon", "text": "Perfect time for a lesson! Let's go! 🎯", "emotion": "excited", "category": "greeting", "weight": 2 },
+    { "id": "greet_evening_01", "trigger": "app_open_evening", "text": "Good evening! End your day with some wisdom 🌙", "emotion": "happy", "category": "greeting", "targetLangLine": "こんばんは！", "weight": 3 },
+    { "id": "greet_evening_02", "trigger": "app_open_evening", "text": "Evening learner! Your dedication is inspiring 💫", "emotion": "proud", "category": "greeting", "weight": 2 },
+    { "id": "greet_night_01", "trigger": "app_open_night", "text": "Late night studying? You're truly dedicated! 🌌", "emotion": "thinking", "category": "greeting", "weight": 2 },
+    { "id": "greet_night_02", "trigger": "app_open_night", "text": "Even at midnight, you're here! Amazing! ⭐", "emotion": "excited", "category": "greeting", "weight": 1 },
+
+    { "id": "greet_generic_01", "trigger": "app_open", "text": "Konnichiwa! Let's grow together! 🌿", "emotion": "happy", "category": "greeting", "targetLangLine": "こんにちは！", "weight": 3 },
+    { "id": "greet_generic_02", "trigger": "app_open", "text": "Welcome back! I missed you! 🤗", "emotion": "excited", "category": "greeting", "weight": 2 },
+    { "id": "greet_generic_03", "trigger": "app_open", "text": "Hey there! Another chance to learn something new! 📚", "emotion": "happy", "category": "greeting", "weight": 2 },
+    { "id": "greet_generic_04", "trigger": "app_open", "text": "Okaeri! Welcome back, champion! 🏆", "emotion": "proud", "category": "greeting", "targetLangLine": "おかえり！", "weight": 1 },
+
+    { "id": "streak_01", "trigger": "streak_maintained", "text": "Your streak is on fire! Keep it burning! 🔥", "emotion": "excited", "category": "motivation", "weight": 3 },
+    { "id": "streak_02", "trigger": "streak_maintained", "text": "Days in a row! Your forest is thriving! 🌳", "emotion": "proud", "category": "motivation", "weight": 2 },
+    { "id": "streak_03", "trigger": "streak_maintained", "text": "Consistency is your superpower! 💪", "emotion": "excited", "category": "motivation", "weight": 2 },
+    { "id": "streak_04", "trigger": "streak_maintained", "text": "Look how far you've come! Incredible! ✨", "emotion": "proud", "category": "motivation", "weight": 1 },
+
+    { "id": "streak_broken_01", "trigger": "streak_broken", "text": "Aaj nahi aaye... maar gayi streak 😢 Par koi baat nahi!", "emotion": "sad", "category": "motivation", "weight": 3 },
+    { "id": "streak_broken_02", "trigger": "streak_broken", "text": "The streak broke, but not your spirit! Start fresh! 💚", "emotion": "sad", "category": "motivation", "weight": 2 },
+    { "id": "streak_broken_03", "trigger": "streak_broken", "text": "Every master has missed a day. Today we restart! 🌱", "emotion": "thinking", "category": "motivation", "weight": 2 },
+
+    { "id": "lesson_complete_01", "trigger": "lesson_complete", "text": "Shandaar! XP mil gayi! You're leveling up! 🎊", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "lesson_complete_02", "trigger": "lesson_complete", "text": "Lesson complete! Your brain just got bigger! 🧠✨", "emotion": "excited", "category": "lesson", "weight": 2 },
+    { "id": "lesson_complete_03", "trigger": "lesson_complete", "text": "Subarashii! That was excellent work! ⭐", "emotion": "proud", "category": "lesson", "targetLangLine": "すばらしい！", "weight": 2 },
+    { "id": "lesson_complete_04", "trigger": "lesson_complete", "text": "Another lesson conquered! Nothing can stop you! 🚀", "emotion": "excited", "category": "lesson", "weight": 2 },
+    { "id": "lesson_complete_05", "trigger": "lesson_complete", "text": "You completed it! The forest grew a little more! 🌿", "emotion": "happy", "category": "lesson", "weight": 1 },
+
+    { "id": "lesson_start_01", "trigger": "lesson_start", "text": "New lesson time! Let's discover something amazing! 🔍", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "lesson_start_02", "trigger": "lesson_start", "text": "Focus mode: ON! You've got this! 🎯", "emotion": "thinking", "category": "lesson", "weight": 2 },
+    { "id": "lesson_start_03", "trigger": "lesson_start", "text": "Ikimasho! Let's go! 🏃‍♂️", "emotion": "excited", "category": "lesson", "targetLangLine": "行きましょう！", "weight": 2 },
+
+    { "id": "wrong_answer_01", "trigger": "wrong_answer", "text": "Koi baat nahi, dobara try karo! You can do it! 💪", "emotion": "sad", "category": "lesson", "weight": 3 },
+    { "id": "wrong_answer_02", "trigger": "wrong_answer", "text": "Not quite right, but mistakes teach us! Try again! 🌱", "emotion": "thinking", "category": "lesson", "weight": 3 },
+    { "id": "wrong_answer_03", "trigger": "wrong_answer", "text": "Almost! Think carefully... you're very close! 🤔", "emotion": "thinking", "category": "lesson", "weight": 2 },
+    { "id": "wrong_answer_04", "trigger": "wrong_answer", "text": "Daijoubu! Everyone gets it wrong sometimes! 😊", "emotion": "sad", "category": "lesson", "targetLangLine": "大丈夫！", "weight": 2 },
+    { "id": "wrong_answer_05", "trigger": "wrong_answer", "text": "Nope! But I believe in you. Let's try again! 🌿", "emotion": "sad", "category": "lesson", "weight": 1 },
+
+    { "id": "correct_answer_01", "trigger": "correct_answer", "text": "Seikai! That's absolutely right! 🎉", "emotion": "excited", "category": "lesson", "targetLangLine": "正解！", "weight": 3 },
+    { "id": "correct_answer_02", "trigger": "correct_answer", "text": "YES! You knew it! I'm so proud! 🌟", "emotion": "excited", "category": "lesson", "weight": 2 },
+    { "id": "correct_answer_03", "trigger": "correct_answer", "text": "Correct! Your Japanese is getting stronger! 💪", "emotion": "proud", "category": "lesson", "weight": 2 },
+    { "id": "correct_answer_04", "trigger": "correct_answer", "text": "Amazing! That was perfect! ✨", "emotion": "happy", "category": "lesson", "weight": 2 },
+
+    { "id": "perfect_score_01", "trigger": "perfect_score", "text": "PERFECT SCORE! You're a champion! 🏆🎊", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "perfect_score_02", "trigger": "perfect_score", "text": "100%! Kanpeki! Absolutely flawless! ⭐⭐⭐", "emotion": "excited", "category": "lesson", "targetLangLine": "完璧！", "weight": 2 },
+    { "id": "perfect_score_03", "trigger": "perfect_score", "text": "Not a single mistake! You're incredible! 🌟", "emotion": "proud", "category": "lesson", "weight": 2 },
+
+    { "id": "quiz_start_01", "trigger": "quiz_start", "text": "Chal shuru karte hain! Taiyar ho? 🎯", "emotion": "thinking", "category": "quiz", "targetLangLine": "始めましょう！", "weight": 3 },
+    { "id": "quiz_start_02", "trigger": "quiz_start", "text": "Quiz time! Show me what you've learned! 📝", "emotion": "excited", "category": "quiz", "weight": 2 },
+    { "id": "quiz_start_03", "trigger": "quiz_start", "text": "Ready? This quiz will be fun! I promise! 😄", "emotion": "happy", "category": "quiz", "weight": 2 },
+
+    { "id": "quiz_complete_01", "trigger": "quiz_complete", "text": "Quiz done! You did amazing! Check your score! 🎊", "emotion": "excited", "category": "quiz", "weight": 3 },
+    { "id": "quiz_complete_02", "trigger": "quiz_complete", "text": "Finished! Every quiz makes you stronger! 💪", "emotion": "proud", "category": "quiz", "weight": 2 },
+
+    { "id": "review_start_01", "trigger": "review_start", "text": "Review time! Let's make sure it sticks! 🔄", "emotion": "thinking", "category": "lesson", "weight": 3 },
+    { "id": "review_start_02", "trigger": "review_start", "text": "Flashcard battle! Ready, player one? 🃏", "emotion": "excited", "category": "lesson", "weight": 2 },
+
+    { "id": "leaf_earned_01", "trigger": "leaf_earned", "text": "🌿 Leaf mili! Kharch karo wisely!", "emotion": "happy", "category": "shop", "weight": 3 },
+    { "id": "leaf_earned_02", "trigger": "leaf_earned", "text": "New leaf! Your collection is growing beautifully! 🌿", "emotion": "happy", "category": "shop", "weight": 2 },
+    { "id": "leaf_earned_03", "trigger": "leaf_earned", "text": "Cha-ching! Leaves incoming! 💚", "emotion": "excited", "category": "shop", "weight": 1 },
+
+    { "id": "xp_earned_01", "trigger": "xp_earned", "text": "XP gained! You're climbing the ranks! 📈", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "xp_earned_02", "trigger": "xp_earned", "text": "Level up incoming! Keep earning! ⬆️", "emotion": "happy", "category": "lesson", "weight": 2 },
+
+    { "id": "daily_goal_01", "trigger": "daily_goal_done", "text": "Aaj ka goal complete! Bahut badhiya! 🎉", "emotion": "proud", "category": "motivation", "weight": 3 },
+    { "id": "daily_goal_02", "trigger": "daily_goal_done", "text": "Daily goal crushed! Tomorrow we go harder! 💪", "emotion": "excited", "category": "motivation", "weight": 2 },
+    { "id": "daily_goal_03", "trigger": "daily_goal_done", "text": "Mokuhyo tassei! Goal achieved! 🏅", "emotion": "proud", "category": "motivation", "targetLangLine": "目標達成！", "weight": 2 },
+
+    { "id": "premium_01", "trigger": "premium_prompt", "text": "Aaj unlimited bolein AI Speaker se? 🎙️", "emotion": "excited", "category": "shop", "weight": 3 },
+    { "id": "premium_02", "trigger": "premium_prompt", "text": "Want to chat in real Japanese? Go Premium! ✨", "emotion": "happy", "category": "shop", "weight": 2 },
+    { "id": "premium_03", "trigger": "premium_prompt", "text": "Unlock AI Speaker — your personal language partner! 🤖", "emotion": "thinking", "category": "shop", "weight": 2 },
+
+    { "id": "shop_visit_01", "trigger": "shop_visit", "text": "Welcome to the shop! Spend those leaves wisely! 🛒", "emotion": "happy", "category": "shop", "weight": 3 },
+    { "id": "shop_visit_02", "trigger": "shop_visit", "text": "Ooh, shiny things! What will you get? 💚", "emotion": "excited", "category": "shop", "weight": 2 },
+
+    { "id": "purchase_made_01", "trigger": "purchase_made", "text": "Great choice! Enjoy your new item! 🎁", "emotion": "excited", "category": "shop", "weight": 3 },
+    { "id": "purchase_made_02", "trigger": "purchase_made", "text": "Leaves well spent! Worth every leaf! 🌿", "emotion": "happy", "category": "shop", "weight": 2 },
+
+    { "id": "idle_01", "trigger": "idle", "text": "Psst... shall we do a quick lesson? 👀", "emotion": "thinking", "category": "motivation", "weight": 3 },
+    { "id": "idle_02", "trigger": "idle", "text": "I'm waiting for you... ready when you are! 🌿", "emotion": "idle", "category": "motivation", "weight": 2 },
+    { "id": "idle_03", "trigger": "idle", "text": "Your Japanese won't learn itself... 😏", "emotion": "thinking", "category": "motivation", "weight": 2 },
+
+    { "id": "encourage_01", "trigger": "multiple_wrong_answers", "text": "Don't give up! Even Kanji masters struggled once! 💪", "emotion": "sad", "category": "motivation", "weight": 3 },
+    { "id": "encourage_02", "trigger": "multiple_wrong_answers", "text": "It's okay to struggle — that means you're learning! 🌱", "emotion": "sad", "category": "motivation", "weight": 3 },
+    { "id": "encourage_03", "trigger": "multiple_wrong_answers", "text": "Ganbatte! You can do this! I believe in you! 🔥", "emotion": "thinking", "category": "motivation", "targetLangLine": "頑張って！", "weight": 2 },
+
+    { "id": "first_lesson_01", "trigger": "first_lesson", "text": "Your first lesson! This is where it all begins! 🌱", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "first_lesson_02", "trigger": "first_lesson", "text": "Hajimemashite! Let's start your journey! 🎌", "emotion": "happy", "category": "lesson", "targetLangLine": "はじめまして！", "weight": 2 },
+
+    { "id": "level_up_01", "trigger": "level_up", "text": "YOU LEVELED UP! The forest expands! 🌳🎉", "emotion": "excited", "category": "motivation", "weight": 3 },
+    { "id": "level_up_02", "trigger": "level_up", "text": "New level unlocked! More adventures await! 🚀", "emotion": "excited", "category": "motivation", "weight": 2 },
+    { "id": "level_up_03", "trigger": "level_up", "text": "Reberu appu! You're becoming a language master! ⭐", "emotion": "proud", "category": "motivation", "targetLangLine": "レベルアップ！", "weight": 2 },
+
+    { "id": "profile_visit_01", "trigger": "profile_visit", "text": "Look at all your achievements! You should be proud! 🏅", "emotion": "proud", "category": "greeting", "weight": 2 },
+    { "id": "profile_visit_02", "trigger": "profile_visit", "text": "Your stats are impressive! Keep growing! 📊", "emotion": "happy", "category": "greeting", "weight": 2 },
+
+    { "id": "settings_visit_01", "trigger": "settings_visit", "text": "Customizing your experience? Great idea! ⚙️", "emotion": "thinking", "category": "greeting", "weight": 2 },
+
+    { "id": "ai_speaker_start_01", "trigger": "ai_speaker_start", "text": "AI Speaker mode ON! Talk to me in Japanese! 🎙️", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "ai_speaker_start_02", "trigger": "ai_speaker_start", "text": "Real conversation time! Don't be shy! 😊", "emotion": "happy", "category": "lesson", "weight": 2 },
+
+    { "id": "chapter_complete_01", "trigger": "chapter_complete", "text": "Chapter complete! You finished a whole unit! 📖🎊", "emotion": "excited", "category": "lesson", "weight": 3 },
+    { "id": "chapter_complete_02", "trigger": "chapter_complete", "text": "Shō wo kanryō! Chapter done! Amazing work! 🎌", "emotion": "proud", "category": "lesson", "targetLangLine": "章を完了！", "weight": 2 },
+
+    { "id": "hint_used_01", "trigger": "hint_used", "text": "Hint used! No worries, we all need help! 💡", "emotion": "thinking", "category": "lesson", "weight": 2 },
+    { "id": "hint_used_02", "trigger": "hint_used", "text": "Smart move using a hint! Now you'll remember it! 🧠", "emotion": "happy", "category": "lesson", "weight": 2 },
+
+    { "id": "hearts_low_01", "trigger": "hearts_low", "text": "Careful! Hearts are running low! Focus! ❤️", "emotion": "thinking", "category": "lesson", "weight": 3 },
+    { "id": "hearts_low_02", "trigger": "hearts_low", "text": "Last chance! Think before you answer! 🎯", "emotion": "sad", "category": "lesson", "weight": 2 },
+
+    { "id": "hearts_full_01", "trigger": "hearts_refilled", "text": "Full hearts! You're ready for anything! ❤️‍🔥", "emotion": "excited", "category": "lesson", "weight": 2 },
+
+    { "id": "motivation_random_01", "trigger": "motivation_random", "text": "Fun fact: Japanese has 3 writing systems! You're learning all 3! 🤯", "emotion": "thinking", "category": "motivation", "weight": 2 },
+    { "id": "motivation_random_02", "trigger": "motivation_random", "text": "Studies show 20 minutes daily beats 2 hours once a week! 📚", "emotion": "thinking", "category": "motivation", "weight": 2 },
+    { "id": "motivation_random_03", "trigger": "motivation_random", "text": "Every word you learn is a bridge to a new world! 🌏", "emotion": "happy", "category": "motivation", "weight": 2 },
+    { "id": "motivation_random_04", "trigger": "motivation_random", "text": "Gambatte! Your future self will thank you! 🌿", "emotion": "proud", "category": "motivation", "targetLangLine": "頑張って！", "weight": 2 },
+
+    { "id": "farewell_01", "trigger": "app_close", "text": "Sayonara for now! Come back tomorrow! 🌿", "emotion": "sad", "category": "greeting", "targetLangLine": "さようなら！", "weight": 3 },
+    { "id": "farewell_02", "trigger": "app_close", "text": "Mata ne! See you soon! 👋", "emotion": "happy", "category": "greeting", "targetLangLine": "またね！", "weight": 2 }
+  ]
+}

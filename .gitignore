@@ -1,0 +1,71 @@
+# =============================================================
+# 🌿 Velmorth Android Project — .gitignore
+# =============================================================
+
+# ─── IDE & Android Studio ──────────────────────────────────
+*.iml
+.idea/
+.DS_Store
+Thumbs.db
+
+# ─── Gradle Build System ───────────────────────────────────
+.gradle/
+/build/
+**/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+
+# ─── Local Environment (NEVER push — has your PC's SDK path) ─
+local.properties
+
+# ─── 🔑 API Keys & Secrets (NEVER push) ───────────────────
+apikey.properties
+secrets.properties
+keystore.properties
+.env
+.env.local
+.env.production
+.env.staging
+
+# ─── 🔥 Firebase Secret Files (NEVER push) ────────────────
+google-services.json
+serviceAccountKey.json
+firebase-adminsdk*.json
+GoogleService-Info.plist
+
+# ─── 🔐 Signing Keystores (NEVER push) ────────────────────
+# A leaked keystore lets anyone publish fake updates as you!
+*.jks
+*.keystore
+*.p12
+*.pfx
+
+# ─── 📦 Compiled Outputs (NEVER push) ─────────────────────
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# ─── ProGuard Generated Files ──────────────────────────────
+proguard/
+*.pro.bak
+
+# ─── Test Results ──────────────────────────────────────────
+/test-results/
+/lint/
+*.lint.xml
+
+# ─── NDK ───────────────────────────────────────────────────
+.externalNativeBuild
+.cxx
+
+# ─── OS Generated ──────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

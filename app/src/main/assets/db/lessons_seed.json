@@ -1,0 +1,136 @@
+{
+  "lessons": [
+    {
+      "id": "es_ch1_l1", "languageId": "es", "chapterId": "es_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Greetings", "description": "Say hello and goodbye in Spanish",
+      "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 1, "iconEmoji": "👋"
+    },
+    {
+      "id": "es_ch1_l2", "languageId": "es", "chapterId": "es_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Numbers 1-10", "description": "Count from one to ten",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 2, "iconEmoji": "🔢"
+    },
+    {
+      "id": "es_ch1_l3", "languageId": "es", "chapterId": "es_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Colors", "description": "Name colors in Spanish",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 3, "iconEmoji": "🎨"
+    },
+    {
+      "id": "es_ch2_l1", "languageId": "es", "chapterId": "es_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Family Members", "description": "Learn words for family",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 4, "iconEmoji": "👨‍👩‍👧"
+    },
+    {
+      "id": "es_ch2_l2", "languageId": "es", "chapterId": "es_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Basic Phrases", "description": "Essential everyday expressions",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 5, "iconEmoji": "💬"
+    },
+    {
+      "id": "es_ch2_l3", "languageId": "es", "chapterId": "es_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Food & Drinks", "description": "Order food at a restaurant",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 6, "iconEmoji": "🍽️"
+    },
+    {
+      "id": "es_ch3_l1", "languageId": "es", "chapterId": "es_ch3",
+      "chapterTitle": "🌲 The Forest Path", "title": "Present Tense Verbs", "description": "Master everyday actions",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 7, "iconEmoji": "⚡"
+    },
+    {
+      "id": "es_ch3_l2", "languageId": "es", "chapterId": "es_ch3",
+      "chapterTitle": "🌲 The Forest Path", "title": "At the Market", "description": "Shop and haggle in Spanish",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 8, "iconEmoji": "🛒"
+    },
+    {
+      "id": "es_ch3_l3", "languageId": "es", "chapterId": "es_ch3",
+      "chapterTitle": "🌲 The Forest Path", "title": "Directions", "description": "Ask and give directions",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 9, "iconEmoji": "🗺️"
+    },
+    {
+      "id": "es_ch4_l1", "languageId": "es", "chapterId": "es_ch4",
+      "chapterTitle": "🏔️ Mountain Peaks", "title": "Past Tense", "description": "Talk about what happened",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 25, "leafReward": 12,
+      "durationMinutes": 12, "orderIndex": 10, "iconEmoji": "⏮️"
+    }
+  ],
+  "questions": [
+    {
+      "id": "es_ch1_l1_q1", "lessonId": "es_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'Hello' in Spanish?",
+      "targetWord": "Hello", "options": ["Hola", "Adiós", "Gracias", "Por favor"],
+      "correctAnswer": "Hola", "explanation": "'Hola' is the most common Spanish greeting, used at any time of day!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l1_q2", "lessonId": "es_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'Buenas tardes' mean?",
+      "targetWord": "Buenas tardes", "options": ["Good morning", "Good afternoon", "Good night", "Goodbye"],
+      "correctAnswer": "Good afternoon", "explanation": "'Buenas tardes' is used from noon until around 9 PM in Spanish.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l1_q3", "lessonId": "es_ch1_l1", "type": "FILL_IN_BLANK",
+      "prompt": "Complete: '___ noches' means 'Good night'",
+      "targetWord": "Buenos/Buenas noches", "options": [],
+      "correctAnswer": "Buenas", "explanation": "'Buenas noches' literally means 'good nights' — buenas (good, feminine plural) + noches (nights).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l1_q4", "lessonId": "es_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which phrase means 'See you later'?",
+      "targetWord": "See you later", "options": ["Hasta luego", "Buenos días", "Cómo estás", "Mucho gusto"],
+      "correctAnswer": "Hasta luego", "explanation": "'Hasta luego' literally means 'until later' — a common casual farewell.",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l1_q5", "lessonId": "es_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you ask 'How are you?' in Spanish?",
+      "targetWord": "How are you?", "options": ["¿Cómo te llamas?", "¿Cómo estás?", "¿Dónde estás?", "¿Cuántos años tienes?"],
+      "correctAnswer": "¿Cómo estás?", "explanation": "'¿Cómo estás?' (informal) or '¿Cómo está usted?' (formal) both ask 'How are you?'",
+      "orderIndex": 5, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l2_q1", "lessonId": "es_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'five' in Spanish?",
+      "targetWord": "five", "options": ["cuatro", "seis", "cinco", "siete"],
+      "correctAnswer": "cinco", "explanation": "cinco = 5. Remember: uno, dos, tres, cuatro, cinco!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l2_q2", "lessonId": "es_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which number is 'diez'?",
+      "targetWord": "diez", "options": ["8", "9", "10", "7"],
+      "correctAnswer": "10", "explanation": "'Diez' is ten — the first milestone in Spanish counting!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l2_q3", "lessonId": "es_ch1_l2", "type": "FILL_IN_BLANK",
+      "prompt": "Uno, dos, tres, ___, cinco",
+      "targetWord": "cuatro", "options": [],
+      "correctAnswer": "cuatro", "explanation": "cuatro = four. The sequence: uno (1), dos (2), tres (3), cuatro (4), cinco (5).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l3_q1", "lessonId": "es_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What color is 'rojo'?",
+      "targetWord": "rojo", "options": ["Blue", "Green", "Red", "Yellow"],
+      "correctAnswer": "Red", "explanation": "'Rojo' means red in Spanish. Remember: traffic lights are rojo!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l3_q2", "lessonId": "es_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'blue' in Spanish?",
+      "targetWord": "blue", "options": ["verde", "azul", "amarillo", "negro"],
+      "correctAnswer": "azul", "explanation": "'Azul' means blue. Think of the azure sky!",
+      "orderIndex": 2, "xpValue": 5
+    }
+  ]
+}

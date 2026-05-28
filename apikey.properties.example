@@ -1,0 +1,21 @@
+# =============================================================
+# 🌿 Velmorth — API Key Template
+# =============================================================
+# HOW TO USE:
+#   1. Copy this file and rename it to: apikey.properties
+#   2. Fill in your real keys below
+#   3. NEVER commit apikey.properties — it is in .gitignore
+#
+# This file (apikey.properties.example) is safe to commit
+# because it contains NO real keys — only placeholders.
+# =============================================================
+
+# Google Gemini API Key (for AI Speaker feature)
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
+
+# Firebase (optional — only if you add Firebase later)
+# These go in google-services.json, not here.
+# google-services.json is already in .gitignore.
+
+# Stripe (for premium subscriptions — future use)
+STRIPE_PUBLISHABLE_KEY=YOUR_STRIPE_PUBLISHABLE_KEY_HERE
