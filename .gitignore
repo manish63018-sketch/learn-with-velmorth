@@ -69,3 +69,7 @@ proguard/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# ─── JVM Crash Dumps (NEVER push) ─────────────────────────
+hs_err_pid*.log
+replay_pid*.log

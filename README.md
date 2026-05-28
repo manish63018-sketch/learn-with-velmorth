@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🌿 Learn With Velmorth
 
 > A beautiful, offline-first Android language learning app with a forest theme, companion mascot, and gamified lessons.
@@ -192,6 +191,3 @@ MIT License — see LICENSE file for details
 
 **Velmorth Team**  
 Built with 🌿 using Jetpack Compose
-=======
-# learn-with-velmorth
->>>>>>> aa7bab875b0d2e193051e6dcc8e100cc8baff5d0
