@@ -1,0 +1,21 @@
+{
+  "name": "learn-with-velmorth",
+  "version": "1.0.0",
+  "description": "<<<<<<< HEAD\r # 🌿 Learn With Velmorth",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manish63018-sketch/learn-with-velmorth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/manish63018-sketch/learn-with-velmorth/issues"
+  },
+  "homepage": "https://github.com/manish63018-sketch/learn-with-velmorth#readme"
+}

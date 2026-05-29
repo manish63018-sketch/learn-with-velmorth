@@ -15,7 +15,7 @@ nav3Core = "1.0.0-alpha01"
 lifecycleViewmodelNav3 = "2.10.0"
 # New dependencies
 room = "2.7.0-alpha13"
-hilt = "2.56.2"
+hilt = "2.59.2"
 hiltNavigationCompose = "1.2.0"
 lottie = "6.6.6"
 datastore = "1.1.4"
