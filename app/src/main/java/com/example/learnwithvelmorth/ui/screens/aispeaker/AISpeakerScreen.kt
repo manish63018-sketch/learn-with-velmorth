@@ -24,11 +24,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.example.learnwithvelmorth.theme.LearnWithVelmorthTheme
 import kotlin.math.sin
 import kotlin.random.Random
@@ -167,6 +173,23 @@ private fun StarryBackground() {
 @Composable
 private fun PremiumContent(modifier: Modifier = Modifier) {
     var isRecording by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    // ── Mic permission handling ───────────────────────────────────────────
+    var hasMicPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context, Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+    val micPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        hasMicPermission = granted
+        if (granted) isRecording = true
+    }
+    // ─────────────────────────────────────────────────────────────────────
 
     Column(
         modifier = modifier
@@ -188,11 +211,27 @@ private fun PremiumContent(modifier: Modifier = Modifier) {
         // Waveform
         WaveformVisualizer(isActive = isRecording)
 
-        // Microphone button
+        // Microphone button – requests permission if not yet granted
         MicrophoneButton(
             isRecording = isRecording,
-            onClick     = { isRecording = !isRecording },
+            onClick = {
+                when {
+                    hasMicPermission -> isRecording = !isRecording
+                    else -> micPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                }
+            },
         )
+
+        // Permission hint when mic is denied
+        if (!hasMicPermission) {
+            Text(
+                text  = "🎤 Microphone permission needed to record",
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = LeafGold.copy(alpha = 0.80f),
+                ),
+                textAlign = TextAlign.Center,
+            )
+        }
 
         // Transcript card
         TranscriptCard()

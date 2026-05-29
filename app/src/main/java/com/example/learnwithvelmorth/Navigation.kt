@@ -10,10 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.example.learnwithvelmorth.domain.repository.UserRepository
 import com.example.learnwithvelmorth.theme.*
 import com.example.learnwithvelmorth.ui.screens.aispeaker.AISpeakerScreen
 import com.example.learnwithvelmorth.ui.screens.home.HomeScreen
@@ -27,6 +31,38 @@ import com.example.learnwithvelmorth.ui.screens.review.ReviewGardenScreen
 import com.example.learnwithvelmorth.ui.screens.settings.SettingsScreen
 import com.example.learnwithvelmorth.ui.screens.shop.LeafShopScreen
 import com.example.learnwithvelmorth.ui.screens.splash.SplashScreen
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+// =============================================
+// SplashViewModel — decides where to go after splash
+// =============================================
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+) : ViewModel() {
+
+    /**
+     * Checks if a local user already exists in the DB.
+     * If yes → skip onboarding and go to Home.
+     * If no  → show onboarding.
+     */
+    fun determineDestination(
+        onNavigateToHome: () -> Unit,
+        onNavigateToOnboarding: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            val user = userRepository.getUser().first()
+            if (user != null) {
+                onNavigateToHome()
+            } else {
+                onNavigateToOnboarding()
+            }
+        }
+    }
+}
 
 // =============================================
 // Bottom nav destinations (tabs)
@@ -90,22 +126,35 @@ fun MainNavigation() {
             entryProvider = entryProvider {
 
                 entry<Splash> {
+                    val splashViewModel: SplashViewModel = hiltViewModel()
                     SplashScreen(
                         onNavigateToOnboarding = {
                             backStack.removeLastOrNull()
-                            backStack.add(Onboarding)
+                            splashViewModel.determineDestination(
+                                onNavigateToHome = {
+                                    backStack.removeAll { true }
+                                    backStack.add(Home)
+                                },
+                                onNavigateToOnboarding = {
+                                    backStack.removeAll { true }
+                                    backStack.add(Onboarding)
+                                },
+                            )
                         }
                     )
                 }
 
                 entry<Onboarding> {
+                    val onboardingViewModel: OnboardingViewModel = hiltViewModel()
                     OnboardingScreen(
-                        onComplete = { _, _ ->
+                        onComplete = { languageId, dailyGoalMinutes ->
+                            onboardingViewModel.saveOnboardingData(languageId, dailyGoalMinutes)
                             backStack.removeAll { true }
                             backStack.add(Home)
                         }
                     )
                 }
+
 
                 entry<Home> {
                     HomeScreen(
