@@ -46,7 +46,7 @@ abstract class VelmorthDatabase : RoomDatabase() {
                     VelmorthDatabase::class.java,
                     "velmorth.db"
                 )
-                    .addCallback(SeedCallback(context))
+                    .addCallback(SeedCallback(context) { INSTANCE!! })
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
@@ -55,12 +55,15 @@ abstract class VelmorthDatabase : RoomDatabase() {
         }
     }
 
-    private class SeedCallback(private val context: Context) : RoomDatabase.Callback() {
+    private class SeedCallback(
+        private val context: Context,
+        private val dbProvider: () -> VelmorthDatabase,
+    ) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
             // Seed default user and lesson data on first creation
             CoroutineScope(Dispatchers.IO).launch {
-                val database = getInstance(context)
+                val database = dbProvider()  // safe: INSTANCE is set before this lambda runs
                 seedDefaultUser(database)
                 seedLessons(context, database)
                 // DialogueRepository handles its own seeding via seedIfEmpty()

@@ -24,18 +24,23 @@ object DatabaseModule {
         VelmorthDatabase.getInstance(context)
 
     @Provides
+    @Singleton
     fun provideUserDao(db: VelmorthDatabase): UserDao = db.userDao()
 
     @Provides
+    @Singleton
     fun provideLessonDao(db: VelmorthDatabase): LessonDao = db.lessonDao()
 
     @Provides
+    @Singleton
     fun provideProgressDao(db: VelmorthDatabase): ProgressDao = db.progressDao()
 
     @Provides
+    @Singleton
     fun provideLeafWalletDao(db: VelmorthDatabase): LeafWalletDao = db.leafWalletDao()
 
     @Provides
+    @Singleton
     fun provideDialogueDao(db: VelmorthDatabase): DialogueDao = db.dialogueDao()
 
     @Provides
@@ -59,4 +64,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindLeafWalletRepository(impl: LeafWalletRepositoryImpl): LeafWalletRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindProgressRepository(impl: ProgressRepositoryImpl): ProgressRepository
 }

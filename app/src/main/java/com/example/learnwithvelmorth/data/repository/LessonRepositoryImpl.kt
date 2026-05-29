@@ -36,8 +36,8 @@ class LessonRepositoryImpl @Inject constructor(
 private fun LessonEntity.toDomain() = Lesson(
     id = id, languageId = languageId, chapterId = chapterId,
     chapterTitle = chapterTitle, title = title, description = description,
-    type = LessonType.valueOf(type),
-    status = LessonStatus.valueOf(status),
+    type = runCatching { LessonType.valueOf(type) }.getOrDefault(LessonType.VOCABULARY),
+    status = runCatching { LessonStatus.valueOf(status) }.getOrDefault(LessonStatus.LOCKED),
     xpReward = xpReward, leafReward = leafReward,
     durationMinutes = durationMinutes, orderIndex = orderIndex,
     iconEmoji = iconEmoji, completedAt = completedAt, bestScore = bestScore,
@@ -45,7 +45,7 @@ private fun LessonEntity.toDomain() = Lesson(
 
 private fun QuestionEntity.toDomain() = Question(
     id = id, lessonId = lessonId,
-    type = QuestionType.valueOf(type),
+    type = runCatching { QuestionType.valueOf(type) }.getOrDefault(QuestionType.MULTIPLE_CHOICE),
     prompt = prompt, targetWord = targetWord,
     options = options, correctAnswer = correctAnswer,
     explanation = explanation, audioUrl = audioUrl,

@@ -325,7 +325,7 @@ private fun FeatureComparisonTable(leafGold: Color, creamWhite: Color) {
             )
         }
 
-        Divider(
+        HorizontalDivider(
             color     = Color.White.copy(alpha = 0.1f),
             thickness = 1.dp,
             modifier  = Modifier.padding(vertical = 10.dp),

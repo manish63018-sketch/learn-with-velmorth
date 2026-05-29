@@ -5,6 +5,7 @@ import com.example.learnwithvelmorth.data.local.entities.UserEntity
 import com.example.learnwithvelmorth.domain.model.User
 import com.example.learnwithvelmorth.domain.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
 import java.util.*
@@ -21,9 +22,27 @@ class UserRepositoryImpl @Inject constructor(
         userDao.insertUser(user.toEntity())
 
     override suspend fun updateStreak(userId: String) {
-        val today = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
-        // Simple streak increment — real impl would check yesterday
-        userDao.updateStreak(userId, 1, today)
+        val fmt = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val today = fmt.format(Date())
+        val user = userDao.getUser(userId).first()
+        val newStreak = if (wasYesterday(user?.lastActiveDate, fmt)) {
+            (user?.currentStreak ?: 0) + 1
+        } else {
+            1 // streak broken or first time — reset to 1
+        }
+        userDao.updateStreak(userId, newStreak, today)
+    }
+
+    private fun wasYesterday(dateStr: String?, fmt: SimpleDateFormat): Boolean {
+        if (dateStr.isNullOrBlank()) return false
+        return try {
+            val cal = Calendar.getInstance()
+            cal.add(Calendar.DATE, -1)
+            val yesterday = fmt.format(cal.time)
+            dateStr == yesterday
+        } catch (e: Exception) {
+            false
+        }
     }
 
     override suspend fun updateLeafBalance(userId: String, delta: Int) =

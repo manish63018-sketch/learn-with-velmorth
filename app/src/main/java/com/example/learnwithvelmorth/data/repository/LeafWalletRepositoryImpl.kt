@@ -34,7 +34,7 @@ class LeafWalletRepositoryImpl @Inject constructor(
 
 private fun LeafTransactionEntity.toDomain() = LeafTransaction(
     id = id, userId = userId, amount = amount,
-    type = LeafTransactionType.valueOf(type),
+    type = runCatching { LeafTransactionType.valueOf(type) }.getOrDefault(LeafTransactionType.EARN_LESSON),
     description = description, timestamp = timestamp,
 )
 
