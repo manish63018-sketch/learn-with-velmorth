@@ -4,12 +4,15 @@ plugins {
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.ksp)
   alias(libs.plugins.hilt)
+  // TODO: Uncomment after creating Firebase project and adding google-services.json to app/
+  // alias(libs.plugins.google.services)
+  // alias(libs.plugins.firebase.crashlytics.plugin)
 }
 android {
-    namespace = "com.example.learnwithvelmorth"
+    namespace = "com.velmorth.app"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.example.learnwithvelmorth"
+        applicationId = "com.velmorth.app"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -18,7 +21,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -38,6 +42,11 @@ android {
         excludes += "/META-INF/{AL2.0,LGPL2.1}"
       }
     }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
 }
 
 dependencies {
@@ -105,6 +114,11 @@ dependencies {
   androidTestImplementation(libs.androidx.test.ext.junit)
   androidTestImplementation(libs.androidx.test.runner)
   androidTestImplementation(libs.androidx.test.espresso.core)
+
+  // Firebase (Crashlytics-only in V1)
+  implementation(platform(libs.firebase.bom))
+  implementation(libs.firebase.crashlytics)
+  implementation(libs.firebase.analytics)
 }
 
 

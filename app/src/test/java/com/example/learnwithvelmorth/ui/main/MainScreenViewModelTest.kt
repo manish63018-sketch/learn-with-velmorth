@@ -1,6 +1,6 @@
-package com.example.learnwithvelmorth.ui.main
+package com.velmorth.app.ui.main
 
-import com.example.learnwithvelmorth.data.DataRepository
+import com.velmorth.app.data.DataRepository
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

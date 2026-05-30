@@ -1,0 +1,13 @@
+package com.velmorth.app.domain.repository
+
+import com.velmorth.app.domain.model.Lesson
+import com.velmorth.app.domain.model.Question
+import kotlinx.coroutines.flow.Flow
+
+interface LessonRepository {
+    fun getLessonsForLanguage(languageId: String): Flow<List<Lesson>>
+    fun getLessonById(lessonId: String): Flow<Lesson?>
+    fun getQuestionsForLesson(lessonId: String): Flow<List<Question>>
+    suspend fun unlockLesson(lessonId: String)
+    suspend fun markLessonCompleted(lessonId: String, score: Int)
+}

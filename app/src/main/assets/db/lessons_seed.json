@@ -1,6 +1,150 @@
 {
   "lessons": [
     {
+      "id": "ja_ch1_l1", "languageId": "ja", "chapterId": "ja_ch1",
+      "chapterTitle": "🌸 はじめの一歩 (First Steps)", "title": "Greetings", "description": "Say hello and goodbye in Japanese",
+      "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 1, "iconEmoji": "👋"
+    },
+    {
+      "id": "ja_ch1_l2", "languageId": "ja", "chapterId": "ja_ch1",
+      "chapterTitle": "🌸 はじめの一歩 (First Steps)", "title": "Numbers 1–10", "description": "Count from one to ten in Japanese",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 2, "iconEmoji": "🔢"
+    },
+    {
+      "id": "ja_ch1_l3", "languageId": "ja", "chapterId": "ja_ch1",
+      "chapterTitle": "🌸 はじめの一歩 (First Steps)", "title": "Hiragana Basics", "description": "Learn the first 10 Hiragana characters",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 3, "iconEmoji": "🈶"
+    },
+    {
+      "id": "ja_ch2_l1", "languageId": "ja", "chapterId": "ja_ch2",
+      "chapterTitle": "🍵 日常生活 (Daily Life)", "title": "Food & Drinks", "description": "Order food like a local in Japan",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 4, "iconEmoji": "🍜"
+    },
+    {
+      "id": "ja_ch2_l2", "languageId": "ja", "chapterId": "ja_ch2",
+      "chapterTitle": "🍵 日常生活 (Daily Life)", "title": "Colors", "description": "Name colors in Japanese",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 5, "iconEmoji": "🎨"
+    },
+    {
+      "id": "ja_ch2_l3", "languageId": "ja", "chapterId": "ja_ch2",
+      "chapterTitle": "🍵 日常生活 (Daily Life)", "title": "Basic Phrases", "description": "Essential polite expressions",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 6, "iconEmoji": "💬"
+    },
+    {
+      "id": "en_ch1_l1", "languageId": "en", "chapterId": "en_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Greetings & Introductions", "description": "Introduce yourself confidently in English",
+      "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 1, "iconEmoji": "👋"
+    },
+    {
+      "id": "en_ch1_l2", "languageId": "en", "chapterId": "en_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Numbers & Time", "description": "Count and tell time in English",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 2, "iconEmoji": "🕐"
+    },
+    {
+      "id": "en_ch1_l3", "languageId": "en", "chapterId": "en_ch1",
+      "chapterTitle": "🌱 The First Seeds", "title": "Common Nouns", "description": "Everyday objects and places",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 3, "iconEmoji": "🏠"
+    },
+    {
+      "id": "en_ch2_l1", "languageId": "en", "chapterId": "en_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Present Simple Tense", "description": "Express habits and facts",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 4, "iconEmoji": "⚡"
+    },
+    {
+      "id": "en_ch2_l2", "languageId": "en", "chapterId": "en_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Question Words", "description": "Who, What, When, Where, Why, How",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 5, "iconEmoji": "❓"
+    },
+    {
+      "id": "en_ch2_l3", "languageId": "en", "chapterId": "en_ch2",
+      "chapterTitle": "🌿 Growing Roots", "title": "Food & Ordering", "description": "Order at a restaurant in English",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 6, "iconEmoji": "🍽️"
+    },
+    {
+      "id": "fr_ch1_l1", "languageId": "fr", "chapterId": "fr_ch1",
+      "chapterTitle": "🗼 Premières Paroles (First Words)", "title": "Greetings", "description": "Say bonjour like a true Parisien",
+      "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 1, "iconEmoji": "👋"
+    },
+    {
+      "id": "fr_ch1_l2", "languageId": "fr", "chapterId": "fr_ch1",
+      "chapterTitle": "🗼 Premières Paroles (First Words)", "title": "Numbers 1–10", "description": "Count from un to dix",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 2, "iconEmoji": "🔢"
+    },
+    {
+      "id": "fr_ch1_l3", "languageId": "fr", "chapterId": "fr_ch1",
+      "chapterTitle": "🗼 Premières Paroles (First Words)", "title": "Colors", "description": "Name les couleurs in French",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 3, "iconEmoji": "🎨"
+    },
+    {
+      "id": "fr_ch2_l1", "languageId": "fr", "chapterId": "fr_ch2",
+      "chapterTitle": "☕ La Vie Quotidienne (Daily Life)", "title": "Food & Café Culture", "description": "Order at a French café",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 4, "iconEmoji": "☕"
+    },
+    {
+      "id": "fr_ch2_l2", "languageId": "fr", "chapterId": "fr_ch2",
+      "chapterTitle": "☕ La Vie Quotidienne (Daily Life)", "title": "Family Members", "description": "Talk about your famille",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 5, "iconEmoji": "👨‍👩‍👧"
+    },
+    {
+      "id": "fr_ch2_l3", "languageId": "fr", "chapterId": "fr_ch2",
+      "chapterTitle": "☕ La Vie Quotidienne (Daily Life)", "title": "Être & Avoir", "description": "Master the two most essential French verbs",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 6, "iconEmoji": "⚡"
+    },
+    {
+      "id": "sa_ch1_l1", "languageId": "sa", "chapterId": "sa_ch1",
+      "chapterTitle": "🕉️ प्रथमं पदम् (The First Step)", "title": "Greetings & Namaste", "description": "Ancient greetings alive today",
+      "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 1, "iconEmoji": "🙏"
+    },
+    {
+      "id": "sa_ch1_l2", "languageId": "sa", "chapterId": "sa_ch1",
+      "chapterTitle": "🕉️ प्रथमं पदम् (The First Step)", "title": "Sanskrit Alphabet — Vowels", "description": "Learn the 16 Sanskrit vowels",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 2, "iconEmoji": "🔤"
+    },
+    {
+      "id": "sa_ch1_l3", "languageId": "sa", "chapterId": "sa_ch1",
+      "chapterTitle": "🕉️ प्रथमं पदम् (The First Step)", "title": "Numbers 1–10", "description": "Count in the ancient tongue",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
+      "durationMinutes": 5, "orderIndex": 3, "iconEmoji": "🔢"
+    },
+    {
+      "id": "sa_ch2_l1", "languageId": "sa", "chapterId": "sa_ch2",
+      "chapterTitle": "🌺 प्रकृतिः (Nature)", "title": "Nature & Elements", "description": "Earth, water, fire, air in Sanskrit",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 4, "iconEmoji": "🌿"
+    },
+    {
+      "id": "sa_ch2_l2", "languageId": "sa", "chapterId": "sa_ch2",
+      "chapterTitle": "🌺 प्रकृतिः (Nature)", "title": "Body Parts", "description": "Know your sharira in Sanskrit",
+      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
+      "durationMinutes": 7, "orderIndex": 5, "iconEmoji": "🫀"
+    },
+    {
+      "id": "sa_ch2_l3", "languageId": "sa", "chapterId": "sa_ch2",
+      "chapterTitle": "🌺 प्रकृतिः (Nature)", "title": "Basic Sentence Structure", "description": "SOV order — Sanskrit's elegant grammar",
+      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
+      "durationMinutes": 10, "orderIndex": 6, "iconEmoji": "📜"
+    },
+    {
       "id": "es_ch1_l1", "languageId": "es", "chapterId": "es_ch1",
       "chapterTitle": "🌱 The First Seeds", "title": "Greetings", "description": "Say hello and goodbye in Spanish",
       "type": "VOCABULARY", "status": "AVAILABLE", "xpReward": 10, "leafReward": 5,
@@ -8,7 +152,7 @@
     },
     {
       "id": "es_ch1_l2", "languageId": "es", "chapterId": "es_ch1",
-      "chapterTitle": "🌱 The First Seeds", "title": "Numbers 1-10", "description": "Count from one to ten",
+      "chapterTitle": "🌱 The First Seeds", "title": "Numbers 1–10", "description": "Count from one to ten",
       "type": "VOCABULARY", "status": "LOCKED", "xpReward": 10, "leafReward": 5,
       "durationMinutes": 5, "orderIndex": 2, "iconEmoji": "🔢"
     },
@@ -35,33 +179,557 @@
       "chapterTitle": "🌿 Growing Roots", "title": "Food & Drinks", "description": "Order food at a restaurant",
       "type": "VOCABULARY", "status": "LOCKED", "xpReward": 15, "leafReward": 8,
       "durationMinutes": 7, "orderIndex": 6, "iconEmoji": "🍽️"
-    },
-    {
-      "id": "es_ch3_l1", "languageId": "es", "chapterId": "es_ch3",
-      "chapterTitle": "🌲 The Forest Path", "title": "Present Tense Verbs", "description": "Master everyday actions",
-      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
-      "durationMinutes": 10, "orderIndex": 7, "iconEmoji": "⚡"
-    },
-    {
-      "id": "es_ch3_l2", "languageId": "es", "chapterId": "es_ch3",
-      "chapterTitle": "🌲 The Forest Path", "title": "At the Market", "description": "Shop and haggle in Spanish",
-      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
-      "durationMinutes": 10, "orderIndex": 8, "iconEmoji": "🛒"
-    },
-    {
-      "id": "es_ch3_l3", "languageId": "es", "chapterId": "es_ch3",
-      "chapterTitle": "🌲 The Forest Path", "title": "Directions", "description": "Ask and give directions",
-      "type": "VOCABULARY", "status": "LOCKED", "xpReward": 20, "leafReward": 10,
-      "durationMinutes": 10, "orderIndex": 9, "iconEmoji": "🗺️"
-    },
-    {
-      "id": "es_ch4_l1", "languageId": "es", "chapterId": "es_ch4",
-      "chapterTitle": "🏔️ Mountain Peaks", "title": "Past Tense", "description": "Talk about what happened",
-      "type": "GRAMMAR", "status": "LOCKED", "xpReward": 25, "leafReward": 12,
-      "durationMinutes": 12, "orderIndex": 10, "iconEmoji": "⏮️"
     }
+
   ],
+
   "questions": [
+    {
+      "id": "ja_ch1_l1_q1", "lessonId": "ja_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'Hello' in Japanese (daytime)?",
+      "targetWord": "Hello", "options": ["こんにちは", "おはよう", "さようなら", "ありがとう"],
+      "correctAnswer": "こんにちは", "explanation": "こんにちは (Konnichiwa) is used from midday to early evening. It literally means 'As for today...'",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l1_q2", "lessonId": "ja_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'おはよう' (Ohayou) mean?",
+      "targetWord": "おはよう", "options": ["Good night", "Good morning", "Thank you", "Goodbye"],
+      "correctAnswer": "Good morning", "explanation": "おはよう (Ohayou) means Good morning. For more formal situations, say おはようございます (Ohayou gozaimasu).",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l1_q3", "lessonId": "ja_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'Thank you' in Japanese?",
+      "targetWord": "Thank you", "options": ["すみません", "ありがとう", "はい", "いいえ"],
+      "correctAnswer": "ありがとう", "explanation": "ありがとう (Arigatou) means thank you. The polite form is ありがとうございます (Arigatou gozaimasu).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l1_q4", "lessonId": "ja_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'Goodbye' in Japanese?",
+      "targetWord": "Goodbye", "options": ["こんばんは", "さようなら", "おはよう", "はじめまして"],
+      "correctAnswer": "さようなら", "explanation": "さようなら (Sayounara) means goodbye. For casual farewells, Japanese people often say またね (Matane) — see you later!",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l1_q5", "lessonId": "ja_ch1_l1", "type": "FILL_IN_BLANK",
+      "prompt": "Complete: '___ は Kobanwa — meaning Good Evening in Japanese",
+      "targetWord": "こんばんは", "options": [],
+      "correctAnswer": "こんばんは", "explanation": "こんばんは (Konbanwa) is the evening greeting, used from dusk onwards.",
+      "orderIndex": 5, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l2_q1", "lessonId": "ja_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'one' in Japanese?",
+      "targetWord": "one", "options": ["に (ni)", "いち (ichi)", "さん (san)", "し (shi)"],
+      "correctAnswer": "いち (ichi)", "explanation": "いち (ichi) = 1. The sequence starts: ichi, ni, san, shi/yon...",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l2_q2", "lessonId": "ja_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What number is 'ご (go)'?",
+      "targetWord": "ご", "options": ["3", "4", "5", "6"],
+      "correctAnswer": "5", "explanation": "ご (go) = 5. Remember the counting: ichi(1), ni(2), san(3), shi(4), go(5)!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l2_q3", "lessonId": "ja_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'ten' in Japanese?",
+      "targetWord": "ten", "options": ["はち (hachi)", "く (ku)", "じゅう (juu)", "なな (nana)"],
+      "correctAnswer": "じゅう (juu)", "explanation": "じゅう (juu) = 10. Japanese counting: nana(7), hachi(8), ku(9), juu(10).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l2_q4", "lessonId": "ja_ch1_l2", "type": "FILL_IN_BLANK",
+      "prompt": "いち, に, さん, ___, ご (Fill in four)",
+      "targetWord": "し or よん", "options": [],
+      "correctAnswer": "し", "explanation": "し (shi) or よん (yon) = 4. Both are correct! よん is more common in everyday speech.",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l3_q1", "lessonId": "ja_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which hiragana character reads as 'a' (like in 'car')?",
+      "targetWord": "a", "options": ["い", "あ", "う", "え"],
+      "correctAnswer": "あ", "explanation": "あ (a) is the first hiragana vowel. The 5 vowels are: あ(a), い(i), う(u), え(e), お(o).",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l3_q2", "lessonId": "ja_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What sound does 'か (ka)' make?",
+      "targetWord": "か", "options": ["sa", "ta", "ka", "ma"],
+      "correctAnswer": "ka", "explanation": "か = 'ka'. The ka-row: か(ka), き(ki), く(ku), け(ke), こ(ko).",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l3_q3", "lessonId": "ja_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which hiragana spells 'su'?",
+      "targetWord": "su", "options": ["さ", "し", "す", "せ"],
+      "correctAnswer": "す", "explanation": "す (su) is in the sa-row: さ(sa), し(shi), す(su), せ(se), そ(so).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "ja_ch1_l3_q4", "lessonId": "ja_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does the hiragana 'な (na)' sound like?",
+      "targetWord": "な", "options": ["ra", "ma", "ha", "na"],
+      "correctAnswer": "na", "explanation": "な (na) is in the na-row. Together: な(na), に(ni), ぬ(nu), ね(ne), の(no).",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l1_q1", "lessonId": "ja_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'water' in Japanese?",
+      "targetWord": "water", "options": ["おちゃ (ocha)", "みず (mizu)", "コーヒー (koohii)", "ビール (biiru)"],
+      "correctAnswer": "みず (mizu)", "explanation": "みず (mizu) = water. お水 (omizu) is the polite form you'd use in a restaurant.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l1_q2", "lessonId": "ja_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'delicious' in Japanese?",
+      "targetWord": "delicious", "options": ["おいしい (oishii)", "からい (karai)", "あまい (amai)", "にがい (nigai)"],
+      "correctAnswer": "おいしい (oishii)", "explanation": "おいしい (oishii) = delicious! Every chef in Japan loves to hear this.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l1_q3", "lessonId": "ja_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is ラーメン (raamen)?",
+      "targetWord": "ラーメン", "options": ["Sushi", "Ramen noodles", "Fried rice", "Tempura"],
+      "correctAnswer": "Ramen noodles", "explanation": "ラーメン (raamen) is Japanese ramen — noodle soup that is beloved worldwide!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l1_q4", "lessonId": "ja_ch2_l1", "type": "FILL_IN_BLANK",
+      "prompt": "すし is the Japanese word for ___",
+      "targetWord": "sushi", "options": [],
+      "correctAnswer": "sushi", "explanation": "すし (sushi) — one of Japan's most famous dishes, made with vinegared rice and toppings.",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l2_q1", "lessonId": "ja_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'red' in Japanese?",
+      "targetWord": "red", "options": ["あお (ao)", "きいろ (kiiro)", "あか (aka)", "しろ (shiro)"],
+      "correctAnswer": "あか (aka)", "explanation": "あか (aka) = red. Japan's iconic red torii gates are called 赤い鳥居 (akai torii)!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l2_q2", "lessonId": "ja_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What color is 'あお (ao)'?",
+      "targetWord": "あお", "options": ["Green", "Blue", "Purple", "Orange"],
+      "correctAnswer": "Blue", "explanation": "あお (ao) means blue (and sometimes green — Japanese has an interesting color history!)",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l2_q3", "lessonId": "ja_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'white' in Japanese?",
+      "targetWord": "white", "options": ["くろ (kuro)", "しろ (shiro)", "きいろ (kiiro)", "みどり (midori)"],
+      "correctAnswer": "しろ (shiro)", "explanation": "しろ (shiro) = white. Mount Fuji's snow cap is called 白い雪 (shiroi yuki) — white snow!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l3_q1", "lessonId": "ja_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'Excuse me / Sorry' in Japanese?",
+      "targetWord": "Excuse me", "options": ["はい (hai)", "すみません (sumimasen)", "いいえ (iie)", "どうぞ (douzo)"],
+      "correctAnswer": "すみません (sumimasen)", "explanation": "すみません (sumimasen) works for both 'excuse me' and 'I'm sorry' — super useful!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l3_q2", "lessonId": "ja_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'どうぞ (douzo)' mean?",
+      "targetWord": "どうぞ", "options": ["No thank you", "Please / Go ahead", "I don't understand", "Where is it?"],
+      "correctAnswer": "Please / Go ahead", "explanation": "どうぞ (douzo) = please go ahead / here you are. Used when offering something or letting someone pass.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "ja_ch2_l3_q3", "lessonId": "ja_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'I don't understand' in Japanese?",
+      "targetWord": "I don't understand", "options": ["わかりません (wakarimasen)", "わかります (wakarimasu)", "できます (dekimasu)", "しりません (shirimasen)"],
+      "correctAnswer": "わかりません (wakarimasen)", "explanation": "わかりません (wakarimasen) = I don't understand. Very useful when learning! わかります = I understand.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l1_q1", "lessonId": "en_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which is the most formal greeting in English?",
+      "targetWord": "formal greeting", "options": ["Hey!", "Yo!", "Good morning.", "Wassup?"],
+      "correctAnswer": "Good morning.", "explanation": "'Good morning' is polite and professional. Use it in offices, meetings, and with elders.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l1_q2", "lessonId": "en_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you introduce yourself formally?",
+      "targetWord": "introduce", "options": ["I am called by...", "My name is...", "They call me...", "Name's..."],
+      "correctAnswer": "My name is...", "explanation": "'My name is [Name]' is the standard formal introduction. 'I'm [Name]' is the informal version.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l1_q3", "lessonId": "en_ch1_l1", "type": "FILL_IN_BLANK",
+      "prompt": "Complete the phrase: 'Nice to ___ you!'",
+      "targetWord": "meet", "options": [],
+      "correctAnswer": "meet", "explanation": "'Nice to meet you!' is said when meeting someone for the first time. A universally friendly phrase!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l1_q4", "lessonId": "en_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which response fits: 'How are you?' → '___'",
+      "targetWord": "response", "options": ["I'm fine, thank you.", "My name is Alex.", "I live in India.", "I like coffee."],
+      "correctAnswer": "I'm fine, thank you.", "explanation": "'I'm fine, thank you' or 'I'm doing well, thanks!' are the classic polite responses.",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l2_q1", "lessonId": "en_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 12:30 in English?",
+      "targetWord": "12:30", "options": ["Half past twelve", "Quarter past twelve", "Twelve thirty-five", "Twelve o'clock"],
+      "correctAnswer": "Half past twelve", "explanation": "'Half past twelve' = 12:30. 'Quarter past' = :15. 'Quarter to' = :45.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l2_q2", "lessonId": "en_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What comes after 'nineteen'?",
+      "targetWord": "twenty", "options": ["Ninety", "Twenty", "Twelve", "Eleven"],
+      "correctAnswer": "Twenty", "explanation": "Nineteen (19) → Twenty (20). The -teen numbers: thirteen, fourteen... nineteen. Then twenty!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l2_q3", "lessonId": "en_ch1_l2", "type": "FILL_IN_BLANK",
+      "prompt": "One, two, three, ___, five (fill in four)",
+      "targetWord": "four", "options": [],
+      "correctAnswer": "four", "explanation": "Four (4) — spelled F-O-U-R. Common mistake: don't confuse with 'for' or 'fore'!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l3_q1", "lessonId": "en_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which word is a noun?",
+      "targetWord": "noun", "options": ["quickly", "beautiful", "table", "run"],
+      "correctAnswer": "table", "explanation": "A noun is a person, place, or thing. 'Table' is a thing. 'Run' is a verb, 'beautiful' is adjective, 'quickly' is adverb.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l3_q2", "lessonId": "en_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is the plural of 'child'?",
+      "targetWord": "children", "options": ["childs", "children", "childrens", "child's"],
+      "correctAnswer": "children", "explanation": "'Children' is an irregular plural. English has many: man→men, woman→women, tooth→teeth, foot→feet.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "en_ch1_l3_q3", "lessonId": "en_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which is a place noun?",
+      "targetWord": "place", "options": ["friendship", "library", "happiness", "running"],
+      "correctAnswer": "library", "explanation": "Library is a place. 'Friendship' and 'happiness' are abstract nouns. 'Running' is a verb/gerund.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l1_q1", "lessonId": "en_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which is correct: 'She ___ to school every day.'",
+      "targetWord": "goes", "options": ["go", "goes", "going", "gone"],
+      "correctAnswer": "goes", "explanation": "With he/she/it, add -s or -es to the verb: 'She goes', 'He plays', 'It works'. This is the third-person singular rule!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l1_q2", "lessonId": "en_ch2_l1", "type": "FILL_IN_BLANK",
+      "prompt": "I ___ English every morning. (study)",
+      "targetWord": "study", "options": [],
+      "correctAnswer": "study", "explanation": "With 'I', the verb stays in base form: 'I study', 'I work', 'I learn'.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l1_q3", "lessonId": "en_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "Present simple is used for:",
+      "targetWord": "habitual actions", "options": ["Actions happening right now", "Habits and routines", "Future plans only", "Past completed events"],
+      "correctAnswer": "Habits and routines", "explanation": "Present simple = habits, facts, routines. 'The sun rises in the east.' 'She drinks coffee every morning.'",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l2_q1", "lessonId": "en_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which question word asks about a person?",
+      "targetWord": "who", "options": ["What", "Where", "Who", "When"],
+      "correctAnswer": "Who", "explanation": "'Who' asks about people. 'What' = things. 'Where' = places. 'When' = time. 'Why' = reason. 'How' = manner.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l2_q2", "lessonId": "en_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "'___ is your birthday?' — which word fits?",
+      "targetWord": "When", "options": ["Who", "What", "When", "How"],
+      "correctAnswer": "When", "explanation": "'When is your birthday?' — 'When' asks about time. 'What is your birthday?' would be grammatically odd.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l2_q3", "lessonId": "en_ch2_l2", "type": "FILL_IN_BLANK",
+      "prompt": "'___ do you come from?' (Asking about place of origin)",
+      "targetWord": "Where", "options": [],
+      "correctAnswer": "Where", "explanation": "'Where do you come from?' asks about place. Could also say 'Where are you from?' — both are correct!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l3_q1", "lessonId": "en_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you politely order at a restaurant?",
+      "targetWord": "order", "options": ["Give me the burger!", "I'll have the burger, please.", "Burger!", "Bring burger now."],
+      "correctAnswer": "I'll have the burger, please.", "explanation": "'I'll have..., please' is polite and natural. 'Could I have...' or 'I'd like...' also work perfectly.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "en_ch2_l3_q2", "lessonId": "en_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'The bill, please' mean?",
+      "targetWord": "bill", "options": ["The menu", "The check / invoice for your meal", "A discount", "A recommendation"],
+      "correctAnswer": "The check / invoice for your meal", "explanation": "'The bill' (UK) or 'The check' (US) = the invoice at a restaurant. Both are widely understood.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l1_q1", "lessonId": "fr_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is the standard French greeting?",
+      "targetWord": "Hello", "options": ["Au revoir", "Bonjour", "Bonsoir", "Merci"],
+      "correctAnswer": "Bonjour", "explanation": "Bonjour = Hello (daytime). Bonsoir = Good evening. Au revoir = Goodbye. Merci = Thank you.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l1_q2", "lessonId": "fr_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'Comment allez-vous?' mean?",
+      "targetWord": "Comment allez-vous", "options": ["Where do you live?", "How are you? (formal)", "What is your name?", "See you later!"],
+      "correctAnswer": "How are you? (formal)", "explanation": "'Comment allez-vous?' is the formal 'How are you?'. The informal version is 'Ça va?' (Sah vah?)",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l1_q3", "lessonId": "fr_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'Thank you very much' in French?",
+      "targetWord": "Thank you very much", "options": ["S'il vous plaît", "Excusez-moi", "Merci beaucoup", "De rien"],
+      "correctAnswer": "Merci beaucoup", "explanation": "Merci beaucoup = Thank you very much. De rien = You're welcome. S'il vous plaît = Please.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l1_q4", "lessonId": "fr_ch1_l1", "type": "FILL_IN_BLANK",
+      "prompt": "'___ voir!' means Goodbye in French",
+      "targetWord": "Au re", "options": [],
+      "correctAnswer": "Au re", "explanation": "Au revoir = Goodbye. Literally 'until we see each other again'. For casual farewell: Salut! (Hi/Bye)",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l2_q1", "lessonId": "fr_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'five' in French?",
+      "targetWord": "five", "options": ["quatre", "six", "cinq", "sept"],
+      "correctAnswer": "cinq", "explanation": "cinq (sank) = 5. French numbers 1-5: un, deux, trois, quatre, cinq.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l2_q2", "lessonId": "fr_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What number is 'dix' in French?",
+      "targetWord": "dix", "options": ["7", "8", "9", "10"],
+      "correctAnswer": "10", "explanation": "dix (deese) = 10. The French 6-10: six, sept, huit, neuf, dix.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l2_q3", "lessonId": "fr_ch1_l2", "type": "FILL_IN_BLANK",
+      "prompt": "un, deux, trois, ___, cinq (Fill in four)",
+      "targetWord": "quatre", "options": [],
+      "correctAnswer": "quatre", "explanation": "quatre (kah-truh) = 4. Notice the silent 're' at the end — typical French pronunciation!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l3_q1", "lessonId": "fr_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'red' in French?",
+      "targetWord": "red", "options": ["bleu", "vert", "rouge", "jaune"],
+      "correctAnswer": "rouge", "explanation": "rouge (roozh) = red. You may know it from lipstick brands or 'Moulin Rouge' in Paris!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l3_q2", "lessonId": "fr_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What color is 'bleu'?",
+      "targetWord": "bleu", "options": ["Green", "Blue", "Yellow", "White"],
+      "correctAnswer": "Blue", "explanation": "bleu (bluh) = blue. The French flag (tricolore) has bleu, blanc, rouge — blue, white, red!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch1_l3_q3", "lessonId": "fr_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'white' in French?",
+      "targetWord": "white", "options": ["noir", "blanc", "gris", "beige"],
+      "correctAnswer": "blanc", "explanation": "blanc (blon) = white (masculine). blanche = white (feminine). French adjectives change gender!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l1_q1", "lessonId": "fr_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you order a coffee in French?",
+      "targetWord": "un café", "options": ["Un café, s'il vous plaît", "Donnez-moi café!", "Je voudrais le thé", "Bonjour, café?"],
+      "correctAnswer": "Un café, s'il vous plaît", "explanation": "'Un café, s'il vous plaît' = A coffee, please. Always add 's'il vous plaît' for politeness!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l1_q2", "lessonId": "fr_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'bread' in French?",
+      "targetWord": "bread", "options": ["fromage", "beurre", "pain", "lait"],
+      "correctAnswer": "pain", "explanation": "pain (pan) = bread. The French baguette is a type of pain. Pain au chocolat = chocolate bread pastry!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l1_q3", "lessonId": "fr_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'L'addition, s'il vous plaît' mean?",
+      "targetWord": "L'addition", "options": ["The menu, please", "The bill, please", "Another glass, please", "The waiter, please"],
+      "correctAnswer": "The bill, please", "explanation": "L'addition = the bill/check. Just like saying 'check please' in English — use it at the end of your meal.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l2_q1", "lessonId": "fr_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'mother' in French?",
+      "targetWord": "mother", "options": ["père", "frère", "mère", "sœur"],
+      "correctAnswer": "mère", "explanation": "mère (mair) = mother. père = father. frère = brother. sœur = sister.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l2_q2", "lessonId": "fr_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'my brother' in French?",
+      "targetWord": "my brother", "options": ["ma sœur", "mon père", "mon frère", "ma mère"],
+      "correctAnswer": "mon frère", "explanation": "mon frère = my brother. 'Mon' is masculine possessive, 'ma' is feminine. frère (freir) = brother.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l3_q1", "lessonId": "fr_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Which is 'I am' in French?",
+      "targetWord": "I am", "options": ["Tu es", "Je suis", "Il est", "Nous sommes"],
+      "correctAnswer": "Je suis", "explanation": "Je suis = I am. From the verb 'être' (to be): je suis, tu es, il/elle est, nous sommes, vous êtes, ils sont.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l3_q2", "lessonId": "fr_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'I have' in French?",
+      "targetWord": "I have", "options": ["Je suis", "Tu as", "J'ai", "Il a"],
+      "correctAnswer": "J'ai", "explanation": "J'ai = I have. From 'avoir' (to have): j'ai, tu as, il a, nous avons, vous avez, ils ont.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "fr_ch2_l3_q3", "lessonId": "fr_ch2_l3", "type": "FILL_IN_BLANK",
+      "prompt": "Je ___ étudiant. (I am a student — fill in être form)",
+      "targetWord": "suis", "options": [],
+      "correctAnswer": "suis", "explanation": "Je suis étudiant = I am a student. Note: no article needed in French! (Not 'un étudiant' after être.)",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l1_q1", "lessonId": "sa_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'नमस्ते (Namaste)' literally mean?",
+      "targetWord": "नमस्ते", "options": ["Hello, friend!", "I bow to the divine in you", "Welcome, stranger", "Peace be upon you"],
+      "correctAnswer": "I bow to the divine in you", "explanation": "Namaste (नमस्ते) comes from 'namas' (bow/salutation) + 'te' (to you). A profound greeting recognizing the divine in everyone.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l1_q2", "lessonId": "sa_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'How are you?' in Sanskrit?",
+      "targetWord": "How are you", "options": ["कुशलं ते? (Kushalam te?)", "नमस्ते (Namaste)", "धन्यवाद (Dhanyavaad)", "स्वागतम् (Svagatam)"],
+      "correctAnswer": "कुशलं ते? (Kushalam te?)", "explanation": "कुशलं ते? (Kushalam te?) = How are you? / Are you well? 'Kushalam' means 'well/auspicious'.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l1_q3", "lessonId": "sa_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'धन्यवाद (Dhanyavaad)' mean?",
+      "targetWord": "धन्यवाद", "options": ["Goodbye", "Please", "Thank you", "Welcome"],
+      "correctAnswer": "Thank you", "explanation": "धन्यवाद (Dhanyavaad) = Thank you. It comes from 'dhanya' (blessed/grateful) + 'vaad' (word/speech).",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l1_q4", "lessonId": "sa_ch1_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'Welcome' in Sanskrit?",
+      "targetWord": "Welcome", "options": ["स्वागतम् (Svagatam)", "पुनर्मिलाम (Punarmilaam)", "शुभम् (Shubham)", "वन्दामि (Vandaami)"],
+      "correctAnswer": "स्वागतम् (Svagatam)", "explanation": "स्वागतम् (Svagatam) = Welcome! You'll see this at the entrance of temples and heritage sites across India.",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l2_q1", "lessonId": "sa_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "Sanskrit has how many basic vowels (svaras)?",
+      "targetWord": "vowels", "options": ["5", "10", "16", "21"],
+      "correctAnswer": "16", "explanation": "Sanskrit has 16 vowels (svaras): अ, आ, इ, ई, उ, ऊ, ऋ, ॠ, ऌ, ॡ, ए, ऐ, ओ, औ, अं, अः — each with precise phonetic rules.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l2_q2", "lessonId": "sa_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What sound does 'अ' make?",
+      "targetWord": "अ", "options": ["like 'a' in 'father'", "like 'i' in 'machine'", "like 'u' in 'moon'", "like 'e' in 'they'"],
+      "correctAnswer": "like 'a' in 'father'", "explanation": "अ is a short 'a' sound, similar to the 'a' in 'father' or 'cut'. It's the most fundamental Sanskrit vowel.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l2_q3", "lessonId": "sa_ch1_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is the long form of 'इ (i)'?",
+      "targetWord": "long i", "options": ["ई (ii)", "ऊ (uu)", "आ (aa)", "ओ (o)"],
+      "correctAnswer": "ई (ii)", "explanation": "इ = short 'i' (as in 'it'). ई = long 'ee' (as in 'feet'). Sanskrit distinguishes short and long vowels precisely.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l3_q1", "lessonId": "sa_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'one' in Sanskrit?",
+      "targetWord": "one", "options": ["द्वि (dvi)", "एक (eka)", "त्रि (tri)", "चतुर् (chatur)"],
+      "correctAnswer": "एक (eka)", "explanation": "एक (eka) = 1. You'll recognize it in words like 'ekam' (unity) and 'Ekta' (name meaning unity).",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l3_q2", "lessonId": "sa_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'three' in Sanskrit?",
+      "targetWord": "three", "options": ["पञ्च (pancha)", "द्वि (dvi)", "त्रि (tri)", "षट् (shat)"],
+      "correctAnswer": "त्रि (tri)", "explanation": "त्रि (tri) = 3. This root appears in English too: tri-angle, tri-cycle, tri-dent. Languages are connected!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "sa_ch1_l3_q3", "lessonId": "sa_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'ten' in Sanskrit?",
+      "targetWord": "ten", "options": ["नव (nava)", "अष्ट (ashta)", "दश (dasha)", "सप्त (sapta)"],
+      "correctAnswer": "दश (dasha)", "explanation": "दश (dasha) = 10. From this root comes the English prefix 'deca-' (decade, decagon)! Sanskrit is a mother language.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l1_q1", "lessonId": "sa_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'water' in Sanskrit?",
+      "targetWord": "water", "options": ["अग्नि (agni)", "जल (jala)", "वायु (vayu)", "पृथ्वी (prithvi)"],
+      "correctAnswer": "जल (jala)", "explanation": "जल (jala) = water. Also called 'ap' or 'ambu'. Water is one of the Panchamahabhuta — the five great elements.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l1_q2", "lessonId": "sa_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'अग्नि (agni)' mean?",
+      "targetWord": "अग्नि", "options": ["Earth", "Sky", "Fire", "Wind"],
+      "correctAnswer": "Fire", "explanation": "अग्नि (agni) = fire. Agni is also the Hindu god of fire. This word root appears in 'ignite' in English!",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l1_q3", "lessonId": "sa_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'sky/space' in Sanskrit?",
+      "targetWord": "sky", "options": ["भूमि (bhoomi)", "आकाश (akaasha)", "वायु (vayu)", "जल (jala)"],
+      "correctAnswer": "आकाश (akaasha)", "explanation": "आकाश (akaasha) = sky/ether/space. It's the 5th element (Panchamahabhuta). 'Aakash' is a common name meaning 'sky'.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l1_q4", "lessonId": "sa_ch2_l1", "type": "FILL_IN_BLANK",
+      "prompt": "पञ्चमहाभूत (Panchamahabhuta) = The Five Great ___",
+      "targetWord": "Elements", "options": [],
+      "correctAnswer": "Elements", "explanation": "Panchamahabhuta = The 5 Great Elements: Earth (पृथ्वी), Water (जल), Fire (अग्नि), Air (वायु), Space (आकाश).",
+      "orderIndex": 4, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l2_q1", "lessonId": "sa_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'hand' in Sanskrit?",
+      "targetWord": "hand", "options": ["पाद (paada)", "हस्त (hasta)", "नेत्र (netra)", "कर्ण (karna)"],
+      "correctAnswer": "हस्त (hasta)", "explanation": "हस्त (hasta) = hand. You'll see this in yoga poses: 'hasta mudra' (hand gesture). Also root of 'hasta la vista'!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l2_q2", "lessonId": "sa_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What does 'नेत्र (netra)' mean?",
+      "targetWord": "नेत्र", "options": ["Nose", "Ear", "Eye", "Mouth"],
+      "correctAnswer": "Eye", "explanation": "नेत्र (netra) = eye. The third eye concept in Hinduism is called 'तृतीय नेत्र' (tritiya netra). नेत्र is also a common name.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l2_q3", "lessonId": "sa_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'heart' in Sanskrit?",
+      "targetWord": "heart", "options": ["हृदय (hridaya)", "मस्तक (mastaka)", "जिह्वा (jihva)", "ललाट (lalata)"],
+      "correctAnswer": "हृदय (hridaya)", "explanation": "हृदय (hridaya) = heart. This is the root of 'hrid' in many Indian languages. It means both the physical heart and the spiritual core.",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l3_q1", "lessonId": "sa_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "Sanskrit follows which word order?",
+      "targetWord": "word order", "options": ["SVO (Subject-Verb-Object)", "VSO (Verb-Subject-Object)", "SOV (Subject-Object-Verb)", "OVS (Object-Verb-Subject)"],
+      "correctAnswer": "SOV (Subject-Object-Verb)", "explanation": "Sanskrit uses SOV order: 'रामः फलं खादति' = Rama fruit eats (Rama eats fruit). The verb comes at the END!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "sa_ch2_l3_q2", "lessonId": "sa_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'Rama goes' in Sanskrit structure?",
+      "targetWord": "Rama goes", "options": ["गच्छति रामः", "रामः गच्छति", "Both are correct!", "Neither is correct"],
+      "correctAnswer": "Both are correct!", "explanation": "Sanskrit is highly flexible! Due to its case system (vibhakti), word order can vary without changing meaning. रामः गच्छति = Standard SOV. गच्छति रामः = also valid!",
+      "orderIndex": 2, "xpValue": 5
+    },
     {
       "id": "es_ch1_l1_q1", "lessonId": "es_ch1_l1", "type": "MULTIPLE_CHOICE",
       "prompt": "How do you say 'Hello' in Spanish?",
@@ -79,8 +747,8 @@
     {
       "id": "es_ch1_l1_q3", "lessonId": "es_ch1_l1", "type": "FILL_IN_BLANK",
       "prompt": "Complete: '___ noches' means 'Good night'",
-      "targetWord": "Buenos/Buenas noches", "options": [],
-      "correctAnswer": "Buenas", "explanation": "'Buenas noches' literally means 'good nights' — buenas (good, feminine plural) + noches (nights).",
+      "targetWord": "Buenas noches", "options": [],
+      "correctAnswer": "Buenas", "explanation": "'Buenas noches' = Good night. Buenas (good, feminine plural) + noches (nights).",
       "orderIndex": 3, "xpValue": 5
     },
     {
@@ -115,7 +783,7 @@
       "id": "es_ch1_l2_q3", "lessonId": "es_ch1_l2", "type": "FILL_IN_BLANK",
       "prompt": "Uno, dos, tres, ___, cinco",
       "targetWord": "cuatro", "options": [],
-      "correctAnswer": "cuatro", "explanation": "cuatro = four. The sequence: uno (1), dos (2), tres (3), cuatro (4), cinco (5).",
+      "correctAnswer": "cuatro", "explanation": "cuatro = four. Sequence: uno(1), dos(2), tres(3), cuatro(4), cinco(5).",
       "orderIndex": 3, "xpValue": 5
     },
     {
@@ -131,6 +799,56 @@
       "targetWord": "blue", "options": ["verde", "azul", "amarillo", "negro"],
       "correctAnswer": "azul", "explanation": "'Azul' means blue. Think of the azure sky!",
       "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "es_ch1_l3_q3", "lessonId": "es_ch1_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'yellow' in Spanish?",
+      "targetWord": "yellow", "options": ["rojo", "azul", "amarillo", "verde"],
+      "correctAnswer": "amarillo", "explanation": "amarillo = yellow. The Spanish sunflower (girasol) is amarillo!",
+      "orderIndex": 3, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l1_q1", "lessonId": "es_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'mother' in Spanish?",
+      "targetWord": "mother", "options": ["padre", "hermano", "madre", "hijo"],
+      "correctAnswer": "madre", "explanation": "madre = mother. padre = father. hermano = brother. hermana = sister.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l1_q2", "lessonId": "es_ch2_l1", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'my brother' in Spanish?",
+      "targetWord": "my brother", "options": ["mi hermana", "mi padre", "mi hermano", "mi madre"],
+      "correctAnswer": "mi hermano", "explanation": "mi hermano = my brother. 'Mi' = my (same for masculine and feminine). hermano = brother.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l2_q1", "lessonId": "es_ch2_l2", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'please' in Spanish?",
+      "targetWord": "please", "options": ["gracias", "lo siento", "por favor", "de nada"],
+      "correctAnswer": "por favor", "explanation": "por favor = please. gracias = thank you. de nada = you're welcome. lo siento = I'm sorry.",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l2_q2", "lessonId": "es_ch2_l2", "type": "FILL_IN_BLANK",
+      "prompt": "Lo ___ = I'm sorry in Spanish",
+      "targetWord": "siento", "options": [],
+      "correctAnswer": "siento", "explanation": "Lo siento = I'm sorry / I feel it. 'Sentir' means to feel — expressing that you feel someone's pain.",
+      "orderIndex": 2, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l3_q1", "lessonId": "es_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "What is 'water' in Spanish?",
+      "targetWord": "water", "options": ["leche", "café", "agua", "jugo"],
+      "correctAnswer": "agua", "explanation": "agua = water. Una botella de agua = a bottle of water. Essential phrase for any Spanish-speaking country!",
+      "orderIndex": 1, "xpValue": 5
+    },
+    {
+      "id": "es_ch2_l3_q2", "lessonId": "es_ch2_l3", "type": "MULTIPLE_CHOICE",
+      "prompt": "How do you say 'the bill, please' in Spanish?",
+      "targetWord": "bill", "options": ["El menú, por favor", "La cuenta, por favor", "Más agua, por favor", "Muy bien, gracias"],
+      "correctAnswer": "La cuenta, por favor", "explanation": "La cuenta, por favor = The bill, please. Essential phrase for restaurants in Spanish-speaking countries!",
+      "orderIndex": 2, "xpValue": 5
     }
+
   ]
 }

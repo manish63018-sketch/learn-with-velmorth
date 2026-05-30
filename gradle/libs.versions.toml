@@ -24,6 +24,8 @@ coil = "2.7.0"
 splashscreen = "1.0.1"
 kotlinxSerializationJson = "1.8.1"
 googleFonts = "1.8.2"
+# Firebase
+firebaseBom = "33.7.0"
 
 
 [libraries]
@@ -74,6 +76,10 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 androidx-compose-ui-text-google-fonts = { module = "androidx.compose.ui:ui-text-google-fonts", version.ref = "googleFonts" }
 # Material Icons Extended (BOM-managed)
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -81,3 +87,6 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+# Firebase
+google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+firebase-crashlytics-plugin = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
