@@ -104,10 +104,12 @@ fun AppPermissionHandler(onAllHandled: () -> Unit = {}) {
     val allPermissions = remember { buildRequiredPermissions() }
 
     var showRationale by remember { mutableStateOf(true) }
+    android.util.Log.d("VelmorthDebug", "AppPermissionHandler composition: showRationale = $showRationale, permissions count = ${allPermissions.size}")
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
-    ) { _ ->
+    ) { results ->
+        android.util.Log.d("VelmorthDebug", "AppPermissionHandler: launcher callback: $results")
         // Regardless of what was granted/denied we continue – the app degrades
         // gracefully per feature.
         onAllHandled()
@@ -128,10 +130,12 @@ fun AppPermissionHandler(onAllHandled: () -> Unit = {}) {
             PermissionRationaleCard(
                 permissions = allPermissions,
                 onAllow = {
+                    android.util.Log.d("VelmorthDebug", "AppPermissionHandler: onAllow triggered")
                     showRationale = false
                     launcher.launch(allPermissions.map { it.permission }.toTypedArray())
                 },
                 onSkip = {
+                    android.util.Log.d("VelmorthDebug", "AppPermissionHandler: onSkip triggered")
                     showRationale = false
                     onAllHandled()
                 },

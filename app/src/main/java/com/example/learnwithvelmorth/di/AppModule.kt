@@ -1,6 +1,8 @@
 package com.example.learnwithvelmorth.di
 
 import android.content.Context
+import com.example.learnwithvelmorth.data.DataRepository
+import com.example.learnwithvelmorth.data.DefaultDataRepository
 import com.example.learnwithvelmorth.data.local.dao.*
 import com.example.learnwithvelmorth.data.local.db.VelmorthDatabase
 import com.example.learnwithvelmorth.data.repository.*
@@ -68,4 +70,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindProgressRepository(impl: ProgressRepositoryImpl): ProgressRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDataRepository(impl: DefaultDataRepository): DataRepository
 }

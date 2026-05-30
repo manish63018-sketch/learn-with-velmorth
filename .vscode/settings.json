@@ -2,5 +2,9 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "java.import.gradle.java.home": "C:\\Program Files\\Android\\Android Studio\\jbr",
     "java.jdt.ls.java.home": "C:\\Program Files\\Android\\Android Studio\\jbr",
-    "gradle.java.home": "C:\\Program Files\\Android\\Android Studio\\jbr"
+    "gradle.java.home": "C:\\Program Files\\Android\\Android Studio\\jbr",
+    "emulator.emulatorPath": "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk\\emulator\\emulator.exe",
+    "emulator.emulatorPathWindows": "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk\\emulator\\emulator.exe",
+    "emulator.sdkPath": "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk",
+    "emulator.sdkPathWindows": "C:\\Users\\ADMIN\\AppData\\Local\\Android\\Sdk"
 }

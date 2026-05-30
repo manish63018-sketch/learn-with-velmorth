@@ -21,6 +21,9 @@ interface UserDao {
     @Query("UPDATE users SET totalXp = totalXp + :xp WHERE id = :userId")
     suspend fun addXp(userId: String, xp: Int)
 
+    @Query("DELETE FROM users WHERE id = :userId")
+    suspend fun deleteUser(userId: String = "local_user")
+
     @Query("UPDATE users SET isPremium = :isPremium WHERE id = :userId")
     suspend fun setPremiumStatus(userId: String, isPremium: Boolean)
 

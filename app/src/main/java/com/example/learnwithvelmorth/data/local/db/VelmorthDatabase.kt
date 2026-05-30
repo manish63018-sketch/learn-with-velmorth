@@ -61,40 +61,13 @@ abstract class VelmorthDatabase : RoomDatabase() {
     ) : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            // Seed default user and lesson data on first creation
+            // Seed lesson data on first creation
             CoroutineScope(Dispatchers.IO).launch {
                 val database = dbProvider()  // safe: INSTANCE is set before this lambda runs
-                seedDefaultUser(database)
                 seedLessons(context, database)
                 // DialogueRepository handles its own seeding via seedIfEmpty()
                 // It is triggered lazily from VelmorthCharacterViewModel on first use
             }
-        }
-
-        private suspend fun seedDefaultUser(db: VelmorthDatabase) {
-            val today = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US)
-                .format(java.util.Date())
-            db.userDao().insertUser(
-                UserEntity(
-                    id = "local_user",
-                    name = "Learner",
-                    avatarEmoji = "🌿",
-                    leafBalance = 0,
-                    joinedDate = today,
-                    lastActiveDate = today,
-                )
-            )
-            // Welcome leaf bonus
-            db.leafWalletDao().insertTransaction(
-                LeafTransactionEntity(
-                    id = "welcome_bonus",
-                    userId = "local_user",
-                    amount = 50,
-                    type = "ADMIN_GRANT",
-                    description = "🌿 Welcome to Velmorth! Here are 50 leaves to start your journey.",
-                    timestamp = System.currentTimeMillis(),
-                )
-            )
         }
 
         private suspend fun seedLessons(context: Context, db: VelmorthDatabase) {

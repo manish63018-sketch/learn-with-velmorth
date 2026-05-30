@@ -13,4 +13,6 @@ interface UserRepository {
     suspend fun setDailyGoal(userId: String, minutes: Int)
     suspend fun updateGrowthPoints(userId: String, points: Int)
     suspend fun updateVelmorthMood(userId: String, mood: String)
+    suspend fun addXp(userId: String, xp: Int)
+    suspend fun resetUser(userId: String)
 }

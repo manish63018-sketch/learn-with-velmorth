@@ -27,12 +27,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.example.learnwithvelmorth.domain.model.LeafTransaction
+import com.example.learnwithvelmorth.domain.model.LeafTransactionType
+import com.example.learnwithvelmorth.domain.model.UserProgress
+import com.example.learnwithvelmorth.domain.repository.LeafWalletRepository
+import com.example.learnwithvelmorth.domain.repository.LessonRepository
+import com.example.learnwithvelmorth.domain.repository.ProgressRepository
+import com.example.learnwithvelmorth.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -83,30 +91,12 @@ data class QuizUiState(
 }
 
 // ─────────────────────────────────────────────
-// Dummy quiz questions
+// Dummy quiz questions (fallback)
 // ─────────────────────────────────────────────
 
 private val quizQuestions = listOf(
     QuizQuestion("q1", "What does \"Perro\" mean?", "Perro",
-        listOf("Cat", "Dog", "Bird", "Fish"), "Dog"),
-    QuizQuestion("q2", "Translate: \"La luna es hermosa.\"", null,
-        listOf("The sun is bright.", "The moon is beautiful.", "The star is near.", "The sky is blue."), "The moon is beautiful."),
-    QuizQuestion("q3", "Which means \"to eat\" in Spanish?", null,
-        listOf("Dormir", "Correr", "Comer", "Hablar"), "Comer"),
-    QuizQuestion("q4", "What is \"Red\" in Spanish?", "Rojo",
-        listOf("Azul", "Verde", "Rojo", "Amarillo"), "Rojo"),
-    QuizQuestion("q5", "\"Ella es mi madre\" means?", null,
-        listOf("He is my father.", "She is my mother.", "They are my parents.", "I am her child."), "She is my mother."),
-    QuizQuestion("q6", "Translate \"Fast\" to Spanish:", null,
-        listOf("Lento", "Rápido", "Alto", "Fuerte"), "Rápido"),
-    QuizQuestion("q7", "What does \"Biblioteca\" mean?", "Biblioteca",
-        listOf("Museum", "Library", "Hospital", "School"), "Library"),
-    QuizQuestion("q8", "How do you say \"Thank you\" in Spanish?", null,
-        listOf("Por favor", "De nada", "Gracias", "Perdón"), "Gracias"),
-    QuizQuestion("q9", "\"El cielo\" means?", "El cielo",
-        listOf("The ocean", "The sky", "The earth", "The fire"), "The sky"),
-    QuizQuestion("q10", "\"Me llamo\" translates to?", null,
-        listOf("I am from…", "My name is…", "I like…", "I have…"), "My name is…")
+        listOf("Cat", "Dog", "Bird", "Fish"), "Dog")
 )
 
 // ─────────────────────────────────────────────
@@ -114,7 +104,12 @@ private val quizQuestions = listOf(
 // ─────────────────────────────────────────────
 
 @HiltViewModel
-class QuizViewModel @Inject constructor() : ViewModel() {
+class QuizViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val lessonRepository: LessonRepository,
+    private val progressRepository: ProgressRepository,
+    private val leafWalletRepository: LeafWalletRepository,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(QuizUiState())
     val uiState: StateFlow<QuizUiState> = _uiState.asStateFlow()
@@ -123,21 +118,38 @@ class QuizViewModel @Inject constructor() : ViewModel() {
     private var autoAdvanceJob: Job? = null
 
     fun initQuiz(lessonId: String) {
-        _uiState.update {
-            it.copy(
-                lessonId = lessonId,
-                questions = quizQuestions,
-                currentQuestionIndex = 0,
-                score = 0,
-                isAnswered = false,
-                selectedAnswer = null,
-                isCorrect = false,
-                timeRemainingSeconds = 60,
-                isComplete = false,
-                isTimerRunning = true
-            )
+        viewModelScope.launch {
+            val dbQuestions = lessonRepository.getQuestionsForLesson(lessonId).first()
+            val mapped = if (dbQuestions.isNotEmpty()) {
+                dbQuestions.map { q ->
+                    QuizQuestion(
+                        id = q.id,
+                        prompt = q.prompt,
+                        targetWord = q.targetWord,
+                        options = if (q.options.isNotEmpty()) q.options else listOf("True", "False"),
+                        correctAnswer = q.correctAnswer
+                    )
+                }
+            } else {
+                quizQuestions
+            }
+
+            _uiState.update {
+                it.copy(
+                    lessonId = lessonId,
+                    questions = mapped,
+                    currentQuestionIndex = 0,
+                    score = 0,
+                    isAnswered = false,
+                    selectedAnswer = null,
+                    isCorrect = false,
+                    timeRemainingSeconds = 60,
+                    isComplete = false,
+                    isTimerRunning = true
+                )
+            }
+            startTimer()
         }
-        startTimer()
     }
 
     private fun startTimer() {
@@ -198,7 +210,59 @@ class QuizViewModel @Inject constructor() : ViewModel() {
     }
 
     fun claimReward(onComplete: () -> Unit) {
-        onComplete()
+        val state = _uiState.value
+        viewModelScope.launch {
+            // 1. Save progress
+            val progress = UserProgress(
+                id = "",
+                userId = "local_user",
+                lessonId = state.lessonId,
+                score = (state.percentScore * 100).toInt(),
+                xpEarned = state.xpEarned,
+                leavesEarned = state.leavesEarned,
+                timeSpentSeconds = state.totalTimeSeconds - state.timeRemainingSeconds,
+                attemptsCount = 1,
+                completedAt = "",
+                incorrectQuestionIds = emptyList()
+            )
+            progressRepository.saveProgress(progress)
+
+            // 2. Add XP to user
+            userRepository.addXp("local_user", state.xpEarned)
+
+            // 3. Add leaves to user balance and transaction history
+            userRepository.updateLeafBalance("local_user", state.leavesEarned)
+            leafWalletRepository.addTransaction(
+                LeafTransaction(
+                    id = "",
+                    userId = "local_user",
+                    amount = state.leavesEarned,
+                    type = LeafTransactionType.EARN_LESSON,
+                    description = "🌿 Earned from lesson quiz!",
+                    timestamp = System.currentTimeMillis()
+                )
+            )
+
+            // 4. Update user streak
+            userRepository.updateStreak("local_user")
+
+            // 5. Mark lesson as completed
+            lessonRepository.markLessonCompleted(state.lessonId, (state.percentScore * 100).toInt())
+
+            // 6. Find next sequential lesson and unlock it
+            val user = userRepository.getUser().first()
+            if (user != null) {
+                val lessons = lessonRepository.getLessonsForLanguage(user.selectedLanguageId).first()
+                val sorted = lessons.sortedBy { it.orderIndex }
+                val currentIndex = sorted.indexOfFirst { it.id == state.lessonId }
+                if (currentIndex != -1 && currentIndex + 1 < sorted.size) {
+                    val nextLesson = sorted[currentIndex + 1]
+                    lessonRepository.unlockLesson(nextLesson.id)
+                }
+            }
+
+            onComplete()
+        }
     }
 
     override fun onCleared() {

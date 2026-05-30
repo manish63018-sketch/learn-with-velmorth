@@ -125,12 +125,18 @@ private val spanishQuestions = listOf(
     )
 )
 
+import com.example.learnwithvelmorth.domain.repository.LessonRepository
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+
 // ─────────────────────────────────────────────
 // ViewModel
 // ─────────────────────────────────────────────
 
 @HiltViewModel
-class LessonPlayerViewModel @Inject constructor() : ViewModel() {
+class LessonPlayerViewModel @Inject constructor(
+    private val lessonRepository: LessonRepository,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LessonPlayerUiState())
     val uiState: StateFlow<LessonPlayerUiState> = _uiState.asStateFlow()
@@ -139,7 +145,28 @@ class LessonPlayerViewModel @Inject constructor() : ViewModel() {
 
     fun initLesson(lessonId: String, onComplete: (Int) -> Unit) {
         onCompleteCallback = onComplete
-        _uiState.update { it.copy(lessonId = lessonId, questions = spanishQuestions) }
+        viewModelScope.launch {
+            val dbQuestions = lessonRepository.getQuestionsForLesson(lessonId).first()
+            val mapped = if (dbQuestions.isNotEmpty()) {
+                dbQuestions.map { q ->
+                    LessonQuestion(
+                        id = q.id,
+                        type = when (q.type) {
+                            com.example.learnwithvelmorth.domain.model.QuestionType.FILL_IN_BLANK -> QuestionType.FILL_IN_BLANK
+                            else -> QuestionType.MULTIPLE_CHOICE
+                        },
+                        prompt = q.prompt,
+                        targetWord = q.targetWord,
+                        options = if (q.options.isNotEmpty()) q.options else listOf("True", "False"),
+                        correctAnswer = q.correctAnswer,
+                        explanation = q.explanation
+                    )
+                }
+            } else {
+                spanishQuestions
+            }
+            _uiState.update { it.copy(lessonId = lessonId, questions = mapped) }
+        }
     }
 
     fun updateFillInText(text: String) {

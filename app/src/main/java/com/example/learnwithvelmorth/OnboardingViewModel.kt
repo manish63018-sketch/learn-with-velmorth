@@ -3,7 +3,10 @@ package com.example.learnwithvelmorth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.learnwithvelmorth.domain.model.User
+import com.example.learnwithvelmorth.domain.model.LeafTransaction
+import com.example.learnwithvelmorth.domain.model.LeafTransactionType
 import com.example.learnwithvelmorth.domain.repository.UserRepository
+import com.example.learnwithvelmorth.domain.repository.LeafWalletRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -20,6 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val leafWalletRepository: LeafWalletRepository,
 ) : ViewModel() {
 
     fun saveOnboardingData(languageId: String, dailyGoalMinutes: Int) {
@@ -38,6 +42,17 @@ class OnboardingViewModel @Inject constructor(
                         dailyGoalMinutes = dailyGoalMinutes,
                         joinedDate       = today,
                         lastActiveDate   = today,
+                    )
+                )
+                // Welcome leaf bonus
+                leafWalletRepository.addTransaction(
+                    LeafTransaction(
+                        id               = "welcome_bonus",
+                        userId           = "local_user",
+                        amount           = 50,
+                        type             = LeafTransactionType.ADMIN_GRANT,
+                        description      = "🌿 Welcome to Velmorth! Here are 50 leaves to start your journey.",
+                        timestamp        = System.currentTimeMillis(),
                     )
                 )
             } else {

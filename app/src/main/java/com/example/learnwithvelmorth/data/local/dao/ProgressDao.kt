@@ -26,4 +26,7 @@ interface ProgressDao {
 
     @Query("SELECT COUNT(*) FROM user_progress WHERE userId = :userId AND completedAt >= :today")
     suspend fun getLessonsCompletedToday(userId: String, today: String): Int
+
+    @Query("DELETE FROM user_progress WHERE userId = :userId")
+    suspend fun clearProgressForUser(userId: String)
 }

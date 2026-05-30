@@ -29,18 +29,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    var hasHandledPermissions by remember { mutableStateOf(false) }
-
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        MainNavigation()
-
-                        // Show permission rationale overlay once per session
-                        if (!hasHandledPermissions) {
-                            AppPermissionHandler(
-                                onAllHandled = { hasHandledPermissions = true },
-                            )
-                        }
-                    }
+                    MainNavigation()
                 }
             }
         }

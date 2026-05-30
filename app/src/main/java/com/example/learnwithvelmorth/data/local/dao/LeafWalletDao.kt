@@ -17,4 +17,7 @@ interface LeafWalletDao {
 
     @Query("SELECT SUM(amount) FROM leaf_transactions WHERE userId = :userId")
     suspend fun getBalanceOnce(userId: String): Int?
+
+    @Query("DELETE FROM leaf_transactions WHERE userId = :userId")
+    suspend fun clearTransactionsForUser(userId: String)
 }

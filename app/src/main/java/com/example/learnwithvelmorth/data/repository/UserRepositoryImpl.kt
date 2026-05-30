@@ -1,6 +1,6 @@
 package com.example.learnwithvelmorth.data.repository
 
-import com.example.learnwithvelmorth.data.local.dao.UserDao
+import com.example.learnwithvelmorth.data.local.dao.*
 import com.example.learnwithvelmorth.data.local.entities.UserEntity
 import com.example.learnwithvelmorth.domain.model.User
 import com.example.learnwithvelmorth.domain.repository.UserRepository
@@ -13,6 +13,9 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userDao: UserDao,
+    private val progressDao: ProgressDao,
+    private val leafWalletDao: LeafWalletDao,
+    private val lessonDao: LessonDao,
 ) : UserRepository {
 
     override fun getUser(): Flow<User?> =
@@ -62,6 +65,17 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateVelmorthMood(userId: String, mood: String) =
         userDao.updateVelmorthMood(userId, mood)
+
+    override suspend fun addXp(userId: String, xp: Int) =
+        userDao.addXp(userId, xp)
+
+    override suspend fun resetUser(userId: String) {
+        userDao.deleteUser(userId)
+        progressDao.clearProgressForUser(userId)
+        leafWalletDao.clearTransactionsForUser(userId)
+        lessonDao.resetAllLessons()
+        lessonDao.unlockFirstLessons()
+    }
 }
 
 private fun UserEntity.toDomain() = User(

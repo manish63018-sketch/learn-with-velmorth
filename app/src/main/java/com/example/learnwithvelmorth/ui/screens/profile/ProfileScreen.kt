@@ -21,14 +21,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.learnwithvelmorth.domain.repository.UserRepository
+import com.example.learnwithvelmorth.domain.repository.LessonRepository
+import com.example.learnwithvelmorth.domain.model.LessonStatus
 import com.example.learnwithvelmorth.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 // ── Data models ───────────────────────────────────────────────────────────────
@@ -39,30 +45,93 @@ data class ProfileUiState(
     val isLoading: Boolean       = false,
     val avatarEmoji: String      = "🌿",
     val userName: String         = "Forest Learner",
-    val joinedDaysAgo: Int       = 42,
-    val streak: Int              = 7,
-    val totalXp: Int             = 1340,
-    val lessonsCompleted: Int    = 28,
-    val currentLevelXp: Int      = 340,
-    val levelMaxXp: Int          = 500,
-    val currentLevel: Int        = 5,
+    val joinedDaysAgo: Int       = 0,
+    val streak: Int              = 0,
+    val totalXp: Int             = 0,
+    val lessonsCompleted: Int    = 0,
+    val currentLevelXp: Int      = 0,
+    val levelMaxXp: Int          = 100,
+    val currentLevel: Int        = 1,
     val learningLanguage: String = "Spanish 🇪🇸",
-    val languageProgress: Float  = 0.54f,
-    val badges: List<Badge>      = listOf(
-        Badge("🌱", "First Lesson",  true),
-        Badge("🔥", "3-Day Streak",  true),
-        Badge("⭐", "10 Lessons",    true),
-        Badge("🍃", "Leaf Collector", false),
-    ),
+    val languageProgress: Float  = 0f,
+    val badges: List<Badge>      = emptyList(),
 )
 
 // ── ViewModel ─────────────────────────────────────────────────────────────────
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor() : ViewModel() {
+class ProfileViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val lessonRepository: LessonRepository,
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ProfileUiState())
-    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<ProfileUiState> = userRepository.getUser()
+        .flatMapLatest { user ->
+            if (user != null) {
+                lessonRepository.getLessonsForLanguage(user.selectedLanguageId).map { lessons ->
+                    val completedCount = lessons.count { it.status == LessonStatus.COMPLETED }
+                    val progressFraction = if (lessons.isNotEmpty()) {
+                        completedCount.toFloat() / lessons.size
+                    } else {
+                        0f
+                    }
+
+                    val level = (user.totalXp / 100) + 1
+                    val currentXp = user.totalXp % 100
+
+                    val daysAgo = getJoinedDaysAgo(user.joinedDate)
+
+                    val languageName = when (user.selectedLanguageId) {
+                        "es" -> "Spanish 🇪🇸"
+                        "fr" -> "French 🇫🇷"
+                        else -> "Spanish 🇪🇸"
+                    }
+
+                    val badgesList = listOf(
+                        Badge("🌱", "First Lesson", completedCount > 0),
+                        Badge("🔥", "3-Day Streak", user.currentStreak >= 3),
+                        Badge("⭐", "10 Lessons", completedCount >= 10),
+                        Badge("🍃", "Leaf Collector", user.leafBalance >= 100),
+                    )
+
+                    ProfileUiState(
+                        isLoading = false,
+                        avatarEmoji = user.avatarEmoji,
+                        userName = user.name,
+                        joinedDaysAgo = daysAgo,
+                        streak = user.currentStreak,
+                        totalXp = user.totalXp,
+                        lessonsCompleted = completedCount,
+                        currentLevelXp = currentXp,
+                        levelMaxXp = 100,
+                        currentLevel = level,
+                        learningLanguage = languageName,
+                        languageProgress = progressFraction,
+                        badges = badgesList,
+                    )
+                }
+            } else {
+                flowOf(ProfileUiState())
+            }
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = ProfileUiState(isLoading = true)
+        )
+
+    private fun getJoinedDaysAgo(joinedDateStr: String?): Int {
+        if (joinedDateStr.isNullOrBlank()) return 0
+        return try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val joinedDate = sdf.parse(joinedDateStr) ?: return 0
+            val diffInMillis = Date().time - joinedDate.time
+            val diffInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis)
+            diffInDays.toInt().coerceAtLeast(0)
+        } catch (e: java.lang.Exception) {
+            0
+        }
+    }
 }
 
 // ── Screen ────────────────────────────────────────────────────────────────────

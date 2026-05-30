@@ -24,13 +24,24 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewModelScope
+import com.example.learnwithvelmorth.domain.repository.UserRepository
 import com.example.learnwithvelmorth.theme.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.os.Build
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 
 // ── Data models ───────────────────────────────────────────────────────────────
 
@@ -47,13 +58,33 @@ data class SettingsUiState(
 // ── ViewModel ─────────────────────────────────────────────────────────────────
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor() : ViewModel() {
+class SettingsViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            userRepository.getUser().collect { user ->
+                if (user != null) {
+                    _uiState.update {
+                        it.copy(
+                            dailyGoalMinutes = user.dailyGoalMinutes,
+                            isPremium = user.isPremium
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun setDailyGoal(minutes: Int) {
         _uiState.update { it.copy(dailyGoalMinutes = minutes) }
+        viewModelScope.launch {
+            userRepository.setDailyGoal("local_user", minutes)
+        }
     }
 
     fun toggleNotifications(enabled: Boolean) {
@@ -76,9 +107,12 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(showResetConfirmDialog = false) }
     }
 
-    fun confirmResetProgress() {
+    fun confirmResetProgress(onResetDone: () -> Unit) {
         _uiState.update { it.copy(showResetConfirmDialog = false) }
-        // TODO: Wire to repository
+        viewModelScope.launch {
+            userRepository.resetUser("local_user")
+            onResetDone()
+        }
     }
 }
 
@@ -89,9 +123,11 @@ class SettingsViewModel @Inject constructor() : ViewModel() {
 fun SettingsScreen(
     onNavigateToPremium: () -> Unit,
     onBack: () -> Unit,
+    onResetProgress: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     val forestDeep = Color(0xFF1B4332)
     val mossGreen  = Color(0xFF40916C)
@@ -100,10 +136,39 @@ fun SettingsScreen(
 
     val dailyGoalOptions = listOf(5, 10, 15, 20)
 
+    var hasNotificationPermission by remember {
+        mutableStateOf(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+        )
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasNotificationPermission = isGranted
+        viewModel.toggleNotifications(isGranted)
+        if (!isGranted) {
+            Toast.makeText(
+                context,
+                "Notifications denied. Please enable them in Settings for reminders.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
     // Reset confirm dialog
     if (state.showResetConfirmDialog) {
         ResetProgressDialog(
-            onConfirm = { viewModel.confirmResetProgress() },
+            onConfirm = {
+                viewModel.confirmResetProgress(onResetDone = onResetProgress)
+            },
             onDismiss = { viewModel.dismissResetDialog() },
             forestDeep = forestDeep,
             mossGreen  = mossGreen,
@@ -211,8 +276,18 @@ fun SettingsScreen(
                         emoji    = "🔔",
                         label    = "Reminder Notifications",
                         subLabel = "Daily study reminders",
-                        checked  = state.notificationsEnabled,
-                        onCheckedChange = viewModel::toggleNotifications,
+                        checked  = state.notificationsEnabled && hasNotificationPermission,
+                        onCheckedChange = { checked ->
+                            if (checked) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                } else {
+                                    viewModel.toggleNotifications(true)
+                                }
+                            } else {
+                                viewModel.toggleNotifications(false)
+                            }
+                        },
                         forestDeep = forestDeep,
                         mossGreen  = mossGreen,
                     )

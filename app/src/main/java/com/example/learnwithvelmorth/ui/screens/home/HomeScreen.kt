@@ -59,9 +59,13 @@ import com.example.learnwithvelmorth.ui.components.VelmorthCharacterViewModel
 import com.example.learnwithvelmorth.domain.VelmorthTrigger
 import com.example.learnwithvelmorth.domain.VelmorthEmotion
 import com.example.learnwithvelmorth.domain.repository.UserRepository
+import com.example.learnwithvelmorth.domain.repository.LessonRepository
+import com.example.learnwithvelmorth.domain.model.LessonStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.first
@@ -79,15 +83,16 @@ data class HomeUiState(
     val streak: Int = 0,
     val leafBalance: Int = 0,
     val totalXp: Int = 0,
-    val maxXp: Int = 500,
+    val maxXp: Int = 100,
     val dailyProgress: Float = 0f,         // 0f–1f fraction
     val dailyLessonsDone: Int = 0,
     val dailyLessonsGoal: Int = 5,
-    val currentLessonTitle: String = "Basics: Greetings",
-    val currentLessonId: String = "lesson_001",
+    val currentLessonTitle: String = "Greetings",
+    val currentLessonId: String = "es_ch1_l1",
     val velmorthTip: String = "Consistency beats intensity. Even 5 minutes a day builds lasting fluency! 🌱",
     val growthPoints: Int = 0,
     val velmorthMood: String = "HAPPY",
+    val isReturningUser: Boolean = false,
 )
 
 // ============================================================
@@ -97,43 +102,54 @@ data class HomeUiState(
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val lessonRepository: LessonRepository,
 ) : ViewModel() {
 
     val homeState: StateFlow<HomeUiState> = userRepository.getUser()
-        .map { user ->
+        .flatMapLatest { user ->
             if (user != null) {
-                val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
-                    in 5..11  -> "Good morning 🌅"
-                    in 12..17 -> "Good afternoon ☀️"
-                    else      -> "Good evening 🌙"
-                }
+                lessonRepository.getLessonsForLanguage(user.selectedLanguageId).map { lessons ->
+                    val activeLesson = lessons.sortedBy { it.orderIndex }.firstOrNull { it.status == LessonStatus.AVAILABLE }
+                        ?: lessons.sortedBy { it.orderIndex }.firstOrNull { it.status == LessonStatus.COMPLETED }
+                        ?: lessons.firstOrNull()
 
-                val tip = when (user.velmorthMood.uppercase()) {
-                    "SLEEPY", "TIRED" -> "Velmorth looks a bit sleepy... Maybe pet or feed him to cheer him up? 🦦💤"
-                    "HUNGRY" -> "I am hungry! 🦦 Can you feed me some leaves? 🍃"
-                    "EXCITED" -> "Velmorth is super excited to learn with you today! 🦦✨ Let's do a lesson!"
-                    "SAD" -> "Velmorth feels a bit lonely. 🦦😢 A quick pet will make him happy!"
-                    else -> "Consistency is key! Every seed you plant today will become a mighty tree tomorrow. 🌱"
-                }
+                    val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+                        in 5..11  -> "Good morning 🌅"
+                        in 12..17 -> "Good afternoon ☀️"
+                        else      -> "Good evening 🌙"
+                    }
 
-                HomeUiState(
-                    userName = user.name,
-                    greeting = greeting,
-                    streak = user.currentStreak,
-                    leafBalance = user.leafBalance,
-                    totalXp = user.totalXp,
-                    maxXp = 500,
-                    dailyProgress = (user.totalXp % 100) / 100f,
-                    dailyLessonsDone = user.totalXp / 100,
-                    dailyLessonsGoal = 5,
-                    currentLessonTitle = "Chapter 2: Colors & Shapes",
-                    currentLessonId = "lesson_007",
-                    velmorthTip = tip,
-                    growthPoints = user.growthPoints,
-                    velmorthMood = user.velmorthMood
-                )
+                    val tip = when (user.velmorthMood.uppercase()) {
+                        "SLEEPY", "TIRED" -> "Velmorth looks a bit sleepy... Maybe pet or feed him to cheer him up? 🦦💤"
+                        "HUNGRY" -> "I am hungry! 🦦 Can you feed me some leaves? 🍃"
+                        "EXCITED" -> "Velmorth is super excited to learn with you today! 🦦✨ Let's do a lesson!"
+                        "SAD" -> "Velmorth feels a bit lonely. 🦦😢 A quick pet will make him happy!"
+                        else -> "Consistency is key! Every seed you plant today will become a mighty tree tomorrow. 🌱"
+                    }
+
+                    val completedCount = lessons.count { it.status == LessonStatus.COMPLETED }
+                    val isReturning = completedCount > 0
+
+                    HomeUiState(
+                        userName = user.name,
+                        greeting = greeting,
+                        streak = user.currentStreak,
+                        leafBalance = user.leafBalance,
+                        totalXp = user.totalXp,
+                        maxXp = 100, // standard level xp ceiling
+                        dailyProgress = (user.totalXp % 100) / 100f,
+                        dailyLessonsDone = completedCount,
+                        dailyLessonsGoal = user.dailyGoalMinutes / 2, // assume 2 min per lesson
+                        currentLessonTitle = activeLesson?.title ?: "No lessons available",
+                        currentLessonId = activeLesson?.id ?: "",
+                        velmorthTip = tip,
+                        growthPoints = user.growthPoints,
+                        velmorthMood = user.velmorthMood,
+                        isReturningUser = isReturning,
+                    )
+                }
             } else {
-                HomeUiState()
+                flowOf(HomeUiState())
             }
         }
         .stateIn(
@@ -265,6 +281,7 @@ fun HomeScreenContent(
             ContinueLearningCard(
                 modifier           = Modifier.padding(horizontal = 20.dp),
                 lessonTitle        = state.currentLessonTitle,
+                isReturning        = state.isReturningUser,
                 onStartLesson      = onStartLesson,
             )
         }
@@ -415,6 +432,7 @@ private fun TodayGoalCard(
 @Composable
 private fun ContinueLearningCard(
     lessonTitle: String,
+    isReturning: Boolean,
     onStartLesson: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -432,7 +450,7 @@ private fun ContinueLearningCard(
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Text(
-                text  = "Continue Learning 📚",
+                text  = if (isReturning) "Continue Learning 📚" else "Start Learning 📚",
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
                 fontFamily = NunitoFamily,
@@ -455,7 +473,7 @@ private fun ContinueLearningCard(
                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
             ) {
                 Text(
-                    text  = "Resume →",
+                    text  = if (isReturning) "Resume →" else "Start →",
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = FontWeight.ExtraBold,
                     color = ForestDeep,

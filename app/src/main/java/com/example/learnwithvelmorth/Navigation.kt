@@ -129,15 +129,14 @@ fun MainNavigation() {
                     val splashViewModel: SplashViewModel = hiltViewModel()
                     SplashScreen(
                         onNavigateToOnboarding = {
-                            backStack.removeLastOrNull()
                             splashViewModel.determineDestination(
                                 onNavigateToHome = {
-                                    backStack.removeAll { true }
                                     backStack.add(Home)
+                                    backStack.remove(Splash)
                                 },
                                 onNavigateToOnboarding = {
-                                    backStack.removeAll { true }
                                     backStack.add(Onboarding)
+                                    backStack.remove(Splash)
                                 },
                             )
                         }
@@ -233,6 +232,10 @@ fun MainNavigation() {
                     SettingsScreen(
                         onNavigateToPremium = { backStack.add(Premium) },
                         onBack = { backStack.removeLastOrNull() },
+                        onResetProgress = {
+                            backStack.removeAll { true }
+                            backStack.add(Splash)
+                        }
                     )
                 }
 

@@ -30,4 +30,10 @@ interface LessonDao {
 
     @Query("SELECT COUNT(*) FROM lessons WHERE languageId = :languageId AND status = 'COMPLETED'")
     suspend fun getCompletedLessonCount(languageId: String): Int
+
+    @Query("UPDATE lessons SET status = 'LOCKED', completedAt = NULL, bestScore = 0")
+    suspend fun resetAllLessons()
+
+    @Query("UPDATE lessons SET status = 'AVAILABLE' WHERE orderIndex = 1")
+    suspend fun unlockFirstLessons()
 }
