@@ -6,10 +6,11 @@
 
 ## 📸 Screenshots
 
-<!-- Add screenshots here after first build -->
-<!-- ![Home Screen](screenshots/home.png) -->
-<!-- ![Lesson Player](screenshots/lesson.png) -->
-<!-- ![Review Garden](screenshots/review.png) -->
+### Home Screen
+![Home Screen](screen.png)
+
+### Lesson Player & Quiz
+![Lesson Player](screen2.png)
 
 ---
 
@@ -45,6 +46,9 @@
 | Preferences | DataStore |
 | Background | WorkManager |
 | Fonts | Google Fonts (Playfair Display, Nunito) |
+| Authentication | Firebase Auth (in progress) |
+| Cloud Sync | Firestore (planned) |
+| AI Integration | Gemini API (planned) |
 
 ---
 
@@ -61,10 +65,11 @@ LearnWithVelmorth/
 │   │   ├── local/
 │   │   │   ├── db/            ← Room database
 │   │   │   ├── dao/           ← DAOs
-│   │   │   └── entities/      ← Room entities
+│   │   │   ├── entities/      ← Room entities
+│   │   │   └── auth/          ← Firebase Auth service
 │   │   └── repository/        ← Repository implementations
 │   ├── domain/
-│   │   ├── model/             ← Domain models
+│   │   ├── model/             ← Domain models (User, Lesson, etc.)
 │   │   └── repository/        ← Repository interfaces
 │   ├── di/                    ← Hilt modules
 │   ├── theme/                 ← Colors, Typography, Shapes
@@ -73,6 +78,7 @@ LearnWithVelmorth/
 │       └── screens/           ← 12 screens
 │           ├── splash/
 │           ├── onboarding/
+│           ├── auth/          ← Login/Register screens
 │           ├── home/
 │           ├── lessons/
 │           ├── lessonplayer/
@@ -83,8 +89,11 @@ LearnWithVelmorth/
 │           ├── premium/
 │           ├── profile/
 │           └── settings/
-└── app/src/main/assets/
-    └── db/lessons_seed.json   ← Seed data
+├── app/src/main/assets/
+│   └── db/lessons_seed.json   ← Seed data
+└── .github/workflows/         ← CI/CD pipelines
+    ├── build.yml              ← Build & test checks
+    └── lint.yml               ← Code quality
 ```
 
 ---
@@ -102,7 +111,7 @@ LearnWithVelmorth/
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/learn-with-velmorth.git
+   git clone https://github.com/manish63018-sketch/learn-with-velmorth.git
    cd learn-with-velmorth
    ```
 
@@ -147,35 +156,67 @@ This project follows secure credential management:
 
 ## 🌱 Roadmap
 
+### ✅ Completed
 - [x] Forest theme + Material 3 design system
 - [x] 12 screens (Splash → Settings)
 - [x] Room database with seed data
 - [x] Navigation3 with bottom nav
 - [x] Hilt dependency injection
 - [x] Velmorth mascot with mood system
-- [ ] Firebase Authentication
+
+### 🔄 In Progress
+- [ ] Firebase Authentication module (feature/firebase-auth)
+- [ ] GitHub Actions CI/CD workflows (chore/cleanup-and-docs)
+- [ ] Authentication UI screens (Login, Register, Reset Password)
+
+### 📋 Planned
 - [ ] Cloud sync (Firestore)
 - [ ] Real AI Speaker (Gemini API)
 - [ ] Push notifications (streak reminders)
+- [ ] Unit & integration tests
 - [ ] Play Store release
+
+---
+
+## 🧪 Testing
+
+### Run Local Tests
+```bash
+./gradlew test
+```
+
+### Run Instrumented Tests (Android device/emulator)
+```bash
+./gradlew connectedAndroidTest
+```
+
+### Run Linter
+```bash
+./gradlew detekt
+```
+
+### Generate Coverage Report
+```bash
+./gradlew testDebugUnitTestCoverage
+```
 
 ---
 
 ## 🤝 Contributing
 
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+- Development workflow
+- Commit message conventions
+- Coding standards
+- Pull request process
+- Testing requirements
+
+### Quick Start
 1. Fork the repo
 2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit with clear messages: `git commit -m "Add: XP reward animation"`
+3. Commit with clear messages following our conventions
 4. Push: `git push origin feature/your-feature`
 5. Open a Pull Request
-
-### Commit Message Format
-```
-Add: short description of what was added
-Fix: short description of what was fixed
-Update: short description of what was changed
-Remove: short description of what was removed
-```
 
 ---
 
@@ -189,5 +230,14 @@ MIT License — see LICENSE file for details
 
 ## 👤 Author
 
-**Velmorth Team**  
+**Manish Sharma (manish63018-sketch)**  
 Built with 🌿 using Jetpack Compose
+
+---
+
+## 🙏 Credits
+
+- **Theme Inspiration:** Forest & nature-based educational apps
+- **Mascot Design:** Velmorth (Custom forest spirit)
+- **Font Family:** Google Fonts (Playfair Display, Nunito)
+- **Icon Resources:** Material Design Icons
