@@ -431,14 +431,8 @@ class SettingsActivity : ComponentActivity() {
             Spacer(Modifier.height(24.dp))
             Button(
                 onClick = {
-                    FirebaseAuth.getInstance().signOut()
-                    prefs.clearAll()
                     Toast.makeText(context, "Logged out", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(this@SettingsActivity, SplashActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        }
-                    )
+                    performLogout(context)
                 },
                 colors   = ButtonDefaults.buttonColors(containerColor = DangerRed),
                 shape    = RoundedCornerShape(24.dp),
@@ -458,6 +452,20 @@ class SettingsActivity : ComponentActivity() {
 
     private fun openUrl(url: String) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+    }
+
+    fun performLogout(context: android.content.Context) {
+        // Step 1 — Sign out from Firebase
+        com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+
+        // Step 2 — Clear all local session data
+        com.velmorth.app.data.local.PrefsManager(context).clearAll()
+
+        // Step 3 — Navigate to login screen
+        val intent = android.content.Intent(context, com.velmorth.app.ui.auth.LoginActivity::class.java)
+        intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                       android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
     }
 }
 
