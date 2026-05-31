@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
@@ -81,6 +82,11 @@ dependencies {
 
     // UI Utilities (Fragment & Fragment-ktx for Activity/Fragment container layout)
     implementation("androidx.fragment:fragment-ktx:1.8.5")
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Gson (for JSON parsing)
     implementation("com.google.code.gson:gson:2.11.0")

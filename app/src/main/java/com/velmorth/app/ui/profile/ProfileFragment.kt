@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,6 +22,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,7 +89,27 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        (view as? ComposeView)?.setContent { ProfileScreen() }
+        // Fetch live Firestore data and update local prefs cache before rendering
+        com.velmorth.app.data.repository.FirestoreProgressRepository.fetchUserData { data ->
+            if (data != null) {
+                val xp     = (data["xp"]     as? Long)?.toInt() ?: prefsManager.xp
+                val level  = (data["level"]  as? Long)?.toInt() ?: prefsManager.level
+                val streak = (data["streak"] as? Long)?.toInt() ?: prefsManager.streak
+                val name   = (data["name"]   as? String)       ?: prefsManager.userName
+                val uname  = (data["username"] as? String)     ?: prefsManager.username
+
+                // Sync Firestore → local prefs
+                prefsManager.xp      = xp
+                prefsManager.level   = level
+                prefsManager.streak  = streak
+                if (name.isNotBlank())  prefsManager.userName = name
+                if (uname.isNotBlank()) prefsManager.username = uname
+            }
+            // Refresh UI (on main thread — fetchUserData callbacks are on main)
+            activity?.runOnUiThread {
+                (view as? ComposeView)?.setContent { ProfileScreen() }
+            }
+        }
     }
 
     // ── Root screen ───────────────────────────────────────────────────────────
@@ -125,6 +149,7 @@ class ProfileFragment : Fragment() {
                 leaves      = user.leaves,
                 xp          = user.xp,
                 joinedAt    = user.joinedAt,
+                photoUrl    = user.photoUrl,
                 onSettings  = {
                     startActivity(Intent(requireContext(), SettingsActivity::class.java))
                 },
@@ -190,9 +215,27 @@ private fun HeroHeader(
     leaves        : Int,
     xp            : Int,
     joinedAt      : String,
+    photoUrl      : String,
     onSettings    : () -> Unit,
     onEditProfile : () -> Unit
 ) {
+    var bitmap by remember(photoUrl) { mutableStateOf<android.graphics.Bitmap?>(null) }
+    val context = LocalContext.current
+    LaunchedEffect(photoUrl) {
+        if (photoUrl.isNotEmpty()) {
+            try {
+                val uri = android.net.Uri.parse(photoUrl)
+                context.contentResolver.openInputStream(uri)?.use { stream ->
+                    bitmap = android.graphics.BitmapFactory.decodeStream(stream)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            bitmap = null
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -244,12 +287,22 @@ private fun HeroHeader(
                         .border(3.dp, Color.White, CircleShape),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text       = displayName.take(1).uppercase(),
-                        fontSize   = 36.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        color      = DarkGreen
-                    )
+                    val currentBitmap = bitmap
+                    if (currentBitmap != null) {
+                        Image(
+                            bitmap = currentBitmap.asImageBitmap(),
+                            contentDescription = "Profile Photo",
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Text(
+                            text       = displayName.take(1).uppercase(),
+                            fontSize   = 36.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            color      = DarkGreen
+                        )
+                    }
                 }
                 // Edit pencil badge
                 Box(
@@ -257,7 +310,7 @@ private fun HeroHeader(
                         .size(28.dp)
                         .clip(CircleShape)
                         .background(GoldXP)
-                        .border(2.dp, Color.White, CircleShape)
+                        .border(2.2.dp, Color.White, CircleShape)
                         .clickable { onEditProfile() },
                     contentAlignment = Alignment.Center
                 ) {

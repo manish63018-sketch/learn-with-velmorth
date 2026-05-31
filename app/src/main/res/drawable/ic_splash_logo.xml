@@ -1,0 +1,62 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Outer Elegant Ring -->
+    <path
+        android:pathData="M 100, 20 a 80,80 0 1, 0 0.1, 0 Z"
+        android:strokeWidth="4"
+        android:strokeColor="#52B788"
+        android:strokeLineCap="round"/>
+
+    <!-- Inner Elegant Dashed Gold Ring -->
+    <path
+        android:pathData="M 100, 28 a 72,72 0 1, 0 0.1, 0 Z"
+        android:strokeWidth="1.5"
+        android:strokeColor="#F4A261"
+        android:strokeLineCap="round"
+        android:strokeDashArray="8,8"/>
+
+    <!-- Open Book (The foundation) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M100,135 C85,120 55,120 40,125 C40,125 40,150 40,150 C55,145 85,145 100,160 C115,145 145,145 160,150 C160,150 160,125 160,125 C145,120 115,120 100,135 Z"/>
+
+    <!-- Center Book Binding Line -->
+    <path
+        android:strokeColor="#1B4332"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round"
+        android:pathData="M100,135 L100,160"/>
+
+    <!-- Sprout Stem (Growing up) -->
+    <path
+        android:strokeColor="#8BEA57"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:pathData="M100,135 C100,105 102,80 105,65"/>
+
+    <!-- Sprout Left Leaf -->
+    <path
+        android:fillColor="#52B788"
+        android:pathData="M99,105 C85,100 75,85 78,72 C90,72 96,90 99,105 Z"/>
+
+    <!-- Sprout Right Leaf -->
+    <path
+        android:fillColor="#8BEA57"
+        android:pathData="M101,90 C115,85 125,70 122,57 C110,57 104,75 101,90 Z"/>
+
+    <!-- Gold Sparkles -->
+    <!-- Star Left -->
+    <path
+        android:fillColor="#F4A261"
+        android:pathData="M65,48 L68,52 L73,53 L69,57 L70,62 L65,59 L60,62 L61,57 L57,53 L62,52 Z"/>
+
+    <!-- Star Right -->
+    <path
+        android:fillColor="#F4A261"
+        android:pathData="M135,40 L137,43 L141,44 L138,47 L139,51 L135,49 L131,51 L132,47 L129,44 L133,43 Z"/>
+
+</vector>

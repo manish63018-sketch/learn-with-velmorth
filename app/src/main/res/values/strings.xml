@@ -184,4 +184,13 @@
     <string name="mascot_name">Velmorth</string>
     <string name="mascot_speech_new">\"Welcome back! Let\'s embark on today\'s language lesson together!\"</string>
     <string name="mascot_speech_progress">\"Splendid progress! You\'re getting closer to absolute mastery!\"</string>
+
+    <!-- Support & Legal Configurable Fields -->
+    <string name="support_email">support@velmorth.com</string>
+    <string name="legal_privacy_policy">Privacy Policy</string>
+    <string name="legal_terms_conditions">Terms &amp; Conditions</string>
+    <string name="about_app_title">About Velmorth</string>
+    <string name="contact_support_title">Contact Support</string>
+    <string name="licenses_title">Open-Source Licenses</string>
+    <string name="permissions_manager_title">Permissions Manager</string>
 </resources>

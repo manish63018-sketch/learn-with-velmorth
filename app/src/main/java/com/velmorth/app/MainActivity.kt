@@ -23,8 +23,11 @@ class MainActivity : FragmentActivity() {
 
     companion object {
         private const val CONTAINER_ID = 1001
-        private const val NAV_ID = 1002
+        const val NAV_ID = 1002
     }
+
+    lateinit var bottomNav: BottomNavigationView
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

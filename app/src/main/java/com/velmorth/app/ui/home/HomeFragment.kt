@@ -6,27 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,9 +21,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import com.google.android.gms.ads.AdRequest
@@ -46,14 +32,54 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.velmorth.app.MainActivity
 import com.velmorth.app.data.local.PrefsManager
+import com.velmorth.app.data.repository.FirestoreProgressRepository
 import com.velmorth.app.data.repository.LessonRepository
 import com.velmorth.app.data.repository.UserRepository
 import com.velmorth.app.ui.lessons.LessonPlayerActivity
 import com.velmorth.app.utils.LeafRewardManager
 import java.util.Calendar
 
+private data class LanguageCard(
+    val key: String,
+    val displayName: String,
+    val flag: String,
+    val tagline: String,
+    val gradient: List<Color>
+)
+
+private val LANGUAGE_CARDS = listOf(
+    LanguageCard(
+        key = "japanese",
+        displayName = "Japanese",
+        flag = "🇯🇵",
+        tagline = "Hiragana · Katakana · Kanji",
+        gradient = listOf(Color(0xFF1565C0), Color(0xFF0D47A1))
+    ),
+    LanguageCard(
+        key = "french",
+        displayName = "French",
+        flag = "🇫🇷",
+        tagline = "Greetings · Grammar · Culture",
+        gradient = listOf(Color(0xFF1B5E20), Color(0xFF2E7D32))
+    ),
+    LanguageCard(
+        key = "sanskrit",
+        displayName = "Sanskrit",
+        flag = "🇮🇳",
+        tagline = "Devanagari · Mantras · Roots",
+        gradient = listOf(Color(0xFFE65100), Color(0xFFBF360C))
+    ),
+    LanguageCard(
+        key = "english",
+        displayName = "English",
+        flag = "🇬🇧",
+        tagline = "Grammar · Vocabulary · Idioms",
+        gradient = listOf(Color(0xFF4A148C), Color(0xFF6A1B9A))
+    )
+)
+
 /**
- * Fragment that displays the home dashboard.
+ * Fragment that displays the home dashboard with language cards and daily progress.
  */
 class HomeFragment : Fragment() {
 
@@ -90,9 +116,7 @@ class HomeFragment : Fragment() {
         }
         // Force refresh UI content when returning
         view?.let {
-            (it as ComposeView).setContent {
-                HomeScreenContent()
-            }
+            (it as ComposeView).setContent { HomeScreenContent() }
         }
     }
 
@@ -102,11 +126,12 @@ class HomeFragment : Fragment() {
         val progress = lessonRepository.getProgress()
         val dailyGoalXp = prefsManager.dailyGoal
         val hasStarted = progress.completedLessons.isNotEmpty()
+        val selectedLanguage = prefsManager.selectedLanguage
 
         val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
-            in 0..11 -> "Good morning"
+            in 0..11  -> "Good morning"
             in 12..16 -> "Good afternoon"
-            else -> "Good evening"
+            else      -> "Good evening"
         }
 
         val xpProgressFraction = if (dailyGoalXp > 0) {
@@ -120,134 +145,94 @@ class HomeFragment : Fragment() {
                 .fillMaxSize()
                 .background(Color(0xFFF8F5EE))
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp),
+                .padding(bottom = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(8.dp))
 
-            // Premium status bar (Streak + Leaves)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Streak Chip
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFFFCEADE)) // Light orange background
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "🔥", fontSize = 16.sp)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "${user.streak} days",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE76F51) // Streak Fire color
+            // ── Green Hero Header ──────────────────────────────────────────────
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(Color(0xFF1B4332), Color(0xFF2D6A4F))
+                        )
                     )
-                }
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                // Leaves/Gold Chip
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color(0xFFE3F0E9)) // Light green background
-                        .padding(horizontal = 12.dp, vertical = 6.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = "🍃", fontSize = 16.sp)
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "${user.leaves}",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF2D6A4F) // Primary Green
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            // Dynamic Greeting
-            Text(
-                text = "$greeting, ${user.displayName}!",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B4332),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Daily Goal card
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 20.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(20.dp)
-                ) {
+                Column {
+                    // Top row: greeting + stat chips
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "$greeting,",
+                                fontSize = 14.sp,
+                                color = Color(0xFF95D5B2)
+                            )
+                            Text(
+                                text = user.displayName.ifBlank { "Learner" } + "!",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            // Streak chip
+                            StatChip(icon = "🔥", value = "${user.streak}", label = "streak")
+                            // Leaves chip
+                            StatChip(icon = "🍃", value = "${user.leaves}", label = "leaves")
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // XP + Level row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Today's XP Target",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF1C1C1E)
+                            text = "⭐ ${user.xp} XP  ·  Level ${user.level}",
+                            fontSize = 13.sp,
+                            color = Color(0xFFB7E4C7),
+                            fontWeight = FontWeight.Medium
                         )
                         Text(
-                            text = "${user.xp} / $dailyGoalXp XP",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF2D6A4F)
+                            text = "${user.xp}/$dailyGoalXp today",
+                            fontSize = 12.sp,
+                            color = Color(0xFF95D5B2)
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
+                    // Daily XP progress bar
                     LinearProgressIndicator(
                         progress = { xpProgressFraction },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)
+                            .height(6.dp)
                             .clip(CircleShape),
-                        color = Color(0xFF52B788), // Accent green
-                        trackColor = Color(0xFFE5E7EB)
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    val statusMsg = if (user.xp >= dailyGoalXp) {
-                        "Daily goal completed! Keep going to build your streak!"
-                    } else {
-                        "Earn ${dailyGoalXp - user.xp} XP more to complete today's goal!"
-                    }
-
-                    Text(
-                        text = statusMsg,
-                        fontSize = 13.sp,
-                        color = Color(0xFF6B7280)
+                        color = Color(0xFF52B788),
+                        trackColor = Color.White.copy(alpha = 0.2f)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            // Mascot Companion Widget (Simple dynamic presentation)
+            // ── Mascot Companion Card ──────────────────────────────────────────
             Card(
                 shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F0E9)), // surface green
-                modifier = Modifier.fillMaxWidth()
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F0E9)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
             ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
@@ -255,60 +240,109 @@ class HomeFragment : Fragment() {
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(64.dp)
+                            .size(60.dp)
                             .clip(CircleShape)
                             .background(Color(0xFFB7E4C7)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "🦉", fontSize = 36.sp) // Velmorth the Owl Mascot
+                        Text(text = "🦉", fontSize = 32.sp)
                     }
 
-                    Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(14.dp))
 
                     Column {
                         Text(
                             text = "Velmorth",
-                            fontSize = 16.sp,
+                            fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF1B4332)
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(3.dp))
                         val speechText = if (user.xp == 0) {
-                            "\"Welcome back! Let's embark on today's language lesson together!\""
+                            "\"Welcome back! Let's embark on today's lesson!\""
                         } else {
-                            "\"Splendid progress! You're getting closer to absolute mastery!\""
+                            "\"Splendid progress! You're getting closer to mastery!\""
                         }
                         Text(
                             text = speechText,
-                            fontSize = 13.sp,
-                            color = Color(0xFF2D6A4F)
+                            fontSize = 12.sp,
+                            color = Color(0xFF2D6A4F),
+                            lineHeight = 16.sp
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            // Action Button
+            // ── Language Cards Section ─────────────────────────────────────────
+            Text(
+                text = "🌍  Choose Your Language",
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF1B4332),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // 2×2 grid of language cards
+            Column(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                LANGUAGE_CARDS.chunked(2).forEach { rowCards ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        rowCards.forEach { card ->
+                            LanguageCardItem(
+                                card = card,
+                                isSelected = selectedLanguage == card.key,
+                                modifier = Modifier.weight(1f),
+                                onClick = {
+                                    prefsManager.selectedLanguage = card.key
+                                    // Navigate to Lessons tab in MainActivity
+                                    (requireActivity() as? MainActivity)
+                                        ?.let { act ->
+                                            val nav = act.findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(1002)
+                                            nav?.selectedItemId = 2
+                                        }
+                                }
+                            )
+                        }
+                        // Fill gap if odd count
+                        if (rowCards.size == 1) Spacer(Modifier.weight(1f))
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // ── Continue Learning Button ───────────────────────────────────────
             Button(
                 onClick = {
-                    // Start next uncompleted lesson, or launch LessonPlayerActivity
                     val nextLessonId = progress.currentLesson
                     val nextLesson = lessonRepository.getLessonById(nextLessonId)
-                    
+
                     if (nextLesson != null) {
-                        val intent = Intent(requireContext(), LessonPlayerActivity::class.java).apply {
-                            putExtra("LESSON_ID", nextLesson.id)
-                        }
-                        startActivity(intent)
-                    } else {
-                        // All lessons completed or fallback to first
-                        val firstLessonId = lessonRepository.getUnits().firstOrNull()?.lessons?.firstOrNull()?.id
-                        if (firstLessonId != null) {
-                            val intent = Intent(requireContext(), LessonPlayerActivity::class.java).apply {
-                                putExtra("LESSON_ID", firstLessonId)
+                        startActivity(
+                            Intent(requireContext(), LessonPlayerActivity::class.java).apply {
+                                putExtra("LESSON_ID", nextLesson.id)
                             }
-                            startActivity(intent)
+                        )
+                    } else {
+                        val firstLessonId = lessonRepository.getUnits()
+                            .firstOrNull()?.lessons?.firstOrNull()?.id
+                        if (firstLessonId != null) {
+                            startActivity(
+                                Intent(requireContext(), LessonPlayerActivity::class.java).apply {
+                                    putExtra("LESSON_ID", firstLessonId)
+                                }
+                            )
                         }
                     }
                 },
@@ -316,11 +350,12 @@ class HomeFragment : Fragment() {
                 shape = RoundedCornerShape(28.dp),
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
                     .height(56.dp)
             ) {
                 Text(
                     text = if (hasStarted) "Continue Learning" else "Start Learning",
-                    fontSize = 18.sp,
+                    fontSize = 17.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -331,18 +366,100 @@ class HomeFragment : Fragment() {
                 Spacer(Modifier.height(16.dp))
                 BannerAdView()
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 
-    /** AdMob banner ad composable — uses test ad unit ID during development. */
+    @Composable
+    private fun StatChip(icon: String, value: String, label: String) {
+        Row(
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White.copy(alpha = 0.15f))
+                .padding(horizontal = 10.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = icon, fontSize = 14.sp)
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = value,
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        }
+    }
+
+    @Composable
+    private fun LanguageCardItem(
+        card: LanguageCard,
+        isSelected: Boolean,
+        modifier: Modifier = Modifier,
+        onClick: () -> Unit
+    ) {
+        val borderColor = if (isSelected) Color(0xFF52B788) else Color.Transparent
+        Card(
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(if (isSelected) 6.dp else 2.dp),
+            modifier = modifier
+                .clickable { onClick() }
+                .then(
+                    if (isSelected) Modifier.padding(1.dp) else Modifier
+                )
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(card.gradient)
+                    )
+                    .padding(16.dp)
+            ) {
+                Column {
+                    Text(text = card.flag, fontSize = 28.sp)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = card.displayName,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                    Text(
+                        text = card.tagline,
+                        fontSize = 10.sp,
+                        color = Color.White.copy(alpha = 0.75f),
+                        lineHeight = 14.sp
+                    )
+                    if (isSelected) {
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Surface(
+                            shape = RoundedCornerShape(20.dp),
+                            color = Color(0xFF52B788)
+                        ) {
+                            Text(
+                                "✓ Active",
+                                fontSize = 9.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /** AdMob banner ad composable */
     @Composable
     private fun BannerAdView() {
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
-            factory  = { ctx ->
+            factory = { ctx ->
                 AdView(ctx).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = "ca-app-pub-8150181705727957/5179692569" // Production banner ID
+                    adUnitId = "ca-app-pub-8150181705727957/5179692569"
                     loadAd(AdRequest.Builder().build())
                 }
             }

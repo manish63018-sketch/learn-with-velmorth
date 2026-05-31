@@ -84,6 +84,34 @@
             android:exported="false"
             android:theme="@style/Theme.Velmorth.Premium" />
 
+        <!-- ── Permissions System ── -->
+        <activity
+            android:name=".ui.permissions.PermissionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+
+        <!-- ── Legal Screens & support ── -->
+        <activity
+            android:name=".ui.legal.PrivacyPolicyActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+        <activity
+            android:name=".ui.legal.TermsConditionsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+        <activity
+            android:name=".ui.legal.AboutAppActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+        <activity
+            android:name=".ui.legal.ContactSupportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+        <activity
+            android:name=".ui.legal.LicensesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Velmorth" />
+
     </application>
 
 </manifest>

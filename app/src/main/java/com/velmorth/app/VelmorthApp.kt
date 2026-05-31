@@ -2,6 +2,7 @@ package com.velmorth.app
 
 import android.app.Application
 import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -11,7 +12,7 @@ import com.velmorth.app.utils.NotificationScheduler
 
 /**
  * Main Application class for Learn With Velmorth.
- * Initialises Firebase Crashlytics, Analytics, and schedules daily reminder if enabled.
+ * Initialises Firebase, applies theme mode, and schedules daily reminders.
  */
 class VelmorthApp : Application() {
 
@@ -23,11 +24,14 @@ class VelmorthApp : Application() {
         super.onCreate()
         prefs = PrefsManager(this)
 
+        // ── Apply saved theme mode at startup ─────────────────────────────────
+        applyThemeMode(prefs.themeMode)
+
         // ── Firebase initialisation ────────────────────────────────────────────
         try {
             FirebaseApp.initializeApp(this)
 
-            // Crashlytics — disabled in debug for speed
+            // Crashlytics — disabled in debug builds for speed
             FirebaseCrashlytics.getInstance().apply {
                 setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
                 log("VelmorthApp started – Crashlytics active")
@@ -54,5 +58,20 @@ class VelmorthApp : Application() {
                 Log.w("VelmorthApp", "Failed to schedule reminder: ${e.message}")
             }
         }
+    }
+
+    /**
+     * Applies the global night mode based on the user's saved preference.
+     * "dark"   → AppCompatDelegate.MODE_NIGHT_YES
+     * "light"  → AppCompatDelegate.MODE_NIGHT_NO
+     * "system" → AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+     */
+    fun applyThemeMode(mode: String) {
+        val nightMode = when (mode) {
+            "dark"  -> AppCompatDelegate.MODE_NIGHT_YES
+            "light" -> AppCompatDelegate.MODE_NIGHT_NO
+            else    -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 }

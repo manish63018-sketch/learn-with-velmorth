@@ -1,2 +1,14 @@
-// LeafWalletRepository.kt — DISABLED in V1
-// Domain layer (Hilt/Room architecture) not used in V1.
+package com.velmorth.app.domain.repository
+
+import com.velmorth.app.data.local.entities.LeafTransactionEntity
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * Domain-level interface for leaf wallet operations.
+ */
+interface LeafWalletRepository {
+    fun getBalance(): Flow<Int>
+    fun getTransactions(): Flow<List<LeafTransactionEntity>>
+    suspend fun addTransaction(amount: Int, type: String, source: String, description: String? = null)
+    suspend fun clearHistory()
+}

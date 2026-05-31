@@ -31,7 +31,7 @@ class UserRepository(context: Context) {
             name = displayName,
             username = userUsername,
             email = userEmail,
-            photoUrl = "",
+            photoUrl = prefsManager.photoUrl,
             isPremium = prefsManager.isPremium,
             streak = prefsManager.streak,
             leafBalance = prefsManager.leaves,

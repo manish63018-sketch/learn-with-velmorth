@@ -56,6 +56,12 @@ class EditProfileActivity : ComponentActivity() {
                 onSave = { updatedName, updatedNativeLang ->
                     if (updatedName.trim().isNotEmpty()) {
                         userRepository.updateProfile(updatedName, updatedNativeLang)
+                        val prefs = PrefsManager(this@EditProfileActivity)
+                        com.velmorth.app.data.repository.FirestoreProgressRepository.syncUserProfile(
+                            name = updatedName.trim(),
+                            nativeLanguage = updatedNativeLang,
+                            profileImage = prefs.photoUrl
+                        )
                         Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
                         finish()
                     } else {

@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.velmorth.app.BuildConfig
 import com.velmorth.app.data.local.PrefsManager
+import com.velmorth.app.data.repository.FirestoreProgressRepository
+import com.velmorth.app.ui.legal.*
 import com.velmorth.app.ui.premium.PremiumActivity
 import com.velmorth.app.ui.splash.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -51,8 +53,7 @@ private val DividerColor   = Color(0xFFF0EDE8)
 private val DangerRed      = Color(0xFFE53935)
 
 /**
- * Full-featured Settings screen — 6 sections:
- * Account · Notifications · App Permissions · Appearance · Subscription · Legal · About
+ * Full-featured Settings screen with Firestore sync.
  */
 class SettingsActivity : ComponentActivity() {
 
@@ -61,8 +62,6 @@ class SettingsActivity : ComponentActivity() {
         val prefs = PrefsManager(this)
         setContent { SettingsScreen(prefs) }
     }
-
-    // ── Root screen ───────────────────────────────────────────────────────────
 
     @Composable
     private fun SettingsScreen(prefs: PrefsManager) {
@@ -130,10 +129,8 @@ class SettingsActivity : ComponentActivity() {
                 onDismiss = { showDeleteDialog = false },
                 onConfirm = {
                     showDeleteDialog = false
-                    // Delete Firebase account first (requires recent sign-in)
                     val fbUser = FirebaseAuth.getInstance().currentUser
                     fbUser?.delete()?.addOnCompleteListener {
-                        // Whether Firebase delete succeeds or not, clear local session
                         FirebaseAuth.getInstance().signOut()
                         prefs.clearAll()
                         Toast.makeText(context, "Account deleted", Toast.LENGTH_SHORT).show()
@@ -143,7 +140,6 @@ class SettingsActivity : ComponentActivity() {
                             }
                         )
                     } ?: run {
-                        // No Firebase user — just clear local
                         prefs.clearAll()
                         Toast.makeText(context, "Account deleted", Toast.LENGTH_SHORT).show()
                         startActivity(
@@ -194,15 +190,6 @@ class SettingsActivity : ComponentActivity() {
                 )
                 RowDivider()
                 SettingsRow(
-                    icon       = Icons.Default.PhotoCamera,
-                    title      = "Change Profile Photo",
-                    subtitle   = "Update or remove your photo",
-                    onClick    = {
-                        Toast.makeText(context, "Photo picker coming soon 🖼️", Toast.LENGTH_SHORT).show()
-                    }
-                )
-                RowDivider()
-                SettingsRow(
                     icon       = Icons.Default.DeleteForever,
                     title      = "Delete Account",
                     subtitle   = "Permanently remove all data",
@@ -223,6 +210,8 @@ class SettingsActivity : ComponentActivity() {
                     onToggle = { enabled ->
                         dailyReminder = enabled
                         prefs.notificationsEnabled = enabled
+                        // Sync to Firestore settings
+                        FirestoreProgressRepository.ensureSettingsDocExists()
                         if (enabled) {
                             NotificationScheduler.scheduleDailyReminder(context, reminderHour, reminderMinute)
                         } else {
@@ -231,7 +220,6 @@ class SettingsActivity : ComponentActivity() {
                     }
                 )
                 RowDivider()
-                // Reminder Time — only shown when daily reminder is on
                 SettingsRow(
                     icon     = Icons.Default.Schedule,
                     title    = "Reminder Time",
@@ -242,7 +230,6 @@ class SettingsActivity : ComponentActivity() {
                             { _, h, m ->
                                 reminderHour   = h; prefs.reminderHour   = h
                                 reminderMinute = m; prefs.reminderMinute = m
-                                // Reschedule with updated time if reminder is active
                                 if (dailyReminder) {
                                     NotificationScheduler.scheduleDailyReminder(context, h, m)
                                 }
@@ -300,31 +287,45 @@ class SettingsActivity : ComponentActivity() {
             SectionHeader("Appearance")
             SectionCard {
                 ThemeOptionRow(
-                    icon       = Icons.Default.LightMode,
-                    label      = "Light Mode",
-                    selected   = themeMode == "light",
-                    onClick    = { themeMode = "light"; prefs.themeMode = "light" }
+                    icon     = Icons.Default.LightMode,
+                    label    = "Light Mode",
+                    selected = themeMode == "light",
+                    onClick  = {
+                        themeMode = "light"
+                        prefs.themeMode = "light"
+                        prefs.darkMode = false
+                        Toast.makeText(context, "Light mode set — restart app to apply", Toast.LENGTH_SHORT).show()
+                    }
                 )
                 RowDivider()
                 ThemeOptionRow(
-                    icon       = Icons.Default.DarkMode,
-                    label      = "Dark Mode",
-                    selected   = themeMode == "dark",
-                    onClick    = { themeMode = "dark"; prefs.themeMode = "dark" }
+                    icon     = Icons.Default.DarkMode,
+                    label    = "Dark Mode",
+                    selected = themeMode == "dark",
+                    onClick  = {
+                        themeMode = "dark"
+                        prefs.themeMode = "dark"
+                        prefs.darkMode = true
+                        Toast.makeText(context, "Dark mode set — restart app to apply", Toast.LENGTH_SHORT).show()
+                    }
                 )
                 RowDivider()
                 ThemeOptionRow(
-                    icon       = Icons.Default.SettingsBrightness,
-                    label      = "System Default",
-                    selected   = themeMode == "system",
-                    onClick    = { themeMode = "system"; prefs.themeMode = "system" }
+                    icon     = Icons.Default.SettingsBrightness,
+                    label    = "System Default",
+                    selected = themeMode == "system",
+                    onClick  = {
+                        themeMode = "system"
+                        prefs.themeMode = "system"
+                        prefs.darkMode = false
+                        Toast.makeText(context, "Following system theme", Toast.LENGTH_SHORT).show()
+                    }
                 )
             }
 
             // ── 5. Subscription ───────────────────────────────────────────────
             SectionHeader("Subscription")
             SectionCard {
-                // Current plan chip
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -366,15 +367,6 @@ class SettingsActivity : ComponentActivity() {
                     iconTint = Color(0xFFD4AC0D),
                     onClick  = { startActivity(Intent(this@SettingsActivity, PremiumActivity::class.java)) }
                 )
-                RowDivider()
-                SettingsRow(
-                    icon     = Icons.Default.Restore,
-                    title    = "Restore Purchase",
-                    subtitle = "Recover a previous subscription",
-                    onClick  = {
-                        Toast.makeText(context, "Restore coming soon — payment SDK needed 🚧", Toast.LENGTH_SHORT).show()
-                    }
-                )
             }
 
             // ── 6. Legal ──────────────────────────────────────────────────────
@@ -384,46 +376,67 @@ class SettingsActivity : ComponentActivity() {
                     icon     = Icons.Default.PrivacyTip,
                     title    = "Privacy Policy",
                     subtitle = "How we handle your data",
-                    onClick  = { openUrl("https://velmorth.app/privacy") }
+                    onClick  = { startActivity(Intent(this@SettingsActivity, PrivacyPolicyActivity::class.java)) }
                 )
                 RowDivider()
                 SettingsRow(
                     icon     = Icons.Default.Gavel,
-                    title    = "Terms of Service",
+                    title    = "Terms & Conditions",
                     subtitle = "Usage rules & license",
-                    onClick  = { openUrl("https://velmorth.app/terms") }
+                    onClick  = { startActivity(Intent(this@SettingsActivity, TermsConditionsActivity::class.java)) }
                 )
                 RowDivider()
                 SettingsRow(
                     icon     = Icons.Default.Info,
                     title    = "Open-Source Licenses",
                     subtitle = "Third-party library attributions",
-                    onClick  = {
-                        Toast.makeText(context, "License viewer coming soon", Toast.LENGTH_SHORT).show()
-                    }
+                    onClick  = { startActivity(Intent(this@SettingsActivity, LicensesActivity::class.java)) }
                 )
             }
 
-            // ── 7. About ──────────────────────────────────────────────────────
-            SectionHeader("About")
+            // ── 7. About & Support ────────────────────────────────────────────
+            SectionHeader("About & Support")
             SectionCard {
                 SettingsRow(
-                    icon     = Icons.Default.Info,
-                    title    = "App Version",
-                    subtitle = "v${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
+                    icon      = Icons.Default.Info,
+                    title     = "About Velmorth",
+                    subtitle  = "App story & version info",
+                    onClick   = { startActivity(Intent(this@SettingsActivity, AboutAppActivity::class.java)) }
+                )
+                RowDivider()
+                SettingsRow(
+                    icon      = Icons.Default.Info,
+                    title     = "App Version",
+                    subtitle  = "v${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
                     showArrow = false
+                )
+                RowDivider()
+                // Instagram support link — primary support channel
+                SettingsRow(
+                    icon       = Icons.Default.Share,
+                    title      = "Instagram Support",
+                    subtitle   = "@mannish_2323 — DM for bugs, feedback & help",
+                    iconTint   = Color(0xFFE1306C), // Instagram pink
+                    onClick    = {
+                        val intent = Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://www.instagram.com/mannish_2323"))
+                        try {
+                            // Try native Instagram app first
+                            intent.setPackage("com.instagram.android")
+                            startActivity(intent)
+                        } catch (e: Exception) {
+                            // Fallback to browser
+                            intent.setPackage(null)
+                            startActivity(intent)
+                        }
+                    }
                 )
                 RowDivider()
                 SettingsRow(
                     icon     = Icons.Default.SupportAgent,
                     title    = "Contact Support",
-                    subtitle = "support@velmorth.app",
-                    onClick  = {
-                        val mail = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:support@velmorth.app")).apply {
-                            putExtra(Intent.EXTRA_SUBJECT, "Velmorth App Support")
-                        }
-                        startActivity(Intent.createChooser(mail, "Send email"))
-                    }
+                    subtitle = "Get help via email or chat",
+                    onClick  = { startActivity(Intent(this@SettingsActivity, ContactSupportActivity::class.java)) }
                 )
             }
 
@@ -450,18 +463,9 @@ class SettingsActivity : ComponentActivity() {
         }
     }
 
-    private fun openUrl(url: String) {
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-    }
-
     fun performLogout(context: android.content.Context) {
-        // Step 1 — Sign out from Firebase
-        com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
-
-        // Step 2 — Clear all local session data
-        com.velmorth.app.data.local.PrefsManager(context).clearAll()
-
-        // Step 3 — Navigate to login screen
+        FirebaseAuth.getInstance().signOut()
+        PrefsManager(context).clearAll()
         val intent = android.content.Intent(context, com.velmorth.app.ui.auth.LoginActivity::class.java)
         intent.flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
                        android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK

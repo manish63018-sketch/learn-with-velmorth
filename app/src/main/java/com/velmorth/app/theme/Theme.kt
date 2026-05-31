@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.velmorth.app.data.local.PrefsManager
 
 // ============================================================
 // Light Color Scheme — Forest Day
@@ -129,7 +131,11 @@ val MaterialTheme.velmorthColors: VelmorthColors
 // ============================================================
 @Composable
 fun LearnWithVelmorthTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = when (PrefsManager(LocalContext.current).themeMode) {
+        "light" -> false
+        "dark" -> true
+        else -> isSystemInDarkTheme()
+    },
     content: @Composable () -> Unit,
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme

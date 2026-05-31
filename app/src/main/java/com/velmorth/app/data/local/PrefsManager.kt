@@ -41,6 +41,8 @@ class PrefsManager(context: Context) {
         private const val KEY_OWNED_SHOP_ITEMS     = "OWNED_SHOP_ITEMS"
         private const val KEY_LAST_LOGIN_DATE      = "LAST_LOGIN_DATE"
         private const val KEY_WEEKLY_STREAK_BONUS  = "WEEKLY_STREAK_BONUS"
+        private const val KEY_FIRST_LAUNCH         = "FIRST_LAUNCH"
+        private const val KEY_PHOTO_URL            = "PHOTO_URL"
     }
 
     var userName: String
@@ -148,6 +150,14 @@ class PrefsManager(context: Context) {
     var weeklyStreakBonusGiven: Boolean
         get() = prefs.getBoolean(KEY_WEEKLY_STREAK_BONUS, false)
         set(value) = prefs.edit().putBoolean(KEY_WEEKLY_STREAK_BONUS, value).apply()
+
+    var isFirstLaunch: Boolean
+        get() = prefs.getBoolean(KEY_FIRST_LAUNCH, true)
+        set(value) = prefs.edit().putBoolean(KEY_FIRST_LAUNCH, value).apply()
+
+    var photoUrl: String
+        get() = prefs.getString(KEY_PHOTO_URL, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_PHOTO_URL, value).apply()
 
     /**
      * Clears all user-related state (useful for Log Out).

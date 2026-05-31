@@ -103,3 +103,6 @@ premium_content/
 admin_keys/
 test_accounts.txt
 test_credentials.txt
+build*.txt
+build_output.txt
+

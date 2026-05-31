@@ -30,6 +30,7 @@ import com.velmorth.app.MainActivity
 import com.velmorth.app.ui.onboarding.OnboardingActivity
 import com.velmorth.app.theme.LearnWithVelmorthTheme
 import com.velmorth.app.data.local.PrefsManager
+import com.velmorth.app.data.repository.FirestoreProgressRepository
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -201,9 +202,17 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     horizontalArrangement = Arrangement.End
                 ) {
                     TextButton(onClick = {
-                        if (email.isBlank()) { errorMessage = "Please enter your email address to reset your password."; return@TextButton }
+                        if (email.isBlank()) {
+                            errorMessage = "Please enter your email address to reset your password."
+                            return@TextButton
+                        }
                         auth.sendPasswordResetEmail(email.trim())
-                        errorMessage = "A password reset email has been sent successfully."
+                            .addOnSuccessListener {
+                                errorMessage = "✓ Password reset email sent to $email"
+                            }
+                            .addOnFailureListener {
+                                errorMessage = it.localizedMessage ?: "Reset failed. Please try again."
+                            }
                     }) {
                         Text(
                             text = "Forgot Password?",
@@ -214,16 +223,20 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                 }
             }
 
-            // Error message
+            // Error / info message
             AnimatedVisibility(visible = errorMessage.isNotEmpty()) {
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFFFEBEB)),
+                    colors = CardDefaults.cardColors(
+                        containerColor = if (errorMessage.startsWith("✓"))
+                            Color(0xFFE8F5E9) else Color(0xFFFFEBEB)
+                    ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
                         text = errorMessage,
-                        color = Color(0xFFB00020),
+                        color = if (errorMessage.startsWith("✓"))
+                            Color(0xFF2D6A4F) else Color(0xFFB00020),
                         modifier = Modifier.padding(12.dp),
                         fontSize = 13.sp
                     )
@@ -247,50 +260,82 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     if (validationError != null) { errorMessage = validationError; return@Button }
 
                     isLoading = true
+
                     if (isLogin) {
                         auth.signInWithEmailAndPassword(email, password)
-                            .addOnSuccessListener { isLoading = false; onAuthSuccess(false) }
-                            .addOnFailureListener { isLoading = false; errorMessage = it.localizedMessage ?: "An error occurred. Please try again." }
+                            .addOnSuccessListener { result ->
+                                val uid = result.user?.uid ?: ""
+                                val prefs = PrefsManager(context)
+
+                                // Auto-create missing Firestore docs on every login
+                                FirestoreProgressRepository.ensureUserDocExists(
+                                    name = prefs.userName,
+                                    username = prefs.username,
+                                    email = email
+                                )
+                                FirestoreProgressRepository.ensureSettingsDocExists()
+                                FirestoreProgressRepository.ensureLanguageLessonsExist()
+
+                                isLoading = false
+                                onAuthSuccess(false)
+                            }
+                            .addOnFailureListener { e ->
+                                isLoading = false
+                                errorMessage = friendlyAuthError(e.message ?: "")
+                            }
                     } else {
+                        // Registration
                         auth.createUserWithEmailAndPassword(email, password)
                             .addOnSuccessListener { result ->
                                 val user = result.user!!
-                                // Send email verification
                                 user.sendEmailVerification()
-                                // Save to Firestore
+
+                                // Create Firestore user document with ALL required fields
                                 val userDoc = hashMapOf(
-                                    "uid" to user.uid,
-                                    "name" to name.trim(),
-                                    "username" to username.trim().lowercase(),
-                                    "email" to email.trim(),
-                                    "photoUrl" to "",
-                                    "isPremium" to false,
-                                    "streak" to 0,
-                                    "leafBalance" to 5,
-                                    "darkMode" to false,
+                                    "uid"                  to user.uid,
+                                    "name"                 to name.trim(),
+                                    "username"             to username.trim().lowercase(),
+                                    "email"                to email.trim(),
+                                    "profileImage"         to "",
+                                    "xp"                   to 0,
+                                    "level"                to 1,
+                                    "streak"               to 0,
+                                    "leafBalance"          to 5,
+                                    "isPremium"            to false,
                                     "notificationsEnabled" to true,
-                                    "emailVerified" to false,
-                                    "createdAt" to FieldValue.serverTimestamp()
+                                    "darkMode"             to false,
+                                    "createdAt"            to FieldValue.serverTimestamp()
                                 )
+
                                 db.collection("users").document(user.uid).set(userDoc)
                                     .addOnSuccessListener {
                                         // Save to local prefs
                                         val prefs = PrefsManager(context)
-                                        prefs.userName = name.trim()
-                                        prefs.username = username.trim().lowercase()
-                                        prefs.userEmail = email.trim()
-                                        prefs.isPremium = false
-                                        prefs.streak = 0
-                                        prefs.leaves = 5
+                                        prefs.userName   = name.trim()
+                                        prefs.username   = username.trim().lowercase()
+                                        prefs.userEmail  = email.trim()
+                                        prefs.isPremium  = false
+                                        prefs.streak     = 0
+                                        prefs.leaves     = 5
+                                        prefs.xp         = 0
+                                        prefs.level      = 1
+
+                                        // Create settings doc and seed lessons
+                                        FirestoreProgressRepository.ensureSettingsDocExists()
+                                        FirestoreProgressRepository.ensureLanguageLessonsExist()
+
                                         isLoading = false
                                         onAuthSuccess(true)
                                     }
-                                    .addOnFailureListener {
+                                    .addOnFailureListener { e ->
                                         isLoading = false
-                                        errorMessage = it.localizedMessage ?: "An error occurred. Please try again."
+                                        errorMessage = friendlyAuthError(e.message ?: "")
                                     }
                             }
-                            .addOnFailureListener { isLoading = false; errorMessage = it.localizedMessage ?: "An error occurred. Please try again." }
+                            .addOnFailureListener { e ->
+                                isLoading = false
+                                errorMessage = friendlyAuthError(e.message ?: "")
+                            }
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp),
@@ -319,6 +364,24 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
             )
         }
     }
+}
+
+/** Maps Firebase Auth error codes to user-friendly messages. */
+private fun friendlyAuthError(raw: String): String = when {
+    "network" in raw.lowercase() || "internet" in raw.lowercase() ->
+        "No internet connection. Please check your network and try again."
+    "password is invalid" in raw.lowercase() || "wrong-password" in raw.lowercase() ->
+        "Incorrect password. Please try again or use Forgot Password."
+    "no user record" in raw.lowercase() || "user-not-found" in raw.lowercase() ->
+        "No account found with this email. Please sign up first."
+    "email address is already in use" in raw.lowercase() ->
+        "An account with this email already exists. Please log in."
+    "email address is badly formatted" in raw.lowercase() ->
+        "Please enter a valid email address."
+    "password should be at least" in raw.lowercase() ->
+        "Password must be at least 6 characters."
+    raw.isBlank() -> "An unexpected error occurred. Please try again."
+    else -> raw
 }
 
 @Composable
@@ -371,8 +434,8 @@ fun validateInputs(
 ): String? {
     if (email.isBlank() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
         return "Please enter a valid email address."
-    if (password.length < 8)
-        return "Password must be at least 8 characters long."
+    if (password.length < 6)
+        return "Password must be at least 6 characters long."
     if (!isLogin) {
         if (name.isBlank()) return "Display Name is required."
         if (username.length < 3) return "Username must be at least 3 characters long."
