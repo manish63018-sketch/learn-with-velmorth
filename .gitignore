@@ -71,16 +71,12 @@ gradle-wrapper.jar
 # ─── 📝 LOGS & TEMP FILES ───────────────────────────────────
 *.log
 logs/
-*.txt
-!README.txt
-!readme.md
-!README.md
+logcat*.txt
+build_*.txt
+window_dump*.xml
+screen*.png
 hs_err_pid*.log
 replay_pid*.log
-window_dump.xml
-window_dump2.xml
-screen.png
-screen2.png
 
 # ─── 📦 NODE / NPM (Tooling dependencies) ───────────────────
 node_modules/
