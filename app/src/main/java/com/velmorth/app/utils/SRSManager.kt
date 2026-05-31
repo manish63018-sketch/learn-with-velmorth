@@ -38,13 +38,7 @@ object SRSManager {
 
         return if (clampedRating < 3) {
             // Incorrect — restart from beginning
-            card.copy(
-                repetitions    = 0,
-                intervalDays   = 1,
-                easeFactor     = (card.easeFactor - 0.2).coerceAtLeast(MIN_EASE_FACTOR),
-                nextReviewDate = System.currentTimeMillis() + 86_400_000L,
-                status         = "learning"
-            )
+            calculateFailure(card)
         } else {
             // Correct — advance interval
             val newRepetitions = card.repetitions + 1
@@ -57,7 +51,16 @@ object SRSManager {
             val delta = 0.1 - (5 - clampedRating) * (0.08 + (5 - clampedRating) * 0.02)
             val newEaseFactor = (card.easeFactor + delta).coerceAtLeast(MIN_EASE_FACTOR)
             val newStatus = if (newInterval >= 21) "mastered" else "review"
-            val nextReview = System.currentTimeMillis() + newInterval * 86_400_000L
+            
+            // Normalize next review to midnight to prevent "time creep"
+            val calendar = java.util.Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis() + newInterval * 86_400_000L
+                set(java.util.Calendar.HOUR_OF_DAY, 0)
+                set(java.util.Calendar.MINUTE, 0)
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+            }
+            val nextReview = calendar.timeInMillis
 
             card.copy(
                 repetitions    = newRepetitions,
@@ -67,6 +70,26 @@ object SRSManager {
                 status         = newStatus
             )
         }
+    }
+
+    /**
+     * Resets a card when the user misses it.
+     */
+    fun calculateFailure(card: SRSCard): SRSCard {
+        val calendar = java.util.Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis() + 86_400_000L
+            set(java.util.Calendar.HOUR_OF_DAY, 0)
+            set(java.util.Calendar.MINUTE, 0)
+            set(java.util.Calendar.SECOND, 0)
+            set(java.util.Calendar.MILLISECOND, 0)
+        }
+        return card.copy(
+            repetitions    = 0,
+            intervalDays   = 1,
+            easeFactor     = (card.easeFactor - 0.2).coerceAtLeast(MIN_EASE_FACTOR),
+            nextReviewDate = calendar.timeInMillis,
+            status         = "learning"
+        )
     }
 
     /** Returns true if this card is due for review today or earlier. */

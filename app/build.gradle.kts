@@ -67,8 +67,7 @@ dependencies {
     // Lifecycle standard components
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // Material Design 3
     implementation("com.google.android.material:material:1.12.0")
@@ -78,7 +77,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation(libs.kotlinx.coroutines.android)
 
     // UI Utilities (Fragment & Fragment-ktx for Activity/Fragment container layout)
     implementation("androidx.fragment:fragment-ktx:1.8.5")
@@ -92,14 +91,14 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.analytics)
 
     // WorkManager (daily notifications)
-    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation(libs.androidx.work.runtime.ktx)
 
     // AdMob
     implementation("com.google.android.gms:play-services-ads:23.0.0")

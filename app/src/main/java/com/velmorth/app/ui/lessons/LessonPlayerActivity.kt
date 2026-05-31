@@ -95,6 +95,8 @@ class LessonPlayerActivity : ComponentActivity() {
                         lessonRepository.removeFromReviewQueue(lesson.id)
                         Toast.makeText(this, "Watering complete! Lesson refreshed. 🌱", Toast.LENGTH_SHORT).show()
                     } else {
+                        val wasAlreadyCompleted = lessonRepository.getCompletedLessons().contains(lesson.id)
+                        
                         lessonRepository.markLessonComplete(lesson.id)
                         lessonRepository.addToReviewQueue(lesson.id)
                         val bonusMsg = if (leavesEarned > LeafRewardManager.LESSON_COMPLETE_REWARD) " ✨ Perfect Quiz! +${LeafRewardManager.PERFECT_QUIZ_BONUS} bonus!" else ""
@@ -110,13 +112,15 @@ class LessonPlayerActivity : ComponentActivity() {
                                 streak = activeStreak,
                                 leafBalance = updatedLeaves
                             )
-                            // Seed SRS cards for vocab in this lesson
-                            val vocabIds = lesson.vocabulary.map { it.vocabId }
-                            if (vocabIds.isNotEmpty()) {
-                                FirestoreProgressRepository.seedSRSCards(
-                                    lessonId = lesson.id,
-                                    vocabIds = vocabIds
-                                )
+                            // Seed SRS cards for vocab in this lesson (only if first time)
+                            if (!wasAlreadyCompleted) {
+                                val vocabIds = lesson.vocabulary.map { it.vocabId }
+                                if (vocabIds.isNotEmpty()) {
+                                    FirestoreProgressRepository.seedSRSCards(
+                                        lessonId = lesson.id,
+                                        vocabIds = vocabIds
+                                    )
+                                }
                             }
                         }
                     }
@@ -137,7 +141,7 @@ class LessonPlayerActivity : ComponentActivity() {
         onComplete: (Int, Int) -> Unit,
         onExit: () -> Unit
     ) {
-        var isStudying by remember { mutableStateOf(true) }
+        var isStudying by rememberSaveable { mutableStateOf(true) }
         val isHindi = prefsManager.nativeLanguage.equals("Hindi", ignoreCase = true)
 
         if (isStudying) {
@@ -650,28 +654,30 @@ class LessonPlayerActivity : ComponentActivity() {
         onExit: () -> Unit
     ) {
         val exercises = lesson.exercises
-        var currentIndex by remember { mutableStateOf(0) }
+        var currentIndex by rememberSaveable { mutableIntStateOf(0) }
         val currentExercise = exercises[currentIndex]
 
-        var selectedOption by remember { mutableStateOf("") }
-        var fillInput by remember { mutableStateOf("") }
-        var translateInput by remember { mutableStateOf("") }
+        var selectedOption by rememberSaveable { mutableStateOf("") }
+        var fillInput by rememberSaveable { mutableStateOf("") }
+        var translateInput by rememberSaveable { mutableStateOf("") }
 
         // State for MATCH matching type exercise
+        // Note: For complex objects like lists, we'll keep simple state for now 
+        // as custom savers are required for rememberSaveable with lists.
         val matchedPairs = remember { mutableStateListOf<Pair<String, String>>() }
-        var selectedJp by remember { mutableStateOf<String?>(null) }
-        var selectedEn by remember { mutableStateOf<String?>(null) }
-        var incorrectPair by remember { mutableStateOf<Pair<String, String>?>(null) }
+        var selectedJp by rememberSaveable { mutableStateOf<String?>(null) }
+        var selectedEn by rememberSaveable { mutableStateOf<String?>(null) }
+        var incorrectPair by rememberSaveable { mutableStateOf<Pair<String, String>?>(null) }
 
         // Shuffle pairs once per exercise
         val shuffledJp = remember(currentExercise) { currentExercise.pairsJapanese.shuffled() }
         val shuffledEn = remember(currentExercise) { currentExercise.pairsEnglish.shuffled() }
 
-        var hasChecked by remember { mutableStateOf(false) }
-        var isCorrect by remember { mutableStateOf(false) }
-        var wrongAnswers by remember { mutableStateOf(0) }  // tracks mistakes for perfect-quiz bonus
+        var hasChecked by rememberSaveable { mutableStateOf(false) }
+        var isCorrect by rememberSaveable { mutableStateOf(false) }
+        var wrongAnswers by rememberSaveable { mutableIntStateOf(0) }  // tracks mistakes for perfect-quiz bonus
 
-        var userLeaves by remember { mutableStateOf(prefsManager.leaves) }
+        var userLeaves by rememberSaveable { mutableIntStateOf(prefsManager.leaves) }
         val isPremium = prefsManager.isPremium
 
         // Speak when exercise changes

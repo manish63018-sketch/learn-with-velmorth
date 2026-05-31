@@ -21,10 +21,10 @@ import com.velmorth.app.ui.profile.ProfileFragment
  */
 class MainActivity : FragmentActivity() {
 
-    private val containerId = View.generateViewId()
-    private val navId = View.generateViewId()
-    
-    private lateinit var bottomNav: BottomNavigationView
+    companion object {
+        private const val CONTAINER_ID = 1001
+        private const val NAV_ID = 1002
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class MainActivity : FragmentActivity() {
         }
 
         val fragmentContainer = FrameLayout(this).apply {
-            id = containerId
+            id = CONTAINER_ID
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
@@ -49,7 +49,7 @@ class MainActivity : FragmentActivity() {
         }
 
         bottomNav = BottomNavigationView(this).apply {
-            id = navId
+            id = NAV_ID
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -104,7 +104,7 @@ class MainActivity : FragmentActivity() {
 
         // Handle back press: navigate to Home tab first, then exit
         onBackPressedDispatcher.addCallback(this) {
-            val currentTag = supportFragmentManager.findFragmentById(containerId)?.tag
+            val currentTag = supportFragmentManager.findFragmentById(CONTAINER_ID)?.tag
             if (currentTag != "Home" && bottomNav.selectedItemId != 1) {
                 bottomNav.selectedItemId = 1
             } else {
@@ -115,7 +115,7 @@ class MainActivity : FragmentActivity() {
     }
 
     private fun switchFragment(fragment: Fragment, tag: String) {
-        val current = supportFragmentManager.findFragmentById(containerId)
+        val current = supportFragmentManager.findFragmentById(CONTAINER_ID)
         if (current != null && current::class.java == fragment::class.java) return
 
         supportFragmentManager.commit {
@@ -123,7 +123,7 @@ class MainActivity : FragmentActivity() {
                 android.R.anim.fade_in,
                 android.R.anim.fade_out
             )
-            replace(containerId, fragment, tag)
+            replace(CONTAINER_ID, fragment, tag)
             // Add to back stack for non-home tabs
             if (tag != "Home") {
                 addToBackStack(tag)
