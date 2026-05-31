@@ -1,0 +1,107 @@
+{
+  "language": "ja",
+  "language_name": "Japanese",
+  "categories": [
+    {
+      "category_id": "cat_ja_basics",
+      "category_title": "Basics",
+      "category_icon": "🌟",
+      "description_en": "Start your Japanese journey with essential everyday phrases.",
+      "description_hi": "रोज़मर्रा की ज़रूरी जापानी phrases से शुरुआत करें।",
+      "total_lessons": 9,
+      "free_lessons": 9,
+      "premium_lessons": 0,
+      "lessons": [
+        "ja_u01_l01_hello_basic",
+        "ja_u01_l02_greetings_time",
+        "ja_u01_l03_polite_phrases",
+        "ja_u02_l01_numbers_1_10",
+        "ja_u02_l02_numbers_11_100",
+        "ja_u02_l03_counting_objects",
+        "ja_u03_l01_my_name_is",
+        "ja_u03_l02_where_are_you_from",
+        "ja_u03_l03_my_hobbies"
+      ]
+    },
+    {
+      "category_id": "cat_ja_everyday",
+      "category_title": "Everyday Life",
+      "category_icon": "🏡",
+      "description_en": "Objects, time, and daily routines in Japanese.",
+      "description_hi": "वस्तुएं, समय और रोज़ की दिनचर्या जापानी में।",
+      "total_lessons": 6,
+      "free_lessons": 0,
+      "premium_lessons": 6,
+      "lessons": [
+        "ja_u04_l01_classroom_objects",
+        "ja_u04_l02_household_items",
+        "ja_u04_l03_shopping_words",
+        "ja_u05_l01_days_of_week",
+        "ja_u05_l02_time_expressions",
+        "ja_u05_l03_daily_schedule"
+      ]
+    },
+    {
+      "category_id": "cat_ja_people",
+      "category_title": "People & Family",
+      "category_icon": "👨‍👩‍👧",
+      "description_en": "Talk about your family and people around you.",
+      "description_hi": "अपने परिवार और आसपास के लोगों के बारे में बात करें।",
+      "total_lessons": 3,
+      "free_lessons": 0,
+      "premium_lessons": 3,
+      "lessons": [
+        "ja_u06_l01_family_members",
+        "ja_u06_l02_my_family_sentences",
+        "ja_u06_l03_describing_people"
+      ]
+    },
+    {
+      "category_id": "cat_ja_food",
+      "category_title": "Food",
+      "category_icon": "🍱",
+      "description_en": "Learn what foods are called in Japanese.",
+      "description_hi": "जापानी में खाने को क्या कहते हैं — सीखो।",
+      "total_lessons": 6,
+      "free_lessons": 2,
+      "premium_lessons": 4,
+      "lessons": [
+        "ja_u07_l01_basic_food_words",
+        "ja_u07_l02_restaurant_phrases"
+      ]
+    },
+    {
+      "category_id": "cat_ja_world",
+      "category_title": "Colors & Places",
+      "category_icon": "🗺️",
+      "description_en": "Describe the world around you — colors and locations.",
+      "description_hi": "रंगों और जगहों से दुनिया को describe करें।",
+      "total_lessons": 6,
+      "free_lessons": 0,
+      "premium_lessons": 6,
+      "lessons": [
+        "ja_u08_l01_basic_colors",
+        "ja_u08_l02_describing_with_colors",
+        "ja_u08_l03_color_adjectives",
+        "ja_u09_l01_location_words",
+        "ja_u09_l02_giving_directions",
+        "ja_u09_l03_asking_where"
+      ]
+    },
+    {
+      "category_id": "cat_ja_actions",
+      "category_title": "Actions & Verbs",
+      "category_icon": "🏃",
+      "description_en": "Express what you do with essential Japanese verbs.",
+      "description_hi": "ज़रूरी जापानी क्रियाओं से बताएं आप क्या करते हैं।",
+      "total_lessons": 3,
+      "free_lessons": 0,
+      "premium_lessons": 3,
+      "lessons": [
+        "ja_u10_l01_basic_action_verbs",
+        "ja_u10_l02_daily_action_sentences",
+        "ja_u10_l03_verb_conjugation_intro"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "unit_id": "ja_u07_food",
+  "unit_title": "Food",
+  "lessons": [
+    {
+      "lesson_id": "ja_u07_l01_basic_food_words",
+      "lesson_title": "Basic Food Words",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Learn basic food items.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_gohan",
+          "kanji": "ご飯",
+          "kana": "ごはん",
+          "romaji": "gohan",
+          "meaning_en": "rice / meal",
+          "meaning_hi": "चावल / भोजन",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "food"
+          ],
+          "frequency": 5,
+          "notes": "Literally cooked rice. Also means meal in general."
+        },
+        {
+          "vocab_id": "ja_vocab_mizu",
+          "kanji": "水",
+          "kana": "みず",
+          "romaji": "mizu",
+          "meaning_en": "water",
+          "meaning_hi": "पानी / जल",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "food"
+          ],
+          "frequency": 5,
+          "notes": "Add honorific 'o' to make 'omizu' polite."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_wo_tabemasu",
+        "title": "Object Particle o (wo)",
+        "structure": "[Noun] を 食べます",
+        "romaji_structure": "[Noun] wo tabemasu",
+        "short_explanation_en": "'wo' marks the direct object. 'tabemasu' means to eat.",
+        "short_explanation_hi": "'wo' प्रत्यक्ष कर्म को दर्शाता है। 'tabemasu' का अर्थ खाना है।",
+        "focus_examples": [
+          "ご飯を食べます。"
+        ],
+        "focus_examples_romaji": [
+          "Gohan wo tabemasu."
+        ],
+        "notes": "pronounced 'o' instead of 'wo' in speech."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "The direct object particle を is spelled 'wo' but pronounced 'o'."
+        ],
+        "tips_hi": [
+          "प्रत्यक्ष कर्म कण を का हिज्जे 'wo' है लेकिन उच्चारण 'o' होता है।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u07_l01_ex_sentence_1",
+          "japanese": "ご飯を食べます。お水を飲みます。",
+          "romaji": "Gohan wo tabemasu. Omizu wo nomimasu.",
+          "translation_en": "I eat rice. I drink water.",
+          "translation_hi": "मैं चावल खाता हूँ। मैं पानी पीता हूँ।",
+          "highlight_vocab_ids": [
+            "ja_vocab_gohan",
+            "ja_vocab_mizu"
+          ],
+          "context_note": "Simple eating routine."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u07_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "What is the direct object marking particle?",
+        "question_hi": "प्रत्यक्ष कर्म को दर्शाने वाला कण कौन सा है?",
+        "options": [
+          "を",
+          "は",
+          "が"
+        ],
+        "options_romaji": [
+          "wo",
+          "wa",
+          "ga"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "'wo' is the direct object particle.",
+        "explanation_hi": "'wo' प्रत्यक्ष कर्म कण है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u07_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match the items.",
+        "prompt_hi": "वस्तुओं का मिलान करें।",
+        "pairs_japanese": [
+          "ご飯",
+          "水"
+        ],
+        "pairs_english": [
+          "Rice / Meal",
+          "Water"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u07_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in: 水を ___ ます (I drink water - write nomimasu base 'nomi')",
+        "question_hi": "भरें: 水を ___ ます (मैं पानी पीता हूँ - नोमी लिखें)",
+        "correct_answer": "のみ",
+        "correct_answer_romaji": "nomi",
+        "hint_en": "nomi",
+        "hint_hi": "नोमी",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_gohan"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u06_l02_my_family_sentences"
+        ],
+        "min_xp_total": 140,
+        "requires_premium": true
+      }
+    },
+    {
+      "lesson_id": "ja_u07_l02_restaurant_phrases",
+      "lesson_title": "Restaurant Phrases",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Order food politely at a restaurant.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_kudasai",
+          "kanji": "下さい",
+          "kana": "ください",
+          "romaji": "kudasai",
+          "meaning_en": "please give me",
+          "meaning_hi": "कृपया मुझे दें",
+          "part_of_speech": "expression",
+          "topic_tags": [
+            "restaurant"
+          ],
+          "frequency": 5,
+          "notes": "Used when requesting objects."
+        },
+        {
+          "vocab_id": "ja_vocab_oishii",
+          "kanji": "美味しい",
+          "kana": "おいしい",
+          "romaji": "oishii",
+          "meaning_en": "delicious",
+          "meaning_hi": "स्वादिष्ट",
+          "part_of_speech": "adjective",
+          "topic_tags": [
+            "food"
+          ],
+          "frequency": 5,
+          "notes": "Can be said directly after eating."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_kudasai",
+        "title": "Ordering items (kudasai)",
+        "structure": "[Noun] を ください",
+        "romaji_structure": "[Noun] wo kudasai",
+        "short_explanation_en": "This is the polite way of ordering or requesting items.",
+        "short_explanation_hi": "वस्तुओं को ऑर्डर करने या अनुरोध करने का यह औपचारिक तरीका है।",
+        "focus_examples": [
+          "お水をください。"
+        ],
+        "focus_examples_romaji": [
+          "Omizu wo kudasai."
+        ],
+        "notes": "Always add object particle を."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce 'kudasai' with flat pitch."
+        ],
+        "tips_hi": [
+          "'kudasai' का उच्चारण सपाट पिच के साथ करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u07_l02_ex_sentence_1",
+          "japanese": "これをご飯をください。とても美味しいです！",
+          "romaji": "Gohan wo kudasai. Totemo oishii desu!",
+          "translation_en": "Rice, please. It is very delicious!",
+          "translation_hi": "चावल दीजिये, कृपया। यह बहुत स्वादिष्ट है!",
+          "highlight_vocab_ids": [
+            "ja_vocab_kudasai",
+            "ja_vocab_oishii"
+          ],
+          "context_note": "Ordering at table."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u07_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "How do you politely request something?",
+        "question_hi": "किसी चीज़ के लिए विनम्रतापूर्वक अनुरोध कैसे करते हैं?",
+        "options": [
+          "ください",
+          "ありがとう",
+          "すみません"
+        ],
+        "options_romaji": [
+          "kudasai",
+          "arigatou",
+          "sumimasen"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "'Kudasai' is please give me.",
+        "explanation_hi": "'Kudasai' का अर्थ कृपया मुझे दें होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u07_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the words.",
+        "prompt_hi": "शब्दों का मिलान करें।",
+        "pairs_japanese": [
+          "ください",
+          "おいしい"
+        ],
+        "pairs_english": [
+          "Please give me",
+          "Delicious"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u07_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in for 'Water, please': 水 ___ ください。",
+        "question_hi": "रिक्त स्थान भरें: 水 ___ ください。",
+        "correct_answer": "を",
+        "correct_answer_romaji": "wo",
+        "hint_en": "offering",
+        "hint_hi": "प्रस्तावित वस्तु",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_kudasai"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u07_l01_basic_food_words"
+        ],
+        "min_xp_total": 150,
+        "requires_premium": true
+      }
+    }
+  ]
+}

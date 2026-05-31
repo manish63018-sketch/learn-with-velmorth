@@ -1,17 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base app theme — NoActionBar since we use Compose -->
-    <style name="Theme.LearnWithVelmorth" parent="android:Theme.Material.Light.NoActionBar">
-        <!-- Forest green status bar -->
-        <item name="android:statusBarColor">#1B4332</item>
-        <item name="android:navigationBarColor">#FAFAF5</item>
-        <item name="android:windowBackground">#F1E8D0</item>
+
+    <!-- ============================================================
+         Base App Theme — Material 3 Day/Night, No Action Bar
+         ============================================================ -->
+    <style name="Theme.Velmorth" parent="Theme.Material3.DayNight.NoActionBar">
+
+        <!-- Brand primary color tokens -->
+        <item name="colorPrimary">@color/primary_green</item>
+        <item name="colorOnPrimary">@color/surface_white</item>
+        <item name="colorPrimaryContainer">@color/light_green</item>
+        <item name="colorOnPrimaryContainer">@color/primary_dark_green</item>
+
+        <!-- Secondary tokens (accent) -->
+        <item name="colorSecondary">@color/accent_green</item>
+        <item name="colorOnSecondary">@color/surface_white</item>
+        <item name="colorSecondaryContainer">@color/light_green</item>
+        <item name="colorOnSecondaryContainer">@color/primary_dark_green</item>
+
+        <!-- Tertiary tokens (gold/XP) -->
+        <item name="colorTertiary">@color/gold_xp</item>
+        <item name="colorOnTertiary">@color/surface_white</item>
+
+        <!-- Surface / Background -->
+        <item name="colorSurface">@color/surface_white</item>
+        <item name="colorOnSurface">@color/text_dark</item>
+        <item name="android:colorBackground">@color/background_cream</item>
+        <item name="android:windowBackground">@color/background_cream</item>
+
+        <!-- Error tokens -->
+        <item name="colorError">@color/streak_fire</item>
+        <item name="colorOnError">@color/surface_white</item>
+
+        <!-- System bar colours -->
+        <item name="android:statusBarColor">@color/primary_dark_green</item>
+        <item name="android:navigationBarColor">@color/surface_white</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Typography -->
+        <item name="android:fontFamily">sans-serif</item>
+
+        <!-- Shape appearance — rounded corners throughout -->
+        <item name="shapeAppearanceSmallComponent">@style/Shape.Velmorth.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/Shape.Velmorth.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/Shape.Velmorth.Large</item>
     </style>
 
-    <!-- Splash screen theme -->
-    <style name="Theme.LearnWithVelmorth.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#1B4332</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="postSplashScreenTheme">@style/Theme.LearnWithVelmorth</item>
+    <!-- ============================================================
+         Shape Styles
+         ============================================================ -->
+    <style name="Shape.Velmorth.Small" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerSize">12dp</item>
     </style>
+
+    <style name="Shape.Velmorth.Medium" parent="ShapeAppearance.Material3.MediumComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="Shape.Velmorth.Large" parent="ShapeAppearance.Material3.LargeComponent">
+        <item name="cornerSize">24dp</item>
+    </style>
+
+    <!-- ============================================================
+         Splash Screen — Pure brand dark green, no action bar
+         ============================================================ -->
+    <style name="Theme.Velmorth.Splash" parent="Theme.Velmorth">
+        <item name="android:windowBackground">@color/primary_dark_green</item>
+        <item name="android:statusBarColor">@color/primary_dark_green</item>
+        <item name="android:navigationBarColor">@color/primary_dark_green</item>
+    </style>
+
+    <!-- ============================================================
+         Premium Paywall — Dark green immersive
+         ============================================================ -->
+    <style name="Theme.Velmorth.Premium" parent="Theme.Velmorth">
+        <item name="android:windowBackground">@color/primary_dark_green</item>
+        <item name="android:statusBarColor">@color/primary_dark_green</item>
+        <item name="android:navigationBarColor">@color/primary_dark_green</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>

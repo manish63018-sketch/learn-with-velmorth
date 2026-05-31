@@ -1,0 +1,436 @@
+{
+  "unit_id": "ja_u03_self_intro",
+  "unit_title": "Self Introduction",
+  "lessons": [
+    {
+      "lesson_id": "ja_u03_l01_name",
+      "lesson_title": "Introducing Your Name",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Introduce your name politely in Japanese.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_watashi",
+          "kanji": "私",
+          "kana": "わたし",
+          "romaji": "watashi",
+          "meaning_en": "I / me",
+          "meaning_hi": "मैं / मुझे",
+          "part_of_speech": "pronoun",
+          "topic_tags": [
+            "self"
+          ],
+          "frequency": 5,
+          "notes": "Formal/standard word for both genders."
+        },
+        {
+          "vocab_id": "ja_vocab_namae",
+          "kanji": "名前",
+          "kana": "なまえ",
+          "romaji": "namae",
+          "meaning_en": "name",
+          "meaning_hi": "नाम",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "self"
+          ],
+          "frequency": 5,
+          "notes": "Used standardly."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_intro_name",
+        "title": "My name is...",
+        "structure": "私は [Name] です",
+        "romaji_structure": "Watashi wa [Name] desu",
+        "short_explanation_en": "This means 'I am [Name]'. It is the easiest and most direct way to introduce yourself.",
+        "short_explanation_hi": "इसका अर्थ है 'मैं [Name] हूँ'। अपना परिचय देने का यह सबसे आसान तरीका है।",
+        "focus_examples": [
+          "私はラヴィです。"
+        ],
+        "focus_examples_romaji": [
+          "Watashi wa Ravii desu."
+        ],
+        "notes": "Replace 'Ravii' with your actual name."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "The 'wa' particle should be pronounced flatly, with no accent."
+        ],
+        "tips_hi": [
+          "'wa' कण का उच्चारण बिना किसी विशेष स्वर-भार के सपाट रूप से करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u03_l01_ex_sentence_1",
+          "japanese": "はじめまして、私はラヴィです。",
+          "romaji": "Hajimemashite, watashi wa Ravii desu.",
+          "translation_en": "Nice to meet you, I am Ravi.",
+          "translation_hi": "आपसे मिलकर अच्छा लगा, मैं रवि हूँ।",
+          "highlight_vocab_ids": [
+            "ja_vocab_watashi"
+          ],
+          "context_note": "A perfect opening line when meeting someone."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u03_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "How do you say 'I' or 'me' politely?",
+        "question_hi": "औपचारिक तरीके से 'मैं' या 'मुझे' कैसे कहेंगे?",
+        "options": [
+          "わたし",
+          "なまえ",
+          "あなた"
+        ],
+        "options_romaji": [
+          "watashi",
+          "namae",
+          "anata"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Watashi' is the polite pronoun for I.",
+        "explanation_hi": "'Watashi' 'मैं' के लिए औपचारिक सर्वनाम है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u03_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match pronouns and nouns.",
+        "prompt_hi": "सर्वनाम और संज्ञा का मिलान करें।",
+        "pairs_japanese": [
+          "私",
+          "名前"
+        ],
+        "pairs_english": [
+          "I / me",
+          "Name"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u03_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank: 私はラヴィ ___ (I am Ravi)",
+        "question_hi": "रिक्त स्थान भरें: 私はラヴィ ___ (मैं रवि हूँ)",
+        "correct_answer": "です",
+        "correct_answer_romaji": "desu",
+        "hint_en": "is / am",
+        "hint_hi": "हूँ",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_watashi"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u02_l02_11_to_99"
+        ],
+        "min_xp_total": 50,
+        "requires_premium": false
+      }
+    },
+    {
+      "lesson_id": "ja_u03_l02_country_age",
+      "lesson_title": "Country and Age",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "State your nationality and age.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_indo",
+          "kanji": "インド",
+          "kana": "いんど",
+          "romaji": "indo",
+          "meaning_en": "India",
+          "meaning_hi": "भारत",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "countries"
+          ],
+          "frequency": 5,
+          "notes": "Written in Katakana."
+        },
+        {
+          "vocab_id": "ja_vocab_jin",
+          "kanji": "人",
+          "kana": "じん",
+          "romaji": "jin",
+          "meaning_en": "nationality suffix (person)",
+          "meaning_hi": "राष्ट्रीयता प्रत्यय (व्यक्ति)",
+          "part_of_speech": "suffix",
+          "topic_tags": [
+            "self"
+          ],
+          "frequency": 5,
+          "notes": "Attach to country names: Country + jin."
+        },
+        {
+          "vocab_id": "ja_vocab_sai",
+          "kanji": "歳",
+          "kana": "さい",
+          "romaji": "sai",
+          "meaning_en": "years old (age suffix)",
+          "meaning_hi": "वर्ष की आयु (आयु प्रत्यय)",
+          "part_of_speech": "suffix",
+          "topic_tags": [
+            "self"
+          ],
+          "frequency": 5,
+          "notes": "Attach to numbers to state age."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_nationality_age",
+        "title": "Stating Origin & Age",
+        "structure": "[Country] ＋ 人 です / [Age Number] ＋ 歳 です",
+        "romaji_structure": "[Country] + jin desu / [Age Number] + sai desu",
+        "short_explanation_en": "Attach 'jin' to a country for nationality. Attach 'sai' to a number for age.",
+        "short_explanation_hi": "राष्ट्रीयता के लिए देश के नाम के पीछे 'jin' जोड़ें। आयु के लिए संख्या के पीछे 'sai' जोड़ें।",
+        "focus_examples": [
+          "インド人です。",
+          "二十歳です。"
+        ],
+        "focus_examples_romaji": [
+          "Indojin desu.",
+          "Hatachi desu."
+        ],
+        "notes": "20 years old has an irregular reading: Hatachi (二十歳)."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Ensure 'sai' is pronounced like 'sigh', not 'say'."
+        ],
+        "tips_hi": [
+          "सुनिश्चित करें कि 'sai' का उच्चारण 'साई' की तरह हो, 'से' नहीं।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u03_l02_ex_sentence_1",
+          "japanese": "私はインド人です。二十歳です。",
+          "romaji": "Watashi wa indojin desu. Hatachi desu.",
+          "translation_en": "I am Indian. I am 20 years old.",
+          "translation_hi": "मैं भारतीय हूँ। मैं २० वर्ष का हूँ।",
+          "highlight_vocab_ids": [
+            "ja_vocab_indo",
+            "ja_vocab_jin",
+            "ja_vocab_sai"
+          ],
+          "context_note": "Stating details about yourself."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u03_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "How do you say 'Indian person (nationality)' in Japanese?",
+        "question_hi": "जापानी में 'भारतीय व्यक्ति (राष्ट्रीयता)' कैसे कहेंगे?",
+        "options": [
+          "インドじん",
+          "にほんじん",
+          "いんどご"
+        ],
+        "options_romaji": [
+          "indojin",
+          "nihonjin",
+          "indogo"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "Indo + jin = Indojin (Indian person).",
+        "explanation_hi": "Indo + jin = Indojin (भारतीय व्यक्ति)।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u03_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match country and suffix.",
+        "prompt_hi": "देश और प्रत्यय का मिलान करें।",
+        "pairs_japanese": [
+          "インド",
+          "人",
+          "歳"
+        ],
+        "pairs_english": [
+          "India",
+          "Nationality suffix",
+          "Years old suffix"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u03_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the nationality suffix for Indian (インド___):",
+        "question_hi": "भारतीय (インド___) के लिए राष्ट्रीयता प्रत्यय भरें:",
+        "correct_answer": "人",
+        "correct_answer_romaji": "jin",
+        "hint_en": "person / jin kanji",
+        "hint_hi": "व्यक्ति / जिन कांजी",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_jin"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u03_l01_name"
+        ],
+        "min_xp_total": 60,
+        "requires_premium": true
+      }
+    },
+    {
+      "lesson_id": "ja_u03_l03_hobbies",
+      "lesson_title": "Hobbies",
+      "difficulty": "beginner-1",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Talk about your hobbies and interests.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_shumi",
+          "kanji": "趣味",
+          "kana": "しゅみ",
+          "romaji": "shumi",
+          "meaning_en": "hobby",
+          "meaning_hi": "शौक",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "hobbies"
+          ],
+          "frequency": 5,
+          "notes": "Used standardly."
+        },
+        {
+          "vocab_id": "ja_vocab_ongaku",
+          "kanji": "音楽",
+          "kana": "おんがく",
+          "romaji": "ongaku",
+          "meaning_en": "music",
+          "meaning_hi": "संगीत",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "hobbies"
+          ],
+          "frequency": 5,
+          "notes": "Literally sounds-music."
+        },
+        {
+          "vocab_id": "ja_vocab_dokusho",
+          "kanji": "読書",
+          "kana": "どくしょ",
+          "romaji": "dokusho",
+          "meaning_en": "reading books",
+          "meaning_hi": "किताबें पढ़ना",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "hobbies"
+          ],
+          "frequency": 4,
+          "notes": "Sino-Japanese word for reading."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_shumi",
+        "title": "Stating Hobbies",
+        "structure": "趣味は [Hobby] です",
+        "romaji_structure": "Shumi wa [Hobby] desu",
+        "short_explanation_en": "This translates to 'My hobby is [Hobby]'.",
+        "short_explanation_hi": "इसका अनुवाद है 'मेरा शौक [Hobby] है'।",
+        "focus_examples": [
+          "趣味は音楽です。"
+        ],
+        "focus_examples_romaji": [
+          "Shumi wa ongaku desu."
+        ],
+        "notes": "Hobby must be a noun."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "In 'dokusho', the 'o' is short. In 'ongaku', the 'n' is a nasal sound."
+        ],
+        "tips_hi": [
+          "'dokusho' में 'o' छोटा होता है। 'ongaku' में 'n' एक नासिका ध्वनि है।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u03_l03_ex_sentence_1",
+          "japanese": "私の趣味は読書です。",
+          "romaji": "Watashi no shumi wa dokusho desu.",
+          "translation_en": "My hobby is reading.",
+          "translation_hi": "मेरा शौक पुस्तकें पढ़ना है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_shumi",
+            "ja_vocab_dokusho"
+          ],
+          "context_note": "Talking about reading."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u03_l03_ex1",
+        "type": "multiple_choice",
+        "question_en": "What does 'shumi' mean?",
+        "question_hi": "'shumi' का क्या अर्थ है?",
+        "options": [
+          "Hobby",
+          "Name",
+          "Country"
+        ],
+        "options_romaji": [
+          "Hobby",
+          "Name",
+          "Country"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Shumi' translates to hobby.",
+        "explanation_hi": "'Shumi' का अनुवाद शौक होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u03_l03_ex2",
+        "type": "match",
+        "prompt_en": "Match the hobbies.",
+        "prompt_hi": "शौक का मिलान करें।",
+        "pairs_japanese": [
+          "しゅみ",
+          "おんがく",
+          "どくしょ"
+        ],
+        "pairs_english": [
+          "Hobby",
+          "Music",
+          "Reading"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u03_l03_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank for music: 趣味は ___ です。",
+        "question_hi": "संगीत के लिए रिक्त स्थान भरें: 趣味は ___ です。",
+        "correct_answer": "おんがく",
+        "correct_answer_romaji": "ongaku",
+        "hint_en": "ongaku",
+        "hint_hi": "ओनगाकु",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_shumi"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u03_l02_country_age"
+        ],
+        "min_xp_total": 70,
+        "requires_premium": true
+      }
+    }
+  ]
+}

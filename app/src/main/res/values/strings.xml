@@ -1,3 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Learn With Velmorth</string>
+    <string name="title_home">Home</string>
+    <string name="title_lessons">Lessons</string>
+    <string name="title_review">Review</string>
+    <string name="title_shop">Shop</string>
+    <string name="title_profile">Profile</string>
+
+    <!-- Welcome &amp; Onboarding -->
+    <string name="welcome_title">Learn With Velmorth</string>
+    <string name="welcome_subtitle">Your premium gateway to master world languages beautifully.</string>
+    <string name="feature_bite_sized">🎓 Bite-sized lessons</string>
+    <string name="feature_daily_streaks">🔥 Daily streaks</string>
+    <string name="feature_leaf_coins">🍃 Earn leaf coins</string>
+    <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+    <string name="choose_language">Choose Your Language</string>
+    <string name="choose_goal">Choose Your Daily Goal</string>
+    <string name="choose_native_language">Your Native Language</string>
+
+    <!-- Languages -->
+    <string name="lang_japanese">Japanese 🇯🇵</string>
+    <string name="lang_spanish">Spanish 🇪🇸</string>
+    <string name="lang_french">French 🇫🇷</string>
+    <string name="lang_german">German 🇩🇪</string>
+    <string name="lang_italian">Italian 🇮🇹</string>
+    <string name="lang_portuguese">Portuguese 🇧🇷</string>
+    <string name="lang_korean">Korean 🇰🇷</string>
+    <string name="lang_mandarin">Mandarin 🇨🇳</string>
+
+    <!-- Daily goals -->
+    <string name="goal_casual">Casual (5 min / day)</string>
+    <string name="goal_regular">Regular (10 min / day)</string>
+    <string name="goal_serious">Serious (15 min / day)</string>
+    <string name="goal_intense">Intense (20 min / day)</string>
+
+    <!-- Auth -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Log in locally to save your progress</string>
+    <string name="signup_title">Create Local Account</string>
+    <string name="signup_subtitle">Start your personalized premium journey</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="display_name">Display Name</string>
+    <string name="login_button">Log In</string>
+    <string name="signup_button">Create Account</string>
+    <string name="no_account">Don\'t have an account? Sign up</string>
+    <string name="have_account">Already have an account? Log in</string>
+    <string name="skip_auth">Continue as Guest</string>
+
+    <!-- Home -->
+    <string name="good_morning">Good morning, %s!</string>
+    <string name="good_afternoon">Good afternoon, %s!</string>
+    <string name="good_evening">Good evening, %s!</string>
+    <string name="start_learning">Start Learning</string>
+    <string name="continue_learning">Continue Learning</string>
+    <string name="today_xp_target">Today\'s XP Target</string>
+    <string name="daily_goal_completed">Daily goal completed! Keep going to build your streak!</string>
+    <string name="xp_remaining">Earn %d XP more to complete today\'s goal!</string>
+
+    <!-- Profile &amp; Edit -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="cancel">Cancel</string>
+    <string name="joined_at">Joined %s</string>
+    <string name="level_label">Level %d</string>
+    <string name="stat_total_xp">Total XP</string>
+    <string name="stat_day_streak">Day Streak</string>
+    <string name="stat_level">Level</string>
+    <string name="stat_lessons">Lessons Done</string>
+    <string name="achievements_title">Milestones &amp; Achievements</string>
+    <string name="course_path">Course Path</string>
+    <string name="language_label">Language: %s</string>
+    <string name="progress_label">%d of %d lessons completed</string>
+    <string name="learning_curriculum">Learning Curriculum</string>
+    <string name="upgrade_banner">Upgrade to Premium! 👑</string>
+    <string name="upgrade_tagline">Unlimited leaves, ad-free experience, &amp; AI feedback</string>
+
+    <!-- Shop -->
+    <string name="shop_title">Leaf Shop</string>
+    <string name="shop_subtitle">Spend your leaves to unlock boosters and perks</string>
+    <string name="leaves_count">%d Leaves</string>
+    <string name="leaves_count_short">%d 🍃</string>
+    <string name="xp_count_short">%d ⚡</string>
+    <string name="streak_count_short">%d 🔥</string>
+    <string name="buy">Buy 🍃</string>
+    <string name="owned">Owned</string>
+    <string name="cost_label">Cost: %d leaves</string>
+    <string name="purchase_success">Successfully purchased %s! 🍃</string>
+    <string name="purchase_insufficient">You don\'t have enough leaves! Keep learning to earn more.</string>
+    <string name="confirm_purchase">Confirm Purchase</string>
+    <string name="confirm_message">Buy %s for %d leaves?</string>
+    <string name="confirm_yes">Buy Now</string>
+    <string name="confirm_no">Cancel</string>
+
+    <!-- Shop items -->
+    <string name="item_streak_freeze">Streak Freeze</string>
+    <string name="item_streak_freeze_desc">Protects your streak for 24 hours if you miss a day.</string>
+    <string name="item_hint_pack">Hint Pack</string>
+    <string name="item_hint_pack_desc">Unlocks unlimited hints for your next 5 lessons.</string>
+    <string name="item_double_xp">Double XP Weekend</string>
+    <string name="item_double_xp_desc">Doubles all XP earned over the next 48 hours.</string>
+    <string name="item_theme_ocean">Theme: Ocean</string>
+    <string name="item_theme_ocean_desc">Unlocks the serene Ocean Blue premium theme for your dashboard.</string>
+
+    <!-- Lesson Player -->
+    <string name="exercise_counter">Exercise %d of %d</string>
+    <string name="check">Check</string>
+    <string name="continue_btn">Continue</string>
+    <string name="quit">✕ Quit</string>
+    <string name="read_aloud">🔊 Read Aloud</string>
+    <string name="answer_correct">Excellent! Correct! 🎉</string>
+    <string name="answer_incorrect">Incorrect answer ✕</string>
+    <string name="correct_answer">Correct answer: %s</string>
+    <string name="hint_label">Hint: %s</string>
+    <string name="enter_translation">Enter Translation</string>
+    <string name="fill_missing_word">Fill the missing word</string>
+    <string name="lesson_complete_toast">Lesson completed! +%d XP, +%d Leaves! 🍃</string>
+    <string name="review_complete_toast">Watering complete! Lesson refreshed. 🌱</string>
+    <string name="lesson_not_found">Lesson not found!</string>
+    <string name="locked_lesson_msg">Complete previous lessons to unlock this one.</string>
+    <string name="xp_leaves_premium">∞</string>
+
+    <!-- Review Garden -->
+    <string name="review_title">Review Garden</string>
+    <string name="review_subtitle">Water your skills to keep them evergreen</string>
+    <string name="review_empty_title">Your garden is watered!</string>
+    <string name="review_empty_desc">No items in your review queue right now. Great job keeping your knowledge fresh!</string>
+    <string name="review_queue_count">You have %d lessons that need watering.</string>
+    <string name="water_btn">Water 💧</string>
+    <string name="practice_refresher">Practice Refresher</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="daily_reminders">Daily Reminders</string>
+    <string name="daily_reminders_desc">Enable daily study notifications</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_theme_desc">Comfortable night learning (Premium only)</string>
+    <string name="daily_goal_label">Daily Goal XP Target</string>
+    <string name="text_size_label">Interface Text Size</string>
+    <string name="notifications">Enable Daily Notifications</string>
+    <string name="dark_mode">Dark Mode (Premium only)</string>
+    <string name="text_size">Text Size</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_reset">Log Out &amp; Reset State</string>
+    <string name="logout_success">Logged out and state cleared</string>
+    <string name="notification_pref_updated">Notification preference updated</string>
+    <string name="daily_target_updated">Daily target updated!</string>
+    <string name="text_size_updated">Text size configured to %s</string>
+    <string name="premium_required_dark">Premium Subscription required for Dark Theme</string>
+    <string name="back">Back</string>
+    <string name="status_free">Status: Free</string>
+    <string name="status_premium">Status: Premium 👑</string>
+
+    <!-- Premium -->
+    <string name="go_premium">Get Premium</string>
+    <string name="premium_title">Velmorth Premium</string>
+    <string name="premium_subtitle">Unlock the ultimate language learning experience</string>
+    <string name="premium_feature_1">✓  Unlimited leaves / hearts for practicing</string>
+    <string name="premium_feature_2">✓  Zero advertisements, focus pure</string>
+    <string name="premium_feature_3">✓  Advanced Speak Analyzer &amp; native audio speak</string>
+    <string name="premium_feature_4">✓  Premium dark mode layouts</string>
+    <string name="monthly_plan">Monthly Plan</string>
+    <string name="monthly_price">$4.99 / month</string>
+    <string name="monthly_billing">Billed monthly</string>
+    <string name="annual_plan">Annual Plan (Best Value)</string>
+    <string name="annual_price">$2.99 / month</string>
+    <string name="annual_billing">$35.99/yr — Save 40%</string>
+    <string name="free_trial">Start 7-Day Free Trial</string>
+    <string name="free_trial_price">Free for 7 Days</string>
+    <string name="free_trial_billing">Then $35.99/yr, cancel anytime</string>
+    <string name="select_plan">Select Your Plan</string>
+    <string name="activate_subscription">Activate Subscription</string>
+    <string name="no_commitment">No commitments. Cancel anytime.</string>
+    <string name="coming_soon">Payment SDK coming soon! 🚧</string>
+    <string name="premium_activated">Congratulations! You are now a Velmorth Premium member! 👑</string>
+    <string name="free_label">Free</string>
+    <string name="premium_label">Premium</string>
+
+    <!-- Mascot -->
+    <string name="mascot_name">Velmorth</string>
+    <string name="mascot_speech_new">\"Welcome back! Let\'s embark on today\'s language lesson together!\"</string>
+    <string name="mascot_speech_progress">\"Splendid progress! You\'re getting closer to absolute mastery!\"</string>
 </resources>

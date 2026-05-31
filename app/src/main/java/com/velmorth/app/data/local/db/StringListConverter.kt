@@ -1,13 +1,2 @@
-package com.velmorth.app.data.local.db
-
-import androidx.room.TypeConverter
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-
-class StringListConverter {
-    @TypeConverter
-    fun fromStringList(list: List<String>): String = Json.encodeToString(list)
-
-    @TypeConverter
-    fun toStringList(value: String): List<String> = Json.decodeFromString(value)
-}
+// StringListConverter.kt — DISABLED in V1
+// Room TypeConverter not needed. Room is not used in V1.

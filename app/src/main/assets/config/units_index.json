@@ -1,0 +1,87 @@
+{
+  "language": "ja",
+  "language_name": "Japanese",
+  "total_units": 10,
+  "units": [
+    {
+      "unit_id": "ja_u01_greetings",
+      "unit_title": "Greetings",
+      "total_lessons": 3,
+      "is_premium": false,
+      "icon": "🙇",
+      "file": "lessons/japanese/ja_u01_greetings.json"
+    },
+    {
+      "unit_id": "ja_u02_numbers",
+      "unit_title": "Numbers",
+      "total_lessons": 3,
+      "is_premium": false,
+      "icon": "🔢",
+      "file": "lessons/japanese/ja_u02_numbers.json"
+    },
+    {
+      "unit_id": "ja_u03_self_intro",
+      "unit_title": "Self Introduction",
+      "total_lessons": 3,
+      "is_premium": false,
+      "icon": "👤",
+      "file": "lessons/japanese/ja_u03_self_intro.json"
+    },
+    {
+      "unit_id": "ja_u04_objects",
+      "unit_title": "Common Objects",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "📦",
+      "file": "lessons/japanese/ja_u04_objects.json"
+    },
+    {
+      "unit_id": "ja_u05_time",
+      "unit_title": "Days & Time",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "🕐",
+      "file": "lessons/japanese/ja_u05_time.json"
+    },
+    {
+      "unit_id": "ja_u06_family",
+      "unit_title": "Family",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "👨👩👧",
+      "file": "lessons/japanese/ja_u06_family.json"
+    },
+    {
+      "unit_id": "ja_u07_food",
+      "unit_title": "Food",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "🍜",
+      "file": "lessons/japanese/ja_u07_food.json"
+    },
+    {
+      "unit_id": "ja_u08_colors",
+      "unit_title": "Colors",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "🎨",
+      "file": "lessons/japanese/ja_u08_colors.json"
+    },
+    {
+      "unit_id": "ja_u09_locations",
+      "unit_title": "Locations",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "📍",
+      "file": "lessons/japanese/ja_u09_locations.json"
+    },
+    {
+      "unit_id": "ja_u10_verbs",
+      "unit_title": "Basic Verbs",
+      "total_lessons": 3,
+      "is_premium": true,
+      "icon": "🏃",
+      "file": "lessons/japanese/ja_u10_verbs.json"
+    }
+  ]
+}

@@ -1,7 +1,3 @@
-package com.velmorth.app
-
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
-
-@HiltAndroidApp
-class VelmorthApplication : Application()
+// This file is intentionally empty.
+// VelmorthApp.kt is the canonical Application class used by this project.
+// The AndroidManifest.xml references android:name=".VelmorthApp"

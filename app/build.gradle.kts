@@ -1,124 +1,106 @@
 plugins {
-  alias(libs.plugins.android.application)
-  alias(libs.plugins.compose.compiler)
-  alias(libs.plugins.kotlin.serialization)
-  alias(libs.plugins.ksp)
-  alias(libs.plugins.hilt)
-  // TODO: Uncomment after creating Firebase project and adding google-services.json to app/
-  // alias(libs.plugins.google.services)
-  // alias(libs.plugins.firebase.crashlytics.plugin)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
+
 android {
     namespace = "com.velmorth.app"
     compileSdk = 36
+
     defaultConfig {
         applicationId = "com.velmorth.app"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     buildFeatures {
-      compose = true
-      aidl = false
-      buildConfig = false
-      shaders = false
+        compose = true
+        buildConfig = true
     }
-
     packaging {
-      resources {
-        excludes += "/META-INF/{AL2.0,LGPL2.1}"
-      }
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
-}
-
-ksp {
-    arg("room.schemaLocation", "$projectDir/schemas")
-    arg("room.incremental", "true")
 }
 
 dependencies {
-  val composeBom = platform(libs.androidx.compose.bom)
-  implementation(composeBom)
-  androidTestImplementation(composeBom)
+    // Core Android
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
 
-  // Core Android
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.lifecycle.runtime.ktx)
-  implementation(libs.androidx.activity.compose)
-  implementation(libs.androidx.core.splashscreen)
+    // Jetpack Compose
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.ui)
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material.icons.extended)
 
-  // Lifecycle
-  implementation(libs.androidx.lifecycle.runtime.compose)
-  implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Lifecycle standard components
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
 
-  // Compose
-  implementation(libs.androidx.compose.ui)
-  implementation(libs.androidx.compose.ui.tooling.preview)
-  implementation(libs.androidx.compose.material3)
-  implementation(libs.androidx.compose.foundation)
-  implementation(libs.androidx.compose.animation)
-  implementation(libs.androidx.compose.ui.text.google.fonts)
-  // Material Icons Extended — required for Icons.AutoMirrored.Filled.*, Icons.Default.*
-  implementation(libs.androidx.compose.material.icons.extended)
-  debugImplementation(libs.androidx.compose.ui.tooling)
-  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-  debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // Material Design 3
+    implementation("com.google.android.material:material:1.12.0")
 
-  // Navigation 3
-  implementation(libs.androidx.navigation3.ui)
-  implementation(libs.androidx.navigation3.runtime)
-  implementation(libs.androidx.lifecycle.viewmodel.navigation3)
+    // Navigation Component
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
 
-  // Room
-  implementation(libs.androidx.room.runtime)
-  implementation(libs.androidx.room.ktx)
-  ksp(libs.androidx.room.compiler)
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
-  // Hilt
-  implementation(libs.hilt.android)
-  ksp(libs.hilt.compiler)
-  implementation(libs.hilt.navigation.compose)
+    // UI Utilities (Fragment & Fragment-ktx for Activity/Fragment container layout)
+    implementation("androidx.fragment:fragment-ktx:1.8.5")
 
-  // Lottie
-  implementation(libs.lottie.compose)
+    // Gson (for JSON parsing)
+    implementation("com.google.code.gson:gson:2.11.0")
 
-  // DataStore
-  implementation(libs.androidx.datastore.preferences)
+    // Testing
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
-  // WorkManager
-  implementation(libs.androidx.work.runtime.ktx)
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-analytics")
 
-  // Coil (image loading)
-  implementation(libs.coil.compose)
+    // WorkManager (daily notifications)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
-  // Kotlinx Serialization JSON
-  implementation(libs.kotlinx.serialization.json)
-
-  // Tests
-  testImplementation(libs.junit)
-  testImplementation(libs.kotlinx.coroutines.test)
-  androidTestImplementation(libs.androidx.test.core)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.runner)
-  androidTestImplementation(libs.androidx.test.espresso.core)
-
-  // Firebase (Crashlytics-only in V1)
-  implementation(platform(libs.firebase.bom))
-  implementation(libs.firebase.crashlytics)
-  implementation(libs.firebase.analytics)
+    // AdMob
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
 }
-
-

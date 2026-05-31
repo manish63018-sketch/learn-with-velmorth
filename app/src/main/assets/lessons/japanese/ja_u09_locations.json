@@ -1,0 +1,269 @@
+{
+  "unit_id": "ja_u09_locations",
+  "unit_title": "Locations",
+  "lessons": [
+    {
+      "lesson_id": "ja_u09_l01_here_there",
+      "lesson_title": "Here and There",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Reference directions and relative locations.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_koko",
+          "kanji": "ここ",
+          "kana": "ここ",
+          "romaji": "koko",
+          "meaning_en": "here (near me)",
+          "meaning_hi": "यहाँ (मेरे पास)",
+          "part_of_speech": "pronoun",
+          "topic_tags": [
+            "locations"
+          ],
+          "frequency": 5,
+          "notes": "Used widely."
+        },
+        {
+          "vocab_id": "ja_vocab_soko",
+          "kanji": "そこ",
+          "kana": "そこ",
+          "romaji": "soko",
+          "meaning_en": "there (near you)",
+          "meaning_hi": "वहाँ (आपके पास)",
+          "part_of_speech": "pronoun",
+          "topic_tags": [
+            "locations"
+          ],
+          "frequency": 5,
+          "notes": "Mid-distance."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_koko_desu",
+        "title": "Stating locations",
+        "structure": "[Place] は ここ です",
+        "romaji_structure": "[Place] wa koko desu",
+        "short_explanation_en": "Asserts that the place is here. E.g. 'koko desu' means 'it is here'.",
+        "short_explanation_hi": "बताता है कि जगह यहाँ है। जैसे 'koko desu' का अर्थ है 'यह यहाँ है'।",
+        "focus_examples": [
+          "学校はここです。"
+        ],
+        "focus_examples_romaji": [
+          "Gakkou wa koko desu."
+        ],
+        "notes": "Simple description."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Keep vowels short and crisp in 'koko' and 'soko'."
+        ],
+        "tips_hi": [
+          "'koko' और 'soko' में स्वरों को छोटा और स्पष्ट रखें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u09_l01_ex_sentence_1",
+          "japanese": "ここはどこですか？そこです。",
+          "romaji": "Koko wa doko desu ka? Soko desu.",
+          "translation_en": "Where is here? It is there.",
+          "translation_hi": "यह कौन सी जगह है? वह वहाँ है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_koko",
+            "ja_vocab_soko"
+          ],
+          "context_note": "Locational dialogue."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u09_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "What does 'koko' mean?",
+        "question_hi": "'koko' का क्या अर्थ है?",
+        "options": [
+          "Here",
+          "There",
+          "Where"
+        ],
+        "options_romaji": [
+          "Here",
+          "There",
+          "Where"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "Koko is here.",
+        "explanation_hi": "Koko का अर्थ यहाँ है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u09_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match the directions.",
+        "prompt_hi": "दिशाओं का मिलान करें।",
+        "pairs_japanese": [
+          "ここ",
+          "そこ"
+        ],
+        "pairs_english": [
+          "Here",
+          "There"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u09_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in for 'It is there': ___ です。",
+        "question_hi": "रिक्त स्थान भरें: ___ です。",
+        "correct_answer": "そこ",
+        "correct_answer_romaji": "soko",
+        "hint_en": "soko",
+        "hint_hi": "सोको",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_koko"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u08_l02_colors_with_objects"
+        ],
+        "min_xp_total": 180,
+        "requires_premium": true
+      }
+    },
+    {
+      "lesson_id": "ja_u09_l02_places_in_town",
+      "lesson_title": "Places in Town",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Identify common buildings and spots in town.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_gakkou",
+          "kanji": "学校",
+          "kana": "がっこう",
+          "romaji": "gakkou",
+          "meaning_en": "school",
+          "meaning_hi": "स्कूल / विद्यालय",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "locations"
+          ],
+          "frequency": 5,
+          "notes": "Literally learn-building."
+        },
+        {
+          "vocab_id": "ja_vocab_eki",
+          "kanji": "駅",
+          "kana": "えき",
+          "romaji": "eki",
+          "meaning_en": "station",
+          "meaning_hi": "स्टेशन (ट्रेन)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "locations"
+          ],
+          "frequency": 5,
+          "notes": "Common in transport."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_place_doko",
+        "title": "Asking where a place is",
+        "structure": "[Place] は どこ ですか",
+        "romaji_structure": "[Place] wa doko desu ka",
+        "short_explanation_en": "This compiles to 'Where is [Place]?'. 'doko' means where.",
+        "short_explanation_hi": "इसका अर्थ है '[Place] कहाँ है?'। 'doko' का अर्थ कहाँ है।",
+        "focus_examples": [
+          "駅はどこですか？"
+        ],
+        "focus_examples_romaji": [
+          "Eki wa doko desu ka?"
+        ],
+        "notes": "Very useful for travelers."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce double consonant 'kk' in 'gakkou' with a tiny beat pause."
+        ],
+        "tips_hi": [
+          "'gakkou' में दोहरे व्यंजन 'kk' का उच्चारण एक छोटे से अंतराल के साथ करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u09_l02_ex_sentence_1",
+          "japanese": "学校はどこですか？ここです。",
+          "romaji": "Gakkou wa doko desu ka? Koko desu.",
+          "translation_en": "Where is the school? It is here.",
+          "translation_hi": "स्कूल कहाँ है? यहाँ है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_gakkou"
+          ],
+          "context_note": "Asking for school."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u09_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "What does 'eki' mean?",
+        "question_hi": "'eki' का क्या अर्थ है?",
+        "options": [
+          "Station",
+          "School",
+          "Home"
+        ],
+        "options_romaji": [
+          "Station",
+          "School",
+          "Home"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "Eki is station.",
+        "explanation_hi": "Eki का अर्थ स्टेशन होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u09_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the places.",
+        "prompt_hi": "स्थानों का मिलान करें।",
+        "pairs_japanese": [
+          "学校",
+          "駅"
+        ],
+        "pairs_english": [
+          "School",
+          "Station"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u09_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the question word: えきは ___ ですか？ (Where is the station?)",
+        "question_hi": "प्रश्नवाचक शब्द भरें: えきは ___ ですか？ (स्टेशन कहाँ है?)",
+        "correct_answer": "どこ",
+        "correct_answer_romaji": "doko",
+        "hint_en": "doko",
+        "hint_hi": "दोको",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_eki"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u09_l01_here_there"
+        ],
+        "min_xp_total": 190,
+        "requires_premium": true
+      }
+    }
+  ]
+}

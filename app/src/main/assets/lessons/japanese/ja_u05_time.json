@@ -1,0 +1,305 @@
+{
+  "unit_id": "ja_u05_time",
+  "unit_title": "Days and Time",
+  "lessons": [
+    {
+      "lesson_id": "ja_u05_l01_days_week",
+      "lesson_title": "Days of the Week",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "State standard days of the week in Japanese.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_kyou",
+          "kanji": "今日",
+          "kana": "きょう",
+          "romaji": "kyou",
+          "meaning_en": "today",
+          "meaning_hi": "आज",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "time"
+          ],
+          "frequency": 5,
+          "notes": "Irregular reading of kanji now-day."
+        },
+        {
+          "vocab_id": "ja_vocab_nichiyoubi",
+          "kanji": "日曜日",
+          "kana": "にちようび",
+          "romaji": "nichiyoubi",
+          "meaning_en": "Sunday",
+          "meaning_hi": "रविवार",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "days"
+          ],
+          "frequency": 5,
+          "notes": "Sun-day."
+        },
+        {
+          "vocab_id": "ja_vocab_getsuyoubi",
+          "kanji": "月曜日",
+          "kana": "げつようび",
+          "romaji": "getsuyoubi",
+          "meaning_en": "Monday",
+          "meaning_hi": "सोमवार",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "days"
+          ],
+          "frequency": 5,
+          "notes": "Moon-day."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_today_is",
+        "title": "Stating the day",
+        "structure": "今日は [Day] です",
+        "romaji_structure": "Kyou wa [Day] desu",
+        "short_explanation_en": "This pattern asserts what day today is.",
+        "short_explanation_hi": "यह संरचना बताती है कि आज कौन सा दिन है।",
+        "focus_examples": [
+          "今日は日曜日です。"
+        ],
+        "focus_examples_romaji": [
+          "Kyou wa nichiyoubi desu."
+        ],
+        "notes": "Pronounced 'kyou wa'."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Ensure 'kyou' is a single syllable with a long 'o' sound."
+        ],
+        "tips_hi": [
+          "सुनिश्चित करें कि 'kyou' का उच्चारण लंबी 'o' ध्वनि के साथ एक ही शब्दांश में हो।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u05_l01_ex_sentence_1",
+          "japanese": "今日は月曜日です。",
+          "romaji": "Kyou wa getsuyoubi desu.",
+          "translation_en": "Today is Monday.",
+          "translation_hi": "आज सोमवार है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_kyou",
+            "ja_vocab_getsuyoubi"
+          ],
+          "context_note": "Stating Monday."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u05_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "What does 'getsuyoubi' mean?",
+        "question_hi": "'getsuyoubi' का क्या अर्थ है?",
+        "options": [
+          "Monday",
+          "Sunday",
+          "Today"
+        ],
+        "options_romaji": [
+          "Monday",
+          "Sunday",
+          "Today"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "Getsuyoubi is Monday.",
+        "explanation_hi": "Getsuyoubi का अर्थ सोमवार होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u05_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match the days.",
+        "prompt_hi": "दिनों का मिलान करें।",
+        "pairs_japanese": [
+          "今日",
+          "日曜日",
+          "月曜日"
+        ],
+        "pairs_english": [
+          "Today",
+          "Sunday",
+          "Monday"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u05_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank for Sunday: 今日は ___ です。",
+        "question_hi": "रविवार के लिए रिक्त स्थान भरें: 今日は ___ です。",
+        "correct_answer": "にちようび",
+        "correct_answer_romaji": "nichiyoubi",
+        "hint_en": "nichiyoubi",
+        "hint_hi": "निचियोउबी",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_kyou"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u04_l02_home_objects"
+        ],
+        "min_xp_total": 100,
+        "requires_premium": true
+      }
+    },
+    {
+      "lesson_id": "ja_u05_l02_clock_basic",
+      "lesson_title": "Clock Basics",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Tell the hour of the day.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_ima",
+          "kanji": "今",
+          "kana": "いま",
+          "romaji": "ima",
+          "meaning_en": "now",
+          "meaning_hi": "अब / अभी",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "time"
+          ],
+          "frequency": 5,
+          "notes": "Standard word."
+        },
+        {
+          "vocab_id": "ja_vocab_ji",
+          "kanji": "時",
+          "kana": "じ",
+          "romaji": "ji",
+          "meaning_en": "o'clock (hour suffix)",
+          "meaning_hi": "बजे (घंटे का प्रत्यय)",
+          "part_of_speech": "suffix",
+          "topic_tags": [
+            "time"
+          ],
+          "frequency": 5,
+          "notes": "Attach to numbers."
+        },
+        {
+          "vocab_id": "ja_vocab_nanji",
+          "kanji": "何時",
+          "kana": "なんじ",
+          "romaji": "nanji",
+          "meaning_en": "what time",
+          "meaning_hi": "क्या समय / कितने बजे",
+          "part_of_speech": "phrase",
+          "topic_tags": [
+            "time"
+          ],
+          "frequency": 5,
+          "notes": "Question word."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_time_ji",
+        "title": "Stating Hours",
+        "structure": "[Number] ＋ 時 です",
+        "romaji_structure": "[Number] + ji desu",
+        "short_explanation_en": "To tell time, add 'ji' to a number. Note irregulars: 4 is yoji (not shiji), 9 is kuji (not kyuuji).",
+        "short_explanation_hi": "समय बताने के लिए संख्या में 'ji' जोड़ें। ध्यान दें: ४ yoji (shiji नहीं) है, ९ kuji (kyuuji नहीं) है।",
+        "focus_examples": [
+          "一時です。",
+          "四時です。"
+        ],
+        "focus_examples_romaji": [
+          "Ichi-ji desu.",
+          "Yo-ji desu."
+        ],
+        "notes": "Very simple pattern."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce 'ji' clearly with a 'g' like 'jeep'."
+        ],
+        "tips_hi": [
+          "'ji' का उच्चारण स्पष्ट रूप से 'जी' की तरह करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u05_l02_ex_sentence_1",
+          "japanese": "今何時ですか？一時です。",
+          "romaji": "Ima nanji desu ka? Ichiji desu.",
+          "translation_en": "What time is it now? It is 1 o'clock.",
+          "translation_hi": "अभी क्या समय हुआ है? एक बजा है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_ima",
+            "ja_vocab_ji",
+            "ja_vocab_nanji"
+          ],
+          "context_note": "A simple time dialog."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u05_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "What is the irregular reading for 4 o'clock?",
+        "question_hi": "४ बजे के लिए अनियमित उच्चारण क्या है?",
+        "options": [
+          "よじ",
+          "しじ",
+          "よんじ"
+        ],
+        "options_romaji": [
+          "yoji",
+          "shiji",
+          "yonji"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "4 o'clock is yoji.",
+        "explanation_hi": "४ बजे को yoji कहा जाता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u05_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the words.",
+        "prompt_hi": "शब्दों का मिलान करें।",
+        "pairs_japanese": [
+          "今",
+          "時",
+          "何時"
+        ],
+        "pairs_english": [
+          "Now",
+          "O'clock suffix",
+          "What time"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u05_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in for 'It is 3 o'clock': 三 ___ です。",
+        "question_hi": "रिक्त स्थान भरें: 三 ___ です。",
+        "correct_answer": "時",
+        "correct_answer_romaji": "ji",
+        "hint_en": "ji kanji",
+        "hint_hi": "जी कांजी",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_nanji"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u05_l01_days_week"
+        ],
+        "min_xp_total": 110,
+        "requires_premium": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+{
+  "unit_id": "ja_u02_numbers",
+  "unit_title": "Numbers",
+  "lessons": [
+    {
+      "lesson_id": "ja_u02_l01_1_to_10",
+      "lesson_title": "Numbers 1 to 10",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Count from 1 to 10 in Japanese.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_ichi",
+          "kanji": "一",
+          "kana": "いち",
+          "romaji": "ichi",
+          "meaning_en": "one (1)",
+          "meaning_hi": "एक (1)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Kanji is a simple horizontal stroke."
+        },
+        {
+          "vocab_id": "ja_vocab_ni",
+          "kanji": "二",
+          "kana": "に",
+          "romaji": "ni",
+          "meaning_en": "two (2)",
+          "meaning_hi": "दो (2)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Kanji is two strokes."
+        },
+        {
+          "vocab_id": "ja_vocab_san",
+          "kanji": "三",
+          "kana": "さん",
+          "romaji": "san",
+          "meaning_en": "three (3)",
+          "meaning_hi": "तीन (3)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Kanji is three strokes."
+        },
+        {
+          "vocab_id": "ja_vocab_go",
+          "kanji": "五",
+          "kana": "ご",
+          "romaji": "go",
+          "meaning_en": "five (5)",
+          "meaning_hi": "पाँच (5)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Kanji represents five."
+        },
+        {
+          "vocab_id": "ja_vocab_juu",
+          "kanji": "十",
+          "kana": "じゅう",
+          "romaji": "juu",
+          "meaning_en": "ten (10)",
+          "meaning_hi": "दस (10)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Kanji looks like a cross."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_counting_basics",
+        "title": "Counting in order",
+        "structure": "いち, に, さん, ...",
+        "romaji_structure": "ichi, ni, san, ...",
+        "short_explanation_en": "Japanese numbers are sequential. Some numbers (like 4, 7, 9) have dual readings.",
+        "short_explanation_hi": "जापानी संख्याएं क्रमिक होती हैं। कुछ संख्याओं (जैसे 4, 7, 9) के दोहरे उच्चारण होते हैं।",
+        "focus_examples": [
+          "一、二、三、四、五。"
+        ],
+        "focus_examples_romaji": [
+          "Ichi, ni, san, yon, go."
+        ],
+        "notes": "For 4, 'yon' is more common than 'shi'."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Ensure 'ichi' sounds like 'ee-chee', not 'eye-chee'."
+        ],
+        "tips_hi": [
+          "सुनिश्चित करें कि 'ichi' का उच्चारण 'इची' हो, 'आई-ची' नहीं।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u02_l01_ex_sentence_1",
+          "japanese": "一、二、三。",
+          "romaji": "Ichi, ni, san.",
+          "translation_en": "One, two, three.",
+          "translation_hi": "एक, दो, तीन।",
+          "highlight_vocab_ids": [
+            "ja_vocab_ichi",
+            "ja_vocab_ni",
+            "ja_vocab_san"
+          ],
+          "context_note": "Simple sequential counting."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u02_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "What is 'five (5)' in Japanese?",
+        "question_hi": "जापानी में 'पाँच (5)' क्या है?",
+        "options": [
+          "ご",
+          "さん",
+          "いち"
+        ],
+        "options_romaji": [
+          "go",
+          "san",
+          "ichi"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Go' represents five.",
+        "explanation_hi": "'Go' का अर्थ पाँच है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u02_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match the numbers.",
+        "prompt_hi": "संख्याओं का मिलान करें।",
+        "pairs_japanese": [
+          "一",
+          "二",
+          "三"
+        ],
+        "pairs_english": [
+          "One (1)",
+          "Two (2)",
+          "Three (3)"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u02_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank: 一, 二, 三, 四, ___ (Write hiragana for 5)",
+        "question_hi": "रिक्त स्थान भरें: 一, 二, 三, 四, ___ (५ के लिए हीरागाना लिखें)",
+        "correct_answer": "ご",
+        "correct_answer_romaji": "go",
+        "hint_en": "Go",
+        "hint_hi": "गो",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_ichi",
+        "ja_vocab_go"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u01_l03_goodbye"
+        ],
+        "min_xp_total": 30,
+        "requires_premium": false
+      }
+    },
+    {
+      "lesson_id": "ja_u02_l02_11_to_99",
+      "lesson_title": "Numbers 11 to 99",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Combine numbers to count up to 99.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_juu_ichi",
+          "kanji": "十一",
+          "kana": "じゅういち",
+          "romaji": "juu ichi",
+          "meaning_en": "eleven (11)",
+          "meaning_hi": "ग्यारह (11)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Ten (十) + One (一)."
+        },
+        {
+          "vocab_id": "ja_vocab_ni_juu",
+          "kanji": "二十",
+          "kana": "にじゅう",
+          "romaji": "ni juu",
+          "meaning_en": "twenty (20)",
+          "meaning_hi": "बीस (20)",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "numbers"
+          ],
+          "frequency": 5,
+          "notes": "Two (二) + Ten (十)."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_double_digit_numbers",
+        "title": "Double-digit system",
+        "structure": "[Tens Digit] ＋ 十 ＋ [Ones Digit]",
+        "romaji_structure": "[Tens Digit] + juu + [Ones Digit]",
+        "short_explanation_en": "For 11-19, say 'ten' plus the digit. For multiples of ten, say the multiplier plus 'ten'. Combine for 21-99.",
+        "short_explanation_hi": "11-19 के लिए, 'दस' और उसके बाद की संख्या कहें। दस के गुणकों के लिए, गुणक और 'दस' कहें। 21-99 के लिए दोनों को मिलाएं।",
+        "focus_examples": [
+          "二十五"
+        ],
+        "focus_examples_romaji": [
+          "ni juu go (25)"
+        ],
+        "notes": "Example: 25 is ni-juu-go (2 * 10 + 5)."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce 'juu' with a long vowel sound 'oo'."
+        ],
+        "tips_hi": [
+          "'juu' का उच्चारण लंबी स्वर ध्वनि 'oo' के साथ करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u02_l02_ex_sentence_1",
+          "japanese": "私は二十五歳です。",
+          "romaji": "Watashi wa nijuugosai desu.",
+          "translation_en": "I am 25 years old.",
+          "translation_hi": "मैं २५ वर्ष का हूँ।",
+          "highlight_vocab_ids": [
+            "ja_vocab_ni_juu"
+          ],
+          "context_note": "Telling your age."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u02_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "How do you say 'twenty-one (21)'?",
+        "question_hi": "'इक्कीस (21)' कैसे कहेंगे?",
+        "options": [
+          "にじゅういち",
+          "じゅうにいち",
+          "いちじゅうに"
+        ],
+        "options_romaji": [
+          "nijuuichi",
+          "juuniichi",
+          "ichijuuni"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "Ni-juu-ichi = 2-10-1 = 21.",
+        "explanation_hi": "Ni-juu-ichi = २-१०-१ = २१।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u02_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the numbers.",
+        "prompt_hi": "संख्याओं का मिलान करें।",
+        "pairs_japanese": [
+          "十一",
+          "二十"
+        ],
+        "pairs_english": [
+          "Eleven (11)",
+          "Twenty (20)"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u02_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Write 11 in Hiragana (juu ichi):",
+        "question_hi": "हीरागाना में ११ लिखें (juu ichi):",
+        "correct_answer": "じゅういち",
+        "correct_answer_romaji": "juuichi",
+        "hint_en": "ten + one",
+        "hint_hi": "दस + एक",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_ni_juu"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u02_l01_1_to_10"
+        ],
+        "min_xp_total": 40,
+        "requires_premium": true
+      }
+    }
+  ]
+}

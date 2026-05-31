@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand colors -->
+    <color name="ic_launcher_background">#052B18</color>
+    <color name="primary_dark_green">#1B4332</color>
+    <color name="primary_green">#2D6A4F</color>
+    <color name="accent_green">#52B788</color>
+    <color name="light_green">#B7E4C7</color>
+    <color name="background_cream">#F8F5EE</color>
+    <color name="surface_white">#FFFFFF</color>
+    <color name="gold_xp">#F4A261</color>
+    <color name="streak_fire">#E76F51</color>
+    <color name="text_dark">#1C1C1E</color>
+    <color name="text_muted">#6B7280</color>
+
+    <!-- Theme standard overrides if needed -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

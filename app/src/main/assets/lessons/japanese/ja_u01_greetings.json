@@ -1,0 +1,458 @@
+{
+  "unit_id": "ja_u01_greetings",
+  "unit_title": "Greetings",
+  "lessons": [
+    {
+      "lesson_id": "ja_u01_l01_hello_basic",
+      "lesson_title": "Basic Hello & Goodbye",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Learn to say hello and goodbye in Japanese for morning, daytime, and evening.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_u01_l01_ohayou_gozaimasu",
+          "kanji": "おはようございます",
+          "kana": "おはようございます",
+          "romaji": "ohayou gozaimasu",
+          "meaning_en": "good morning (polite)",
+          "meaning_hi": "शुभ प्रभात (औपचारिक)",
+          "part_of_speech": "expression",
+          "frequency": 5,
+          "notes": "Use in the morning with teachers, coworkers, or strangers. Polite version of 'ohayou'. [Japanese Professor](http://www.japaneseprofessor.com/lessons/beginning/greetings-and-other-expressions/)"
+        },
+        {
+          "vocab_id": "ja_u01_l01_konnichiwa",
+          "kanji": "こんにちは",
+          "kana": "こんにちは",
+          "romaji": "konnichiwa",
+          "meaning_en": "hello / good afternoon",
+          "meaning_hi": "नमस्ते / शुभ दोपहर",
+          "part_of_speech": "expression",
+          "frequency": 5,
+          "notes": "General daytime greeting used from late morning through afternoon. Works in most neutral situations. [Coto Academy](https://cotoacademy.com/ja/blog/learn-japanese-blog-konnichiwa-english-ohayou-konbanwa/)"
+        },
+        {
+          "vocab_id": "ja_u01_l01_konbanwa",
+          "kanji": "こんばんは",
+          "kana": "こんばんは",
+          "romaji": "konbanwa",
+          "meaning_en": "good evening",
+          "meaning_hi": "शुभ संध्या",
+          "part_of_speech": "expression",
+          "frequency": 4,
+          "notes": "Use after it becomes dark outside when you meet someone in the evening. [Coto Academy](https://cotoacademy.com/learn-japanese-blog-konnichiwa-english-ohayou-konbanwa/)"
+        },
+        {
+          "vocab_id": "ja_u01_l01_sayounara",
+          "kanji": "さようなら",
+          "kana": "さようなら",
+          "romaji": "sayounara",
+          "meaning_en": "goodbye",
+          "meaning_hi": "अलविदा",
+          "part_of_speech": "expression",
+          "frequency": 4,
+          "notes": "Use for more formal or long-term goodbyes, not usually for casual 'see you soon'. [Voyapon](https://voyapon.com/daily-greetings-japanese/)"
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_u01_l01_greeting_usage_times",
+        "title": "Using greetings by time of day",
+        "structure": "おはようございます / こんにちは / こんばんは",
+        "romaji_structure": "ohayou gozaimasu / konnichiwa / konbanwa",
+        "short_explanation_en": "Use 'ohayou gozaimasu' in the morning, 'konnichiwa' during the day, and 'konbanwa' in the evening when it is dark.",
+        "short_explanation_hi": "'Ohayou gozaimasu' सुबह में, 'konnichiwa' दिन में और 'konbanwa' शाम में (अंधेरा होने के बाद) इस्तेमाल करें।",
+        "focus_examples": [
+          "朝は「おはようございます」。",
+          "昼は「こんにちは」。",
+          "夜は「こんばんは」。"
+        ],
+        "focus_examples_romaji": [
+          "Asa wa 'ohayou gozaimasu'.",
+          "Hiru wa 'konnichiwa'.",
+          "Yoru wa 'konbanwa'."
+        ],
+        "notes": "There is no single word for 'hello' in Japanese; greetings change with the time of day. [Wikiversity](https://en.wikiversity.org/wiki/Japanese_Language/Basic_Greetings)"
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Japanese has five clear vowels: a (ah), i (ee), u (oo), e (eh), o (oh). Keep them short and pure.",
+          "Each kana is one beat. Say words like 'ko-n-ni-chi-wa' with even rhythm, without strong stress on any one syllable.",
+          "Rs are lightly flapped, between R and L. In 'arigatou', tap the tongue quickly for the 'r' sound."
+        ],
+        "tips_hi": [
+          "जापानी में पाँच साफ स्वर होते हैं: a (आ), i (ई), u (उ/ऊ), e (ए), o (ओ)। इन्हें छोटा और साफ बोलें।",
+          "हर kana एक समान बीट की तरह है। 'ko-n-ni-chi-wa' को बराबर लय में बोलें, किसी एक syllable पर ज़्यादा ज़ोर न दें।",
+          "जापानी 'r' हल्का फ्लैप होता है, R और L के बीच। 'arigatou' में जीभ को हल्का सा टैप करें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u01_l01_ex_sentence_1",
+          "japanese": "おはようございます。",
+          "romaji": "Ohayou gozaimasu.",
+          "translation_en": "Good morning.",
+          "translation_hi": "शुभ प्रभात।",
+          "highlight_vocab_ids": [
+            "ja_u01_l01_ohayou_gozaimasu"
+          ],
+          "context_note": "Use when greeting someone politely in the morning, for example at school or work. [Japan Society](https://aboutjapan.japansociety.org/content.cfm?page=%2Fcontent.cfm%2Fjapanese-lesson-1-introductions&rfcid=76)"
+        },
+        {
+          "example_id": "ja_u01_l01_ex_sentence_2",
+          "japanese": "こんにちは。はじめまして。",
+          "romaji": "Konnichiwa. Hajimemashite.",
+          "translation_en": "Hello. Nice to meet you.",
+          "translation_hi": "नमस्ते। आपसे मिलकर खुशी हुई।",
+          "highlight_vocab_ids": [
+            "ja_u01_l01_konnichiwa"
+          ],
+          "context_note": "Use when you meet someone for the first time during the day. [Voyapon](https://voyapon.com/daily-greetings-japanese/)"
+        },
+        {
+          "example_id": "ja_u01_l01_ex_sentence_3",
+          "japanese": "それでは、さようなら。",
+          "romaji": "Sore dewa, sayounara.",
+          "translation_en": "Well then, goodbye.",
+          "translation_hi": "तो फिर, अलविदा।",
+          "highlight_vocab_ids": [
+            "ja_u01_l01_sayounara"
+          ],
+          "context_note": "Use when you are parting for a longer time or in a formal situation. [Nihongo PH](https://www.nihongoph.com/2017/12/basic-greetings.html)"
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u01_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "Which greeting do you use in Japanese for a polite 'Good morning'?",
+        "question_hi": "जापानी में शिष्ट 'Good morning' कहने के लिए कौन-सा अभिवादन इस्तेमाल करते हैं?",
+        "options": [
+          "おはようございます",
+          "こんにちは",
+          "こんばんは",
+          "さようなら"
+        ],
+        "options_romaji": [
+          "ohayou gozaimasu",
+          "konnichiwa",
+          "konbanwa",
+          "sayounara"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Ohayou gozaimasu' is the polite way to say 'Good morning' in Japanese.",
+        "explanation_hi": "'Ohayou gozaimasu' जापानी में शिष्ट तरीके से 'Good morning' कहने का तरीका है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u01_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match each Japanese greeting to its English meaning.",
+        "prompt_hi": "हर जापानी अभिवादन को सही अंग्रेजी अर्थ से मिलाएँ।",
+        "pairs_japanese": [
+          "おはようございます",
+          "こんにちは",
+          "こんばんは",
+          "さようなら"
+        ],
+        "pairs_english": [
+          "Good morning (polite)",
+          "Hello / Good afternoon",
+          "Good evening",
+          "Goodbye"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u01_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank with the best greeting: ______ 、先生。",
+        "question_hi": "रिक्त स्थान में सही अभिवादन भरें: ______ 、先生。",
+        "correct_answer": "こんにちは",
+        "correct_answer_romaji": "Konnichiwa",
+        "hint_en": "Use this greeting when you meet your teacher in the afternoon.",
+        "hint_hi": "जब आप अपने शिक्षक से दोपहर/दिन में मिलते हैं तो यह अभिवादन इस्तेमाल करें।",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_u01_l01_ohayou_gozaimasu",
+        "ja_u01_l01_konnichiwa",
+        "ja_u01_l01_konbanwa",
+        "ja_u01_l01_sayounara"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [],
+        "min_xp_total": 0,
+        "requires_premium": false
+      }
+    },
+    {
+      "lesson_id": "ja_u01_l02_polite_greetings",
+      "lesson_title": "Polite Greetings",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Use polite expressions like Thank You and Excuse Me.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_arigatou_gozaimasu",
+          "kanji": "ありがとうございます",
+          "kana": "ありがとうございます",
+          "romaji": "arigatou gozaimasu",
+          "meaning_en": "thank you very much (polite)",
+          "meaning_hi": "बहुत बहुत धन्यवाद (औपचारिक)",
+          "part_of_speech": "expression",
+          "topic_tags": [
+            "greetings",
+            "polite"
+          ],
+          "frequency": 5,
+          "notes": "Always use with superiors and strangers."
+        },
+        {
+          "vocab_id": "ja_vocab_sumimasen",
+          "kanji": "すみません",
+          "kana": "すみません",
+          "romaji": "sumimasen",
+          "meaning_en": "excuse me / sorry",
+          "meaning_hi": "माफ कीजिये / सुनिए",
+          "part_of_speech": "expression",
+          "topic_tags": [
+            "polite"
+          ],
+          "frequency": 5,
+          "notes": "Extremely versatile: can mean excuse me, sorry, or thank you."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_polite_ending",
+        "title": "Polite endings (-gozaimasu)",
+        "structure": "[Base] ＋ ございます",
+        "romaji_structure": "[Base] + gozaimasu",
+        "short_explanation_en": "Adding 'gozaimasu' makes greetings and expressions polite rather than casual.",
+        "short_explanation_hi": "'gozaimasu' जोड़ने से अभिवादन और भाव औपचारिक बन जाते हैं।",
+        "focus_examples": [
+          "ありがとうございます。",
+          "おはようございます。"
+        ],
+        "focus_examples_romaji": [
+          "Arigatou gozaimasu.",
+          "Ohayou gozaimasu."
+        ],
+        "notes": "Avoid using short forms with teachers or bosses."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce 'su' at the end of 'gozaimasu' softly, almost like 's'."
+        ],
+        "tips_hi": [
+          "'gozaimasu' के अंत में 'su' का उच्चारण बहुत हल्के से करें, लगभग 's' की तरह।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u01_l02_ex_sentence_1",
+          "japanese": "すみません、ありがとうございます。",
+          "romaji": "Sumimasen, arigatou gozaimasu.",
+          "translation_en": "Excuse me, thank you very much.",
+          "translation_hi": "माफ कीजिये, बहुत-बहुत धन्यवाद।",
+          "highlight_vocab_ids": [
+            "ja_vocab_sumimasen",
+            "ja_vocab_arigatou_gozaimasu"
+          ],
+          "context_note": "A very natural polite phrase when someone helps you."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u01_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "What is the polite way to say 'Excuse me' or 'Sorry'?",
+        "question_hi": "'Excuse me' या 'Sorry' कहने का औपचारिक तरीका क्या है?",
+        "options": [
+          "すみません",
+          "ありがとう",
+          "さようなら"
+        ],
+        "options_romaji": [
+          "sumimasen",
+          "arigatou",
+          "sayounara"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Sumimasen' is used for excuse me or sorry.",
+        "explanation_hi": "'Sumimasen' का प्रयोग माफ कीजिये या सुनिए के लिए किया जाता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u01_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the words.",
+        "prompt_hi": "शब्दों का मिलान करें।",
+        "pairs_japanese": [
+          "ありがとうございます",
+          "すみません"
+        ],
+        "pairs_english": [
+          "Thank you very much (polite)",
+          "Excuse me / Sorry"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u01_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in: 美味しい ___ です (It is delicious - write copula 'desu')",
+        "question_hi": "भरें: 美味しい ___ です (यह स्वादिष्ट है - 'desu' लिखें)",
+        "correct_answer": "です",
+        "correct_answer_romaji": "desu",
+        "hint_en": "desu",
+        "hint_hi": "देसु",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_sumimasen"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u01_l01_hello_basic"
+        ],
+        "min_xp_total": 10,
+        "requires_premium": false
+      }
+    },
+    {
+      "lesson_id": "ja_u01_l03_goodbye",
+      "lesson_title": "Basic Goodbye",
+      "difficulty": "beginner-1",
+      "is_premium": false,
+      "xp_reward": 10,
+      "lesson_goal": "Say goodbye in formal and casual contexts.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_oyasuminasai",
+          "kanji": "おやすみなさい",
+          "kana": "おやすみなさい",
+          "romaji": "oyasuminasai",
+          "meaning_en": "good night (polite)",
+          "meaning_hi": "शुभ रात्रि (औपचारिक)",
+          "part_of_speech": "expression",
+          "topic_tags": [
+            "greetings"
+          ],
+          "frequency": 4,
+          "notes": "Use before going to bed."
+        },
+        {
+          "vocab_id": "ja_vocab_matane",
+          "kanji": "またね",
+          "kana": "またね",
+          "romaji": "matane",
+          "meaning_en": "see you later (casual)",
+          "meaning_hi": "फिर मिलेंगे (अनौपचारिक)",
+          "part_of_speech": "expression",
+          "topic_tags": [
+            "greetings",
+            "casual"
+          ],
+          "frequency": 5,
+          "notes": "Use with friends and classmates."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_dewa_mata",
+        "title": "Dewa mata (Farewell)",
+        "structure": "では、また",
+        "romaji_structure": "dewa, mata",
+        "short_explanation_en": "Literally 'Then, again'. It is the standard way of saying see you later.",
+        "short_explanation_hi": "शाब्दिक अर्थ 'तो, फिर'। यह अलविदा कहने का मानक तरीका है।",
+        "focus_examples": [
+          "では、またね。"
+        ],
+        "focus_examples_romaji": [
+          "Dewa, matane."
+        ],
+        "notes": "Can be shortened to 'ja' or 'dewa' casually."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "The 'o' in 'oyasumi' is short."
+        ],
+        "tips_hi": [
+          "'oyasumi' में 'o' का उच्चारण छोटा होता है।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u01_l03_ex_sentence_1",
+          "japanese": "では、またね！おやすみなさい。",
+          "romaji": "Dewa, matane! Oyasuminasai.",
+          "translation_en": "Well, see you! Good night.",
+          "translation_hi": "तो फिर मिलते हैं! शुभ रात्रि।",
+          "highlight_vocab_ids": [
+            "ja_vocab_matane",
+            "ja_vocab_oyasuminasai"
+          ],
+          "context_note": "A friendly departure at night."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u01_l03_ex1",
+        "type": "multiple_choice",
+        "question_en": "How do you say 'Good night' politely?",
+        "question_hi": "औपचारिक तरीके से 'शुभ रात्रि' कैसे कहेंगे?",
+        "options": [
+          "おやすみなさい",
+          "こんにちは",
+          "すみません"
+        ],
+        "options_romaji": [
+          "oyasuminasai",
+          "konnichiwa",
+          "sumimasen"
+        ],
+        "correct_option_index": 0,
+        "explanation_en": "'Oyasuminasai' means Good night.",
+        "explanation_hi": "'Oyasuminasai' का अर्थ शुभ रात्रि होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u01_l03_ex2",
+        "type": "match",
+        "prompt_en": "Match casual vs polite goodbye.",
+        "prompt_hi": "अनौपचारिक बनाम औपचारिक अलविदा का मिलान करें।",
+        "pairs_japanese": [
+          "またね",
+          "おやすみなさい"
+        ],
+        "pairs_english": [
+          "See you later (casual)",
+          "Good night (polite)"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u01_l03_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank for 'See you': また___",
+        "question_hi": "रिक्त स्थान भरें: また___",
+        "correct_answer": "ね",
+        "correct_answer_romaji": "ne",
+        "hint_en": "Casual ending particle",
+        "hint_hi": "अनौपचारिक समाप्ति कण",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_matane"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u01_l02_polite_greetings"
+        ],
+        "min_xp_total": 20,
+        "requires_premium": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "unit_id": "ja_u04_objects",
+  "unit_title": "Common Objects",
+  "lessons": [
+    {
+      "lesson_id": "ja_u04_l01_classroom_objects",
+      "lesson_title": "Classroom Objects",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Identify common objects in a classroom.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_hon",
+          "kanji": "本",
+          "kana": "ほん",
+          "romaji": "hon",
+          "meaning_en": "book",
+          "meaning_hi": "पुस्तक / किताब",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "objects"
+          ],
+          "frequency": 5,
+          "notes": "Also means origin."
+        },
+        {
+          "vocab_id": "ja_vocab_pen",
+          "kanji": "ペン",
+          "kana": "ぺん",
+          "romaji": "pen",
+          "meaning_en": "pen",
+          "meaning_hi": "पेन / कलम",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "objects"
+          ],
+          "frequency": 5,
+          "notes": "Written in Katakana since it's a loanword."
+        },
+        {
+          "vocab_id": "ja_vocab_tsue",
+          "kanji": "机",
+          "kana": "つくえ",
+          "romaji": "tsukue",
+          "meaning_en": "desk / table",
+          "meaning_hi": "मेज",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "objects"
+          ],
+          "frequency": 4,
+          "notes": "Standard word for study desks."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_kore_sore",
+        "title": "Kore (This item)",
+        "structure": "これは [Object] です",
+        "romaji_structure": "Kore wa [Object] desu",
+        "short_explanation_en": "'Kore' is used for items close to the speaker (this).",
+        "short_explanation_hi": "'Kore' का प्रयोग वक्ता के पास की वस्तुओं (यह) के लिए किया जाता है।",
+        "focus_examples": [
+          "これは本です。"
+        ],
+        "focus_examples_romaji": [
+          "Kore wa hon desu."
+        ],
+        "notes": "Matches 'this' in English."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "Pronounce 'tsukue' as 'tsoo-koo-eh', keeping the 'ts' crisp."
+        ],
+        "tips_hi": [
+          "'tsukue' का उच्चारण 'त्सू-कू-ए' की तरह करें, 'ts' को स्पष्ट रखें।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u04_l01_ex_sentence_1",
+          "japanese": "これは私の本です。",
+          "romaji": "Kore wa watashi no hon desu.",
+          "translation_en": "This is my book.",
+          "translation_hi": "यह मेरी पुस्तक है।",
+          "highlight_vocab_ids": [
+            "ja_vocab_hon"
+          ],
+          "context_note": "Indicating possession."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u04_l01_ex1",
+        "type": "multiple_choice",
+        "question_en": "What is 'book' in Japanese?",
+        "question_hi": "जापानी में 'किताब' क्या है?",
+        "options": [
+          "ほん",
+          "つくえ",
+          "ぺん"
+        ],
+        "options_romaji": [
+          "hon",
+          "tsukue",
+          "pen"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "'Hon' means book.",
+        "explanation_hi": "'Hon' का अर्थ पुस्तक होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u04_l01_ex2",
+        "type": "match",
+        "prompt_en": "Match the items.",
+        "prompt_hi": "वस्तुओं का मिलान करें।",
+        "pairs_japanese": [
+          "本",
+          "つくえ",
+          "ペン"
+        ],
+        "pairs_english": [
+          "Book",
+          "Desk",
+          "Pen"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u04_l01_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank for 'This is a desk': これ ___ つくえです。",
+        "question_hi": "रिक्त स्थान भरें: これ ___ つくえです。",
+        "correct_answer": "は",
+        "correct_answer_romaji": "wa",
+        "hint_en": "topic particle wa (written as ha)",
+        "hint_hi": "विषय कण वा (हा के रूप में लिखा जाता है)",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_hon"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u03_l03_hobbies"
+        ],
+        "min_xp_total": 80,
+        "requires_premium": true
+      }
+    },
+    {
+      "lesson_id": "ja_u04_l02_home_objects",
+      "lesson_title": "Home Objects",
+      "difficulty": "beginner-2",
+      "is_premium": true,
+      "xp_reward": 12,
+      "lesson_goal": "Name objects found in a home.",
+      "vocabulary": [
+        {
+          "vocab_id": "ja_vocab_terebi",
+          "kanji": "テレビ",
+          "kana": "てれび",
+          "romaji": "terebi",
+          "meaning_en": "television",
+          "meaning_hi": "टेलीविज़न",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "objects"
+          ],
+          "frequency": 5,
+          "notes": "Shortened from Television."
+        },
+        {
+          "vocab_id": "ja_vocab_denwa",
+          "kanji": "電話",
+          "kana": "でんわ",
+          "romaji": "denwa",
+          "meaning_en": "telephone / phone",
+          "meaning_hi": "फ़ोन",
+          "part_of_speech": "noun",
+          "topic_tags": [
+            "objects"
+          ],
+          "frequency": 5,
+          "notes": "Literally electric-talk."
+        }
+      ],
+      "grammar_point": {
+        "grammar_id": "ja_gram_sore_object",
+        "title": "Sore (That item near you)",
+        "structure": "それは [Object] です",
+        "romaji_structure": "Sore wa [Object] desu",
+        "short_explanation_en": "'Sore' is used for items closer to the listener (that).",
+        "short_explanation_hi": "'Sore' का प्रयोग श्रोता के पास की वस्तुओं (वह) के लिए किया जाता है।",
+        "focus_examples": [
+          "それはテレビです。"
+        ],
+        "focus_examples_romaji": [
+          "Sore wa terebi desu."
+        ],
+        "notes": "Matches 'that' when referencing something the listener has."
+      },
+      "pronunciation": {
+        "tips_en": [
+          "In 'terebi', the 'r' is light and sounds between 'r' and 'l'."
+        ],
+        "tips_hi": [
+          "'terebi' में 'r' का उच्चारण हल्का होता है और यह 'r' and 'l' के बीच लगता है।"
+        ],
+        "audio_ids": []
+      },
+      "examples": [
+        {
+          "example_id": "ja_u04_l02_ex_sentence_1",
+          "japanese": "それは電話ですか？",
+          "romaji": "Sore wa denwa desu ka?",
+          "translation_en": "Is that a telephone?",
+          "translation_hi": "क्या वह एक टेलीफ़ोन है?",
+          "highlight_vocab_ids": [
+            "ja_vocab_denwa"
+          ],
+          "context_note": "Asking a question."
+        }
+      ],
+      "exercise_1": {
+        "exercise_id": "ja_u04_l02_ex1",
+        "type": "multiple_choice",
+        "question_en": "What does 'terebi' mean?",
+        "question_hi": "'terebi' का क्या अर्थ है?",
+        "options": [
+          "Television",
+          "Telephone",
+          "Desk"
+        ],
+        "options_romaji": [
+          "Television",
+          "Telephone",
+          "Desk"
+        ],
+        "correctOptionIndex": 0,
+        "explanation_en": "'Terebi' is television.",
+        "explanation_hi": "'Terebi' का अर्थ टेलीविज़न होता है।",
+        "xp_reward": 3
+      },
+      "exercise_2": {
+        "exercise_id": "ja_u04_l02_ex2",
+        "type": "match",
+        "prompt_en": "Match the items.",
+        "prompt_hi": "वस्तुओं का मिलान करें।",
+        "pairs_japanese": [
+          "テレビ",
+          "電話"
+        ],
+        "pairs_english": [
+          "Television",
+          "Telephone"
+        ],
+        "xp_reward": 3
+      },
+      "exercise_3": {
+        "exercise_id": "ja_u04_l02_ex3",
+        "type": "fill_in_blank",
+        "question_en": "Fill in the blank: それはでんわ ___ か？ (Is that a phone?)",
+        "question_hi": "रिक्त स्थान भरें: それはでんわ ___ か？ (क्या वह एक फ़ोन है?)",
+        "correct_answer": "です",
+        "correct_answer_romaji": "desu",
+        "hint_en": "desu",
+        "hint_hi": "देसु",
+        "xp_reward": 4
+      },
+      "review_words": [
+        "ja_vocab_denwa"
+      ],
+      "unlock_requirement": {
+        "requires_lessons": [
+          "ja_u04_l01_classroom_objects"
+        ],
+        "min_xp_total": 90,
+        "requires_premium": true
+      }
+    }
+  ]
+}

@@ -2,74 +2,108 @@
 # 🌿 Velmorth Android Project — .gitignore
 # =============================================================
 
-# ─── IDE & Android Studio ──────────────────────────────────
-*.iml
-.idea/
-.DS_Store
-Thumbs.db
-
-# ─── Gradle Build System ───────────────────────────────────
-.gradle/
-/build/
-**/build/
-/captures/
-.externalNativeBuild/
-.cxx/
-
-# ─── Local Environment (NEVER push — has your PC's SDK path) ─
-local.properties
-
-# ─── 🔑 API Keys & Secrets (NEVER push) ───────────────────
-apikey.properties
-secrets.properties
-keystore.properties
-.env
-.env.local
-.env.production
-.env.staging
-
-# ─── 🔥 Firebase Secret Files (NEVER push) ────────────────
+# ─── 🔥 FIREBASE / GOOGLE CONFIG ─────────────────────────────
 google-services.json
+google-services-staging.json
+firebase.json
+.firebaserc
 serviceAccountKey.json
 firebase-adminsdk*.json
 GoogleService-Info.plist
 
-# ─── 🔐 Signing Keystores (NEVER push) ────────────────────
-# A leaked keystore lets anyone publish fake updates as you!
-*.jks
+# ─── 🔑 SECRET KEYS, ENVIRONMENT & CREDENTIALS ──────────────
 *.keystore
+*.jks
 *.p12
 *.pfx
+keystore.properties
+signing.properties
+secrets.properties
+local.properties
+apikey.properties
+config.properties
+apikeys.properties
+.env
+.env.local
+.env.staging
+.env.production
+secrets/
+credentials/
 
-# ─── 📦 Compiled Outputs (NEVER push) ─────────────────────
+# ─── 💻 IDE & ANDROID STUDIO ────────────────────────────────
+*.iml
+.gradle/
+.idea/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/modules.xml
+.idea/assetWizardSettings.xml
+.vscode/
+.kotlin/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ─── 📦 BUILD OUTPUTS & COMPILED FILES ───────────────────────
+build/
+app/build/
+*/build/
 *.apk
 *.aab
+*.aar
 *.ap_
 *.dex
 *.class
+output/
+release/
+*/release/
+*.upload
+*.zip
+mapping.txt
+*.idsig
 
-# ─── ProGuard Generated Files ──────────────────────────────
-proguard/
-*.pro.bak
+# ─── ⚙️ GRADLE CACHE ──────────────────────────────────────────
+.gradle
+gradle-wrapper.jar
+!gradle-wrapper.properties
 
-# ─── Test Results ──────────────────────────────────────────
-/test-results/
-/lint/
-*.lint.xml
+# ─── 📝 LOGS & TEMP FILES ───────────────────────────────────
+*.log
+logs/
+*.txt
+!README.txt
+!readme.md
+!README.md
+hs_err_pid*.log
+replay_pid*.log
+window_dump.xml
+window_dump2.xml
+screen.png
+screen2.png
 
-# ─── NDK ───────────────────────────────────────────────────
-.externalNativeBuild
-.cxx
+# ─── 📦 NODE / NPM (Tooling dependencies) ───────────────────
+node_modules/
+package-lock.json
 
-# ─── OS Generated ──────────────────────────────────────────
+# ─── 🐍 PYTHON (Utility scripts) ────────────────────────────
+__pycache__/
+*.pyc
+venv/
+
+# ─── 🍏 OS SPECIFIC FILES ───────────────────────────────────
 .DS_Store
 .DS_Store?
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# ─── JVM Crash Dumps (NEVER push) ─────────────────────────
-hs_err_pid*.log
-replay_pid*.log
+# ─── 🎓 VELMORTH SPECIFIC ────────────────────────────────────
+app/src/main/assets/lessons/premium/
+premium_content/
+admin_keys/
+test_accounts.txt
+test_credentials.txt
