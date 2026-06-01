@@ -8,6 +8,8 @@ import android.provider.Settings as AndroidSettings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -55,7 +57,7 @@ private val DangerRed      = Color(0xFFE53935)
 /**
  * Full-featured Settings screen with Firestore sync.
  */
-class SettingsActivity : ComponentActivity() {
+class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -294,7 +296,7 @@ class SettingsActivity : ComponentActivity() {
                         themeMode = "light"
                         prefs.themeMode = "light"
                         prefs.darkMode = false
-                        Toast.makeText(context, "Light mode set — restart app to apply", Toast.LENGTH_SHORT).show()
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                 )
                 RowDivider()
@@ -306,7 +308,7 @@ class SettingsActivity : ComponentActivity() {
                         themeMode = "dark"
                         prefs.themeMode = "dark"
                         prefs.darkMode = true
-                        Toast.makeText(context, "Dark mode set — restart app to apply", Toast.LENGTH_SHORT).show()
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
                 )
                 RowDivider()
@@ -318,7 +320,7 @@ class SettingsActivity : ComponentActivity() {
                         themeMode = "system"
                         prefs.themeMode = "system"
                         prefs.darkMode = false
-                        Toast.makeText(context, "Following system theme", Toast.LENGTH_SHORT).show()
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
                     }
                 )
             }
@@ -410,33 +412,23 @@ class SettingsActivity : ComponentActivity() {
                     subtitle  = "v${BuildConfig.VERSION_NAME} (build ${BuildConfig.VERSION_CODE})",
                     showArrow = false
                 )
-                RowDivider()
-                // Instagram support link — primary support channel
+                // Instagram support link — ONLY support channel
                 SettingsRow(
                     icon       = Icons.Default.Share,
                     title      = "Instagram Support",
-                    subtitle   = "@mannish_2323 — DM for bugs, feedback & help",
-                    iconTint   = Color(0xFFE1306C), // Instagram pink
+                    subtitle   = "@velmorth — DM for bugs, feedback & help",
+                    iconTint   = Color(0xFFE1306C),
                     onClick    = {
                         val intent = Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://www.instagram.com/mannish_2323"))
+                            Uri.parse("https://www.instagram.com/velmorth"))
                         try {
-                            // Try native Instagram app first
                             intent.setPackage("com.instagram.android")
                             startActivity(intent)
                         } catch (e: Exception) {
-                            // Fallback to browser
                             intent.setPackage(null)
                             startActivity(intent)
                         }
                     }
-                )
-                RowDivider()
-                SettingsRow(
-                    icon     = Icons.Default.SupportAgent,
-                    title    = "Contact Support",
-                    subtitle = "Get help via email or chat",
-                    onClick  = { startActivity(Intent(this@SettingsActivity, ContactSupportActivity::class.java)) }
                 )
             }
 

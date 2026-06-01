@@ -16,12 +16,12 @@ class LessonRepository(context: Context) {
     private val prefsManager = PrefsManager(context)
 
     /**
-     * Retrieves all units and nested lessons.
+     * Retrieves all units and nested lessons for the active language.
+     * Uses LessonLoader which tries units_index.json first, then directory scan.
      */
     fun getUnits(): List<CourseUnit> {
         val lang = prefsManager.selectedLanguage
-        val fileName = "lessons/$lang.json"
-        return lessonLoader.loadLessons(fileName)
+        return lessonLoader.loadLessons(lang)
     }
 
     /**

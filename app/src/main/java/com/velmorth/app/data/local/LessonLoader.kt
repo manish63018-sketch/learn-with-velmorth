@@ -11,42 +11,44 @@ import java.io.IOException
  * Implements a memory cache to ensure asset reading is only performed once.
  */
 class LessonLoader(private val context: Context) {
-    
-    private var cachedUnits: List<CourseUnit>? = null
+
+    companion object {
+        // Shared across all instances to avoid re-loading on each Fragment create
+        private val unitCache = mutableMapOf<String, List<CourseUnit>>()
+    }
 
     /**
      * Loads the language curriculum units.
-     * @param fileName Path to the JSON asset file (default is "lessons/japanese.json").
-     * @return List of units with lessons and exercises inside. Returns an empty list if file missing or corrupt.
+     * Tries the units_index.json first, then falls back to scanning the lessons directory.
+     * @param language The language key (e.g. "japanese").
+     * @return List of units with lessons inside. Returns empty list on failure.
      */
-    fun loadLessons(fileName: String = "lessons/japanese.json"): List<CourseUnit> {
-        cachedUnits?.let { return it }
+    fun loadLessons(language: String = "japanese"): List<CourseUnit> {
+        unitCache[language]?.let { return it }
 
         val unitsList = mutableListOf<CourseUnit>()
         try {
-            // Extract language name from fileName (e.g. "lessons/japanese.json" -> "japanese")
-            val langKey = fileName.substringAfter("lessons/").substringBefore(".json")
-            
-            // Try loading from config/units_index.json
+            // 1. Try loading via config/units_index.json
             var loadedFromIndex = false
             try {
-                val indexJsonString = context.assets.open("config/units_index.json").bufferedReader().use { it.readText() }
+                val indexJsonString = context.assets.open("config/units_index.json")
+                    .bufferedReader().use { it.readText() }
                 val indexRoot = JSONObject(indexJsonString)
-                
+
                 var unitsArray: JSONArray? = null
                 if (indexRoot.has("units")) {
                     val indexLang = indexRoot.optString("language", "")
                     val indexLangName = indexRoot.optString("language_name", "")
-                    if (indexLang.equals(langKey, ignoreCase = true) || 
-                        indexLangName.equals(langKey, ignoreCase = true) ||
-                        (langKey.equals("japanese", ignoreCase = true) && indexLang.equals("ja", ignoreCase = true))
+                    if (indexLang.equals(language, ignoreCase = true) ||
+                        indexLangName.equals(language, ignoreCase = true) ||
+                        (language.equals("japanese", ignoreCase = true) && indexLang.equals("ja", ignoreCase = true))
                     ) {
                         unitsArray = indexRoot.getJSONArray("units")
                     }
                 } else {
                     val languagesObj = indexRoot.optJSONObject("languages")
-                    if (languagesObj != null && languagesObj.has(langKey)) {
-                        unitsArray = languagesObj.getJSONArray(langKey)
+                    if (languagesObj != null && languagesObj.has(language)) {
+                        unitsArray = languagesObj.getJSONArray(language)
                     }
                 }
 
@@ -54,33 +56,46 @@ class LessonLoader(private val context: Context) {
                     for (u in 0 until unitsArray.length()) {
                         val unitIndexObj = unitsArray.getJSONObject(u)
                         val unitFile = unitIndexObj.getString("file")
-                        
-                        // Load and parse the individual unit JSON file
-                        val unitJsonString = context.assets.open(unitFile).bufferedReader().use { it.readText() }
+                        val unitJsonString = context.assets.open(unitFile)
+                            .bufferedReader().use { it.readText() }
                         val unitObj = JSONObject(unitJsonString)
                         unitsList.add(parseUnit(unitObj))
                     }
-                    loadedFromIndex = true
+                    loadedFromIndex = unitsList.isNotEmpty()
                 }
             } catch (e: Exception) {
-                // If index loading fails, we'll fall back to monolithic loading
                 e.printStackTrace()
             }
 
+            // 2. Fall back: scan lessons/{language}/ directory directly
             if (!loadedFromIndex) {
-                val jsonString = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                val root = JSONObject(jsonString)
-                val unitsArray = root.getJSONArray("units")
-                for (i in 0 until unitsArray.length()) {
-                    val unitObj = unitsArray.getJSONObject(i)
-                    unitsList.add(parseUnit(unitObj))
+                val dir = "lessons/$language"
+                val files = try {
+                    context.assets.list(dir)?.sorted() ?: emptyList()
+                } catch (e: IOException) {
+                    emptyList<String>()
+                }
+                for (file in files) {
+                    if (!file.endsWith(".json")) continue
+                    try {
+                        val unitJsonString = context.assets.open("$dir/$file")
+                            .bufferedReader().use { it.readText() }
+                        val unitObj = JSONObject(unitJsonString)
+                        unitsList.add(parseUnit(unitObj))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
-            cachedUnits = unitsList
+
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+
+        if (unitsList.isNotEmpty()) {
+            unitCache[language] = unitsList
         }
         return unitsList
     }

@@ -3,18 +3,19 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics.plugin)
 }
 
 android {
     namespace = "com.velmorth.app"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.velmorth.app"
-        minSdk = 24
-        targetSdk = 36
+        minSdk = 26
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -88,6 +89,11 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
     // Gson (for JSON parsing)
     implementation("com.google.code.gson:gson:2.11.0")
 
@@ -108,4 +114,7 @@ dependencies {
 
     // AdMob
     implementation("com.google.android.gms:play-services-ads:23.0.0")
+
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
 }

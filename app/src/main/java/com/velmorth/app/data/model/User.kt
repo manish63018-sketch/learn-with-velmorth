@@ -21,12 +21,16 @@ data class User(
     val darkMode: Boolean = false,
     val notificationsEnabled: Boolean = true,
     val createdAt: Timestamp? = null,
-    
+
     // Core learning fields required by local offline database and UI
     val selectedLanguage: String = "japanese",
+    val activeLanguageId: String = "japanese",
     val nativeLanguage: String = "english",
     val xp: Int = 0,
-    val level: Int = 1
+    val level: Int = 1,
+
+    // Streak check-in date (ISO "yyyy-MM-dd") persisted in Firestore
+    val lastCheckinDate: String = ""
 ) {
     // Compatibility properties to prevent breaking existing UI code
     @get:Exclude

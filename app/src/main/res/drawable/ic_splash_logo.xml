@@ -16,8 +16,7 @@
         android:pathData="M 100, 28 a 72,72 0 1, 0 0.1, 0 Z"
         android:strokeWidth="1.5"
         android:strokeColor="#F4A261"
-        android:strokeLineCap="round"
-        android:strokeDashArray="8,8"/>
+        android:strokeLineCap="round"/>
 
     <!-- Open Book (The foundation) -->
     <path

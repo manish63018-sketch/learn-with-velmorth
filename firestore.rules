@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── Users collection ─────────────────────────────────────────────────────
+    // === Users collection ===
     // Users can only read/write their own document.
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
@@ -18,13 +18,13 @@ service cloud.firestore {
       }
     }
 
-    // ── Settings collection ───────────────────────────────────────────────────
+    // === Settings collection ===
     // Users can only read/write their own settings document.
     match /settings/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
-    // ── Progress collection (top-level) ───────────────────────────────────────
+    // === Progress collection (top-level) ===
     // Document ID format: {uid}_{lessonId}
     // Only the owning user can read/write their progress entries.
     match /progress/{progressId} {
@@ -32,17 +32,15 @@ service cloud.firestore {
         && progressId.matches(request.auth.uid + '_.*');
     }
 
-    // ── Lessons collection ────────────────────────────────────────────────────
+    // === Lessons collection ===
     // All authenticated users can READ lesson metadata.
-    // Only server-side (admin SDK) or the app's seeding logic can WRITE.
-    // Because the app uses SetOptions.merge() client-side seeding, we allow
-    // authenticated writes here for MVP. Lock down with Admin SDK in production.
+    // Seeding allows authenticated writes here for MVP.
     match /lessons/{lessonId} {
       allow read: if request.auth != null;
-      allow write: if request.auth != null;  // Tighten to admin-only post-launch
+      allow write: if request.auth != null;
     }
 
-    // ── Deny all other access ─────────────────────────────────────────────────
+    // === Deny all other access ===
     match /{document=**} {
       allow read, write: if false;
     }

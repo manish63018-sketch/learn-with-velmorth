@@ -3,7 +3,9 @@ package com.velmorth.app.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,15 +18,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.GoogleAuthProvider
 import com.velmorth.app.R
 import com.velmorth.app.MainActivity
 import com.velmorth.app.ui.onboarding.OnboardingActivity
@@ -56,23 +63,111 @@ class LoginActivity : ComponentActivity() {
 @Composable
 fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
-    val db = FirebaseFirestore.getInstance()
+    val auth    = FirebaseAuth.getInstance()
 
-    var isLogin by remember { mutableStateOf(true) }
-    var name by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    var confirmVisible by remember { mutableStateOf(false) }
-    var isLoading by remember { mutableStateOf(false) }
-    var errorMessage by remember { mutableStateOf("") }
+    var isLogin           by remember { mutableStateOf(true) }
+    var name              by remember { mutableStateOf("") }
+    var username          by remember { mutableStateOf("") }
+    var email             by remember { mutableStateOf("") }
+    var password          by remember { mutableStateOf("") }
+    var confirmPassword   by remember { mutableStateOf("") }
+    var passwordVisible   by remember { mutableStateOf(false) }
+    var confirmVisible    by remember { mutableStateOf(false) }
+    var isLoading         by remember { mutableStateOf(false) }
+    var googleLoading     by remember { mutableStateOf(false) }
+    var errorMessage      by remember { mutableStateOf("") }
 
-    val green = Color(0xFF2D6A4F)
-    val cream = Color(0xFFF8F5EE)
+    val green     = Color(0xFF2D6A4F)
+    val cream     = Color(0xFFF8F5EE)
     val darkGreen = Color(0xFF1B4332)
+
+    // Google Sign-In client
+    val gso = remember {
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+    }
+    val googleSignInClient = remember { GoogleSignIn.getClient(context, gso) }
+
+    // Launcher for the Google account picker
+    val googleLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        googleLoading = true
+        try {
+            val task    = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            val account = task.getResult(ApiException::class.java)
+            val idToken = account?.idToken
+
+            if (idToken != null) {
+                val credential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(credential)
+                    .addOnSuccessListener { authResult ->
+                        val user    = authResult.user!!
+                        val isNew   = authResult.additionalUserInfo?.isNewUser == true
+                        val prefs   = PrefsManager(context)
+
+                        // Always persist the real Firebase UID locally
+                        prefs.uid       = user.uid
+                        prefs.userName  = user.displayName ?: prefs.userName
+                        prefs.userEmail = user.email ?: prefs.userEmail
+                        prefs.photoUrl  = user.photoUrl?.toString() ?: prefs.photoUrl
+
+                        if (isNew) {
+                            // New Google user — initialise with defaults
+                            prefs.isPremium = false
+                            prefs.streak    = 0
+                            prefs.leaves    = 5
+                            prefs.xp        = 0
+                            prefs.level     = 1
+                            // Use central repository to create user doc + settings
+                            FirestoreProgressRepository.ensureUserDocExists(
+                                name     = prefs.userName,
+                                username = user.email?.substringBefore("@")
+                                    ?.lowercase()
+                                    ?.filter { c -> c.isLetterOrDigit() || c == '_' } ?: "",
+                                email    = prefs.userEmail
+                            )
+                            FirestoreProgressRepository.ensureSettingsDocExists()
+                            FirestoreProgressRepository.ensureLanguageLessonsExist()
+                            googleLoading = false
+                            onAuthSuccess(true)
+                        } else {
+                            // Existing Google user — sync prefs from Firestore then proceed
+                            FirestoreProgressRepository.fetchUserData { data ->
+                                if (data != null) {
+                                    prefs.userName  = (data["name"] as? String) ?: prefs.userName
+                                    prefs.userEmail = (data["email"] as? String) ?: prefs.userEmail
+                                    prefs.xp        = (data["xp"] as? Long)?.toInt() ?: 0
+                                    prefs.level     = (data["level"] as? Long)?.toInt() ?: 1
+                                    prefs.streak    = (data["streak"] as? Long)?.toInt() ?: 0
+                                    prefs.leaves    = (data["leafBalance"] as? Long)?.toInt() ?: 5
+                                    prefs.isPremium = data["isPremium"] as? Boolean ?: false
+                                }
+                                FirestoreProgressRepository.ensureUserDocExists(
+                                    name     = prefs.userName,
+                                    username = prefs.username,
+                                    email    = prefs.userEmail
+                                )
+                                googleLoading = false
+                                onAuthSuccess(false)
+                            }
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        googleLoading = false
+                        errorMessage = friendlyAuthError(e.message ?: "")
+                    }
+            } else {
+                googleLoading = false
+                errorMessage = "Google Sign-In failed. Please try again."
+            }
+        } catch (e: ApiException) {
+            googleLoading = false
+            errorMessage = "Google Sign-In cancelled or failed (code ${e.statusCode})."
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -89,21 +184,51 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
         ) {
             // Logo + Title
             Text(
-                text = stringResource(R.string.app_name),
-                fontSize = 36.sp,
+                text       = stringResource(R.string.app_name),
+                fontSize   = 36.sp,
                 fontWeight = FontWeight.Bold,
-                color = darkGreen
+                color      = darkGreen
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = if (isLogin) stringResource(R.string.login_subtitle)
-                       else stringResource(R.string.signup_subtitle),
+                text     = if (isLogin) stringResource(R.string.login_subtitle)
+                           else stringResource(R.string.signup_subtitle),
                 fontSize = 14.sp,
-                color = Color.Gray
+                color    = Color.Gray
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
-            // Tab switcher
+            // ── Google Sign-In Button ─────────────────────────────────────────
+            GoogleSignInButton(
+                isLoading = googleLoading,
+                onClick   = {
+                    googleLoading = true
+                    errorMessage  = ""
+                    googleSignInClient.signOut().addOnCompleteListener {
+                        googleLauncher.launch(googleSignInClient.signInIntent)
+                    }
+                }
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // OR divider
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFD1CFC8))
+                Text(
+                    text = "  or continue with email  ",
+                    fontSize = 12.sp,
+                    color = Color(0xFF9CA3AF)
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFD1CFC8))
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Tab switcher: Log In / Sign Up
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -124,30 +249,25 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = label,
-                            color = if (isLogin == isLoginTab) Color.White else Color.Gray,
+                            text       = label,
+                            color      = if (isLogin == isLoginTab) Color.White else Color.Gray,
                             fontWeight = FontWeight.SemiBold,
-                            fontSize = 14.sp
+                            fontSize   = 14.sp
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Signup-only fields
             AnimatedVisibility(
                 visible = !isLogin,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+                enter   = fadeIn() + expandVertically(),
+                exit    = fadeOut() + shrinkVertically()
             ) {
                 Column {
-                    AuthTextField(
-                        value = name,
-                        onValueChange = { name = it },
-                        label = "Display Name",
-                        keyboardType = KeyboardType.Text
-                    )
+                    AuthTextField(value = name, onValueChange = { name = it }, label = "Display Name", keyboardType = KeyboardType.Text)
                     Spacer(modifier = Modifier.height(12.dp))
                     AuthTextField(
                         value = username,
@@ -160,83 +280,46 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
             }
 
             // Email
-            AuthTextField(
-                value = email,
-                onValueChange = { email = it.trim() },
-                label = "Email Address",
-                keyboardType = KeyboardType.Email
-            )
+            AuthTextField(value = email, onValueChange = { email = it.trim() }, label = "Email Address", keyboardType = KeyboardType.Email)
             Spacer(modifier = Modifier.height(12.dp))
 
             // Password
-            PasswordField(
-                value = password,
-                onValueChange = { password = it },
-                label = "Password",
-                visible = passwordVisible,
-                onToggle = { passwordVisible = !passwordVisible }
-            )
+            PasswordField(value = password, onValueChange = { password = it }, label = "Password", visible = passwordVisible, onToggle = { passwordVisible = !passwordVisible })
 
-            // Confirm password (signup only)
-            AnimatedVisibility(
-                visible = !isLogin,
-                enter = fadeIn() + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
-            ) {
+            // Confirm password
+            AnimatedVisibility(visible = !isLogin, enter = fadeIn() + expandVertically(), exit = fadeOut() + shrinkVertically()) {
                 Column {
                     Spacer(modifier = Modifier.height(12.dp))
-                    PasswordField(
-                        value = confirmPassword,
-                        onValueChange = { confirmPassword = it },
-                        label = "Confirm Password",
-                        visible = confirmVisible,
-                        onToggle = { confirmVisible = !confirmVisible }
-                    )
+                    PasswordField(value = confirmPassword, onValueChange = { confirmPassword = it }, label = "Confirm Password", visible = confirmVisible, onToggle = { confirmVisible = !confirmVisible })
                 }
             }
 
             // Forgot password
             AnimatedVisibility(visible = isLogin) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     TextButton(onClick = {
-                        if (email.isBlank()) {
-                            errorMessage = "Please enter your email address to reset your password."
-                            return@TextButton
-                        }
+                        if (email.isBlank()) { errorMessage = "Enter your email address to reset password."; return@TextButton }
                         auth.sendPasswordResetEmail(email.trim())
-                            .addOnSuccessListener {
-                                errorMessage = "✓ Password reset email sent to $email"
-                            }
-                            .addOnFailureListener {
-                                errorMessage = it.localizedMessage ?: "Reset failed. Please try again."
-                            }
+                            .addOnSuccessListener { errorMessage = "✓ Password reset email sent to $email" }
+                            .addOnFailureListener { errorMessage = it.localizedMessage ?: "Reset failed." }
                     }) {
-                        Text(
-                            text = "Forgot Password?",
-                            color = green,
-                            fontSize = 13.sp
-                        )
+                        Text("Forgot Password?", color = green, fontSize = 13.sp)
                     }
                 }
             }
 
-            // Error / info message
+            // Error / info banner
             AnimatedVisibility(visible = errorMessage.isNotEmpty()) {
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = if (errorMessage.startsWith("✓"))
-                            Color(0xFFE8F5E9) else Color(0xFFFFEBEB)
+                    colors   = CardDefaults.cardColors(
+                        containerColor = if (errorMessage.startsWith("✓")) Color(0xFFE8F5E9) else Color(0xFFFFEBEB)
                     ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
-                        text = errorMessage,
-                        color = if (errorMessage.startsWith("✓"))
-                            Color(0xFF2D6A4F) else Color(0xFFB00020),
+                        text     = errorMessage,
+                        color    = if (errorMessage.startsWith("✓")) Color(0xFF2D6A4F) else Color(0xFFB00020),
                         modifier = Modifier.padding(12.dp),
                         fontSize = 13.sp
                     )
@@ -245,18 +328,11 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Primary CTA button
+            // Primary CTA button (email auth)
             Button(
                 onClick = {
                     errorMessage = ""
-                    val validationError = validateInputs(
-                        isLogin = isLogin,
-                        name = name,
-                        username = username,
-                        email = email,
-                        password = password,
-                        confirmPassword = confirmPassword
-                    )
+                    val validationError = validateInputs(isLogin, name, username, email, password, confirmPassword)
                     if (validationError != null) { errorMessage = validationError; return@Button }
 
                     isLoading = true
@@ -264,18 +340,17 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     if (isLogin) {
                         auth.signInWithEmailAndPassword(email, password)
                             .addOnSuccessListener { result ->
-                                val uid = result.user?.uid ?: ""
+                                val user  = result.user ?: return@addOnSuccessListener
                                 val prefs = PrefsManager(context)
-
-                                // Auto-create missing Firestore docs on every login
+                                // Persist real Firebase UID on every email login
+                                prefs.uid = user.uid
                                 FirestoreProgressRepository.ensureUserDocExists(
-                                    name = prefs.userName,
+                                    name     = prefs.userName,
                                     username = prefs.username,
-                                    email = email
+                                    email    = email
                                 )
                                 FirestoreProgressRepository.ensureSettingsDocExists()
                                 FirestoreProgressRepository.ensureLanguageLessonsExist()
-
                                 isLoading = false
                                 onAuthSuccess(false)
                             }
@@ -284,53 +359,31 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                                 errorMessage = friendlyAuthError(e.message ?: "")
                             }
                     } else {
-                        // Registration
                         auth.createUserWithEmailAndPassword(email, password)
                             .addOnSuccessListener { result ->
                                 val user = result.user!!
                                 user.sendEmailVerification()
-
-                                // Create Firestore user document with ALL required fields
-                                val userDoc = hashMapOf(
-                                    "uid"                  to user.uid,
-                                    "name"                 to name.trim(),
-                                    "username"             to username.trim().lowercase(),
-                                    "email"                to email.trim(),
-                                    "profileImage"         to "",
-                                    "xp"                   to 0,
-                                    "level"                to 1,
-                                    "streak"               to 0,
-                                    "leafBalance"          to 5,
-                                    "isPremium"            to false,
-                                    "notificationsEnabled" to true,
-                                    "darkMode"             to false,
-                                    "createdAt"            to FieldValue.serverTimestamp()
+                                val prefs = PrefsManager(context)
+                                // Persist real Firebase UID immediately
+                                prefs.uid       = user.uid
+                                prefs.userName  = name.trim()
+                                prefs.username  = username.trim().lowercase()
+                                prefs.userEmail = email.trim()
+                                prefs.isPremium = false
+                                prefs.streak    = 0
+                                prefs.leaves    = 5
+                                prefs.xp        = 0
+                                prefs.level     = 1
+                                // Use central repository for Firestore doc creation
+                                FirestoreProgressRepository.ensureUserDocExists(
+                                    name     = name.trim(),
+                                    username = username.trim().lowercase(),
+                                    email    = email.trim()
                                 )
-
-                                db.collection("users").document(user.uid).set(userDoc)
-                                    .addOnSuccessListener {
-                                        // Save to local prefs
-                                        val prefs = PrefsManager(context)
-                                        prefs.userName   = name.trim()
-                                        prefs.username   = username.trim().lowercase()
-                                        prefs.userEmail  = email.trim()
-                                        prefs.isPremium  = false
-                                        prefs.streak     = 0
-                                        prefs.leaves     = 5
-                                        prefs.xp         = 0
-                                        prefs.level      = 1
-
-                                        // Create settings doc and seed lessons
-                                        FirestoreProgressRepository.ensureSettingsDocExists()
-                                        FirestoreProgressRepository.ensureLanguageLessonsExist()
-
-                                        isLoading = false
-                                        onAuthSuccess(true)
-                                    }
-                                    .addOnFailureListener { e ->
-                                        isLoading = false
-                                        errorMessage = friendlyAuthError(e.message ?: "")
-                                    }
+                                FirestoreProgressRepository.ensureSettingsDocExists()
+                                FirestoreProgressRepository.ensureLanguageLessonsExist()
+                                isLoading = false
+                                onAuthSuccess(true)
                             }
                             .addOnFailureListener { e ->
                                 isLoading = false
@@ -339,29 +392,82 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = green),
-                shape = RoundedCornerShape(14.dp),
-                enabled = !isLoading
+                colors   = ButtonDefaults.buttonColors(containerColor = green),
+                shape    = RoundedCornerShape(14.dp),
+                enabled  = !isLoading && !googleLoading
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(color = Color.White, strokeWidth = 2.dp, modifier = Modifier.size(22.dp))
                 } else {
                     Text(
-                        text = if (isLogin) "Log In" else "Create Account",
-                        fontSize = 16.sp,
+                        text       = if (isLogin) "Log In" else "Create Account",
+                        fontSize   = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color      = Color.White
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "By continuing, you agree to our Privacy Policy.",
+                text     = "By continuing, you agree to our Privacy Policy.",
                 fontSize = 11.sp,
-                color = Color.Gray,
+                color    = Color.Gray,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
+        }
+    }
+}
+
+// ── Google Sign-In Button ─────────────────────────────────────────────────────
+
+@Composable
+private fun GoogleSignInButton(isLoading: Boolean, onClick: () -> Unit) {
+    Button(
+        onClick  = { if (!isLoading) onClick() },
+        enabled  = !isLoading,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(52.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            disabledContainerColor = Color(0xFFF5F5F5)
+        ),
+        shape = RoundedCornerShape(14.dp),
+        border = BorderStroke(1.dp, Color(0xFFDADCE0)),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 1.dp)
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(color = Color(0xFF4285F4), strokeWidth = 2.dp, modifier = Modifier.size(22.dp))
+        } else {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                // Google "G" icon in brand colors
+                Box(
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clip(androidx.compose.foundation.shape.CircleShape)
+                        .background(Color.White),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text       = "G",
+                        fontSize   = 16.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color      = Color(0xFF4285F4),
+                        textAlign  = TextAlign.Center
+                    )
+                }
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    text       = "Continue with Google",
+                    fontSize   = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color      = Color(0xFF3C4043)
+                )
+            }
         }
     }
 }
@@ -387,16 +493,16 @@ private fun friendlyAuthError(raw: String): String = when {
 @Composable
 fun AuthTextField(value: String, onValueChange: (String) -> Unit, label: String, keyboardType: KeyboardType) {
     OutlinedTextField(
-        value = value,
+        value         = value,
         onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        label         = { Text(label) },
+        modifier      = Modifier.fillMaxWidth(),
+        singleLine    = true,
+        shape         = RoundedCornerShape(12.dp),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFF2D6A4F),
-            focusedLabelColor = Color(0xFF2D6A4F)
+            focusedLabelColor  = Color(0xFF2D6A4F)
         )
     )
 }
@@ -404,15 +510,15 @@ fun AuthTextField(value: String, onValueChange: (String) -> Unit, label: String,
 @Composable
 fun PasswordField(value: String, onValueChange: (String) -> Unit, label: String, visible: Boolean, onToggle: () -> Unit) {
     OutlinedTextField(
-        value = value,
-        onValueChange = onValueChange,
-        label = { Text(label) },
-        modifier = Modifier.fillMaxWidth(),
-        singleLine = true,
-        shape = RoundedCornerShape(12.dp),
+        value               = value,
+        onValueChange       = onValueChange,
+        label               = { Text(label) },
+        modifier            = Modifier.fillMaxWidth(),
+        singleLine          = true,
+        shape               = RoundedCornerShape(12.dp),
         visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        trailingIcon = {
+        keyboardOptions     = KeyboardOptions(keyboardType = KeyboardType.Password),
+        trailingIcon        = {
             IconButton(onClick = onToggle) {
                 Icon(
                     imageVector = if (visible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
@@ -423,7 +529,7 @@ fun PasswordField(value: String, onValueChange: (String) -> Unit, label: String,
         },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color(0xFF2D6A4F),
-            focusedLabelColor = Color(0xFF2D6A4F)
+            focusedLabelColor  = Color(0xFF2D6A4F)
         )
     )
 }

@@ -5,6 +5,8 @@ import com.velmorth.app.data.local.entities.LeafTransactionEntity
 import com.velmorth.app.domain.repository.LeafWalletRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 
 /**
  * Implementation of LeafWalletRepository using Room database.
@@ -26,10 +28,14 @@ class LeafWalletRepositoryImpl(private val leafWalletDao: LeafWalletDao) : LeafW
             source = source,
             description = description
         )
-        leafWalletDao.insertTransaction(transaction)
+        withContext(Dispatchers.IO) {
+            leafWalletDao.insertTransaction(transaction)
+        }
     }
 
     override suspend fun clearHistory() {
-        leafWalletDao.clearHistory()
+        withContext(Dispatchers.IO) {
+            leafWalletDao.clearHistory()
+        }
     }
 }

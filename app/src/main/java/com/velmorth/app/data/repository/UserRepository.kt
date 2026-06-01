@@ -20,14 +20,16 @@ class UserRepository(context: Context) {
     fun getUser(): User {
         val email = prefsManager.userEmail
         val name = prefsManager.userName
-        
+
         // If name is empty, it means we have a guest or uninitialized profile
         val displayName = if (name.isEmpty()) "Learner" else name
         val userEmail = if (email.isEmpty()) "guest@velmorth.com" else email
         val userUsername = prefsManager.username.ifEmpty { displayName.lowercase().replace(" ", "") }
+        // Use the persisted Firebase UID; fall back to "guest" if not signed in
+        val resolvedUid = prefsManager.uid.ifEmpty { "guest" }
 
         return User(
-            uid = "local_user",
+            uid = resolvedUid,
             name = displayName,
             username = userUsername,
             email = userEmail,

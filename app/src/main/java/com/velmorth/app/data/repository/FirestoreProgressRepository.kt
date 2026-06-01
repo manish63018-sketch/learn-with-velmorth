@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.velmorth.app.utils.XPManager
 
 /**
  * Central Firestore repository that handles all cloud sync operations.
@@ -42,21 +43,10 @@ object FirestoreProgressRepository {
     // ── XP → Level calculation ────────────────────────────────────────────────
 
     /**
-     * Calculates the user's level from total XP.
-     * Level thresholds: 1=0, 2=100, 3=250, 4=500, 5=800, 6=1200, 7=1700, 8=2300, 9=3000, 10=4000+
+     * Delegates to [XPManager.getLevelForXp] — single source of truth for
+     * XP→Level mapping shared across the whole app and Firestore.
      */
-    fun calculateLevel(xp: Int): Int = when {
-        xp < 100  -> 1
-        xp < 250  -> 2
-        xp < 500  -> 3
-        xp < 800  -> 4
-        xp < 1200 -> 5
-        xp < 1700 -> 6
-        xp < 2300 -> 7
-        xp < 3000 -> 8
-        xp < 4000 -> 9
-        else      -> 10
-    }
+    fun calculateLevel(xp: Int): Int = XPManager.getLevelForXp(xp)
 
     // ── Auto-create: users/{uid} ──────────────────────────────────────────────
 
@@ -82,18 +72,20 @@ object FirestoreProgressRepository {
 
         // Use merge so existing values (xp, streak, level) are never reset
         val defaults = mapOf(
-            "uid"         to uid,
-            "username"    to username,
-            "email"       to email,
-            "profileImage" to "",
-            "xp"          to 0,
-            "level"       to 1,
-            "streak"      to 0,
-            "leafBalance" to 5,
-            "isPremium"   to false,
+            "uid"             to uid,
+            "username"        to username,
+            "email"           to email,
+            "profileImage"    to "",
+            "xp"              to 0,
+            "level"           to 1,
+            "streak"          to 0,
+            "leafBalance"     to 5,
+            "isPremium"       to false,
             "notificationsEnabled" to true,
-            "darkMode"    to false,
-            "createdAt"   to FieldValue.serverTimestamp()
+            "darkMode"        to false,
+            "activeLanguageId" to "japanese",
+            "lastCheckinDate" to "",
+            "createdAt"       to FieldValue.serverTimestamp()
         ).let { base ->
             // Only set name if it's not blank
             if (name.isNotBlank()) base + mapOf("name" to name) else base
@@ -407,6 +399,82 @@ object FirestoreProgressRepository {
      */
     fun syncLessonComplete(lessonId: String, xpEarned: Int = 10) {
         syncLessonProgress(lessonId = lessonId, xpEarned = xpEarned)
+    }
+
+    // ── Streak check-in ──────────────────────────────────────────────────────
+
+    enum class StreakCheckinResult {
+        CLAIMED,          // Successfully claimed today's streak reward
+        ALREADY_CLAIMED,  // Already claimed today
+        RESET             // Streak was reset (missed a day)
+    }
+
+    /**
+     * Checks the user's lastCheckinDate against today.
+     * - Same day  → ALREADY_CLAIMED (no-op)
+     * - Yesterday → increments streak, adds +5 leaves, writes lastCheckinDate = today → CLAIMED
+     * - Older     → resets streak to 1, adds +5 leaves, writes lastCheckinDate = today → RESET
+     *
+     * Result is returned on the main thread via [onResult].
+     */
+    fun claimStreakCheckin(onResult: (StreakCheckinResult, Int /*newStreak*/, Int /*newLeaves*/) -> Unit) {
+        val uid = currentUid() ?: run { onResult(StreakCheckinResult.ALREADY_CLAIMED, 0, 0); return }
+        val db  = getDb()        ?: run { onResult(StreakCheckinResult.ALREADY_CLAIMED, 0, 0); return }
+
+        val today = java.time.LocalDate.now().toString()  // "yyyy-MM-dd"
+
+        db.collection(USERS).document(uid).get()
+            .addOnSuccessListener { doc ->
+                val lastCheckin  = doc.getString("lastCheckinDate") ?: ""
+                val currentStreak = (doc.getLong("streak") ?: 0L).toInt()
+                val currentLeaves = (doc.getLong("leafBalance") ?: 0L).toInt()
+
+                if (lastCheckin == today) {
+                    // Already claimed today
+                    onResult(StreakCheckinResult.ALREADY_CLAIMED, currentStreak, currentLeaves)
+                    return@addOnSuccessListener
+                }
+
+                val yesterday = java.time.LocalDate.now().minusDays(1).toString()
+                val newStreak = if (lastCheckin == yesterday) currentStreak + 1 else 1
+                val newLeaves = currentLeaves + 5
+                val result    = if (lastCheckin == yesterday) StreakCheckinResult.CLAIMED else StreakCheckinResult.RESET
+
+                val updates = mapOf(
+                    "lastCheckinDate" to today,
+                    "streak"          to newStreak,
+                    "leafBalance"     to newLeaves,
+                    "lastActive"      to FieldValue.serverTimestamp()
+                )
+
+                db.collection(USERS).document(uid).update(updates)
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Streak checked in: streak=$newStreak, leaves=$newLeaves")
+                        onResult(result, newStreak, newLeaves)
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Streak checkin write failed: ${e.message}")
+                        onResult(result, newStreak, newLeaves)
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Streak checkin read failed: ${e.message}")
+                onResult(StreakCheckinResult.ALREADY_CLAIMED, 0, 0)
+            }
+    }
+
+    /**
+     * Saves the active learning language to the user doc in Firestore.
+     */
+    fun saveActiveLanguage(languageId: String) {
+        val uid = currentUid() ?: return
+        val db  = getDb()        ?: return
+        db.collection(USERS).document(uid)
+            .update("activeLanguageId", languageId)
+            .addOnFailureListener { e -> Log.w(TAG, "Active language save failed: ${e.message}") }
+        db.collection(SETTINGS).document(uid)
+            .update("language", languageId)
+            .addOnFailureListener { e -> Log.w(TAG, "Settings language save failed: ${e.message}") }
     }
 }
 

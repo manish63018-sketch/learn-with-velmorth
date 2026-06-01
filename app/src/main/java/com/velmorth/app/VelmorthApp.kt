@@ -9,11 +9,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.utils.AnalyticsManager
 import com.velmorth.app.utils.NotificationScheduler
+import dagger.hilt.android.HiltAndroidApp
 
 /**
  * Main Application class for Learn With Velmorth.
  * Initialises Firebase, applies theme mode, and schedules daily reminders.
  */
+@HiltAndroidApp
 class VelmorthApp : Application() {
 
     /** App-wide single PrefsManager instance — avoids creating multiple per screen. */

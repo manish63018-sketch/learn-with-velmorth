@@ -86,19 +86,41 @@ class ReviewFragment : Fragment() {
         ) {
             Spacer(Modifier.height(8.dp))
 
-            Text(
-                text       = "Review Garden",
-                fontSize   = 28.sp,
-                fontWeight = FontWeight.Bold,
-                color      = Color(0xFF1B4332),
-                modifier   = Modifier.fillMaxWidth()
-            )
-            Text(
-                text     = "Water your skills to keep them evergreen",
-                fontSize = 14.sp,
-                color    = Color(0xFF6B7280),
-                modifier = Modifier.fillMaxWidth()
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text       = "Review Garden",
+                        fontSize   = 28.sp,
+                        fontWeight = FontWeight.Bold,
+                        color      = Color(0xFF1B4332)
+                    )
+                    Text(
+                        text     = "Water your skills to keep them evergreen",
+                        fontSize = 13.sp,
+                        color    = Color(0xFF6B7280)
+                    )
+                }
+                // Due-word count badge — show after loading
+                if (!isLoading) {
+                    val dueCount = if (isOnline) srsCards.size else localQueue.size
+                    Surface(
+                        shape = RoundedCornerShape(20.dp),
+                        color = if (dueCount > 0) Color(0xFF2D6A4F) else Color(0xFFE5E7EB)
+                    ) {
+                        Text(
+                            text = if (dueCount > 0) "$dueCount due" else "All done",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (dueCount > 0) Color.White else Color(0xFF6B7280),
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
+                }
+            }
 
             Spacer(Modifier.height(28.dp))
 
@@ -288,6 +310,10 @@ class ReviewFragment : Fragment() {
 
     @Composable
     private fun ZeroStateGarden() {
+        val allLessons     = lessonRepository.getUnits().flatMap { it.lessons }
+        val completedCount = lessonRepository.getCompletedLessons().size
+        val totalVocab     = allLessons.sumOf { it.vocabulary.size }.let { if (it == 0) allLessons.size else it }
+
         Card(
             shape     = RoundedCornerShape(24.dp),
             colors    = CardDefaults.cardColors(containerColor = Color.White),
@@ -295,19 +321,43 @@ class ReviewFragment : Fragment() {
             modifier  = Modifier.fillMaxWidth().padding(vertical = 12.dp)
         ) {
             Column(
-                modifier                = Modifier.padding(32.dp).fillMaxWidth(),
-                horizontalAlignment     = Alignment.CenterHorizontally,
-                verticalArrangement     = Arrangement.Center
+                modifier            = Modifier.padding(32.dp).fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text("🌸", fontSize = 72.sp)
                 Spacer(Modifier.height(16.dp))
-                Text("Your garden is watered!", fontSize = 20.sp, fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1B4332), textAlign = TextAlign.Center)
+                Text(
+                    "Your garden is watered!",
+                    fontSize   = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color      = Color(0xFF1B4332),
+                    textAlign  = TextAlign.Center
+                )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    "No words due for review right now. Great job keeping your knowledge fresh!",
-                    fontSize = 14.sp, color = Color(0xFF6B7280), textAlign = TextAlign.Center
+                    "No words due for review right now.",
+                    fontSize  = 14.sp,
+                    color     = Color(0xFF6B7280),
+                    textAlign = TextAlign.Center
                 )
+                Spacer(Modifier.height(12.dp))
+                Surface(
+                    shape = RoundedCornerShape(14.dp),
+                    color = Color(0xFFE8F5E9)
+                ) {
+                    Text(
+                        text = if (completedCount > 0)
+                            "$completedCount lessons reviewed · $totalVocab words tracked"
+                        else
+                            "Complete lessons to add words to your review garden",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF2D6A4F),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                    )
+                }
             }
         }
     }

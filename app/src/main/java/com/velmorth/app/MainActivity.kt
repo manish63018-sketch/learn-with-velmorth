@@ -15,10 +15,12 @@ import com.velmorth.app.ui.lessons.LessonsFragment
 import com.velmorth.app.ui.review.ReviewFragment
 import com.velmorth.app.ui.shop.ShopFragment
 import com.velmorth.app.ui.profile.ProfileFragment
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Main dashboard hosting the bottom navigation bar and the main fragment container.
  */
+@AndroidEntryPoint
 class MainActivity : FragmentActivity() {
 
     companion object {
@@ -88,15 +90,15 @@ class MainActivity : FragmentActivity() {
 
         // Set navigation listener
         bottomNav.setOnItemSelectedListener { item ->
-            val selectedFragment = when (item.itemId) {
-                1 -> HomeFragment()
-                2 -> LessonsFragment()
-                3 -> ReviewFragment()
-                4 -> ShopFragment()
-                5 -> ProfileFragment()
-                else -> HomeFragment()
+            val tag = when (item.itemId) {
+                1 -> "Home"
+                2 -> "Lessons"
+                3 -> "Review"
+                4 -> "Shop"
+                5 -> "Profile"
+                else -> "Home"
             }
-            switchFragment(selectedFragment, item.title.toString())
+            switchFragment(tag)
             true
         }
 
@@ -117,19 +119,33 @@ class MainActivity : FragmentActivity() {
         }
     }
 
-    private fun switchFragment(fragment: Fragment, tag: String) {
-        val current = supportFragmentManager.findFragmentById(CONTAINER_ID)
-        if (current != null && current::class.java == fragment::class.java) return
+    private fun switchFragment(tag: String) {
+        val fm = supportFragmentManager
+        val current = fm.findFragmentById(CONTAINER_ID)
+        if (current != null && current.tag == tag) return
 
-        supportFragmentManager.commit {
+        fm.commit {
             setCustomAnimations(
                 android.R.anim.fade_in,
                 android.R.anim.fade_out
             )
-            replace(CONTAINER_ID, fragment, tag)
-            // Add to back stack for non-home tabs
-            if (tag != "Home") {
-                addToBackStack(tag)
+            // Hide the currently active fragment if exists
+            current?.let { hide(it) }
+
+            // Find or instantiate target fragment
+            var target = fm.findFragmentByTag(tag)
+            if (target == null) {
+                target = when (tag) {
+                    "Home" -> HomeFragment()
+                    "Lessons" -> LessonsFragment()
+                    "Review" -> ReviewFragment()
+                    "Shop" -> ShopFragment()
+                    "Profile" -> ProfileFragment()
+                    else -> HomeFragment()
+                }
+                add(CONTAINER_ID, target, tag)
+            } else {
+                show(target)
             }
         }
     }

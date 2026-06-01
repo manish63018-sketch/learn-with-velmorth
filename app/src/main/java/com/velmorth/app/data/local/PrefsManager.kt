@@ -43,6 +43,8 @@ class PrefsManager(context: Context) {
         private const val KEY_WEEKLY_STREAK_BONUS  = "WEEKLY_STREAK_BONUS"
         private const val KEY_FIRST_LAUNCH         = "FIRST_LAUNCH"
         private const val KEY_PHOTO_URL            = "PHOTO_URL"
+        private const val KEY_LAST_CHECKIN_DATE    = "LAST_CHECKIN_DATE"
+        private const val KEY_UID                  = "FIREBASE_UID"
     }
 
     var userName: String
@@ -158,6 +160,16 @@ class PrefsManager(context: Context) {
     var photoUrl: String
         get() = prefs.getString(KEY_PHOTO_URL, "") ?: ""
         set(value) = prefs.edit().putString(KEY_PHOTO_URL, value).apply()
+
+    /** ISO date string "yyyy-MM-dd" of the last streak check-in (used by the Home Collect button) */
+    var lastCheckinDate: String
+        get() = prefs.getString(KEY_LAST_CHECKIN_DATE, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_LAST_CHECKIN_DATE, value).apply()
+
+    /** Firebase UID for the currently signed-in user. Empty string if not signed in. */
+    var uid: String
+        get() = prefs.getString(KEY_UID, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_UID, value).apply()
 
     /**
      * Clears all user-related state (useful for Log Out).

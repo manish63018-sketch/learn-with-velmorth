@@ -15,11 +15,11 @@ interface LeafWalletDao {
     fun getAllTransactions(): Flow<List<LeafTransactionEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTransaction(transaction: LeafTransactionEntity)
+    fun insertTransaction(transaction: LeafTransactionEntity): Long
 
     @Query("SELECT SUM(amount) FROM leaf_transactions")
     fun getLeafBalance(): Flow<Int?>
 
     @Query("DELETE FROM leaf_transactions")
-    suspend fun clearHistory()
+    fun clearHistory(): Int
 }
