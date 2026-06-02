@@ -87,6 +87,10 @@ jobs:
       if: matrix.build-mode == 'manual'
       shell: bash
       run: |
+        # Create a dummy google-services.json for compilation/CI purposes
+        if [ ! -f app/google-services.json ]; then
+          echo '{"project_info":{"project_number":"1234567890","project_id":"mock-project-id"},"client":[{"client_info":{"mobilesdk_app_id":"1:1234567890:android:mockappid","android_client_info":{"package_name":"com.velmorth.app"}},"oauth_client":[],"api_key":[{"current_key":"mock-api-key"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}' > app/google-services.json
+        fi
         chmod +x gradlew
         ./gradlew clean compileDebugKotlin compileDebugJavaWithJavac --no-daemon
 
