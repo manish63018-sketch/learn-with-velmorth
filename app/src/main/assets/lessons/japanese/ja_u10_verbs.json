@@ -76,52 +76,6 @@
           "context_note": "Casual statement."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u10_l01_ex1",
-        "type": "multiple_choice",
-        "question_en": "What does 'iku' mean?",
-        "question_hi": "'iku' का क्या अर्थ है?",
-        "options": [
-          "To go",
-          "To eat",
-          "To drink"
-        ],
-        "options_romaji": [
-          "To go",
-          "To eat",
-          "To drink"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "Iku is to go.",
-        "explanation_hi": "Iku का अर्थ जाना होता है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u10_l01_ex2",
-        "type": "match",
-        "prompt_en": "Match the verbs.",
-        "prompt_hi": "क्रियाओं का मिलान करें।",
-        "pairs_japanese": [
-          "食べる",
-          "行く"
-        ],
-        "pairs_english": [
-          "To eat",
-          "To go"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u10_l01_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in direct object marker: ごはん ___ たべる。",
-        "question_hi": "कर्म वाचक कण भरें: ごはん ___ たべる。",
-        "correct_answer": "を",
-        "correct_answer_romaji": "wo",
-        "hint_en": "wo",
-        "hint_hi": "वो",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_taberu"
       ],
@@ -211,52 +165,6 @@
           "context_note": "A standard polite statement."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u10_l02_ex1",
-        "type": "multiple_choice",
-        "question_en": "What is the polite form of 'iku' (to go)?",
-        "question_hi": "'iku' (जाना) का औपचारिक रूप क्या है?",
-        "options": [
-          "行きます",
-          "行くます",
-          "行き"
-        ],
-        "options_romaji": [
-          "ikimasu",
-          "ikumasu",
-          "iki"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "Iku conjugates to ikimasu.",
-        "explanation_hi": "Iku का रूपांतरण ikimasu होता है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u10_l02_ex2",
-        "type": "match",
-        "prompt_en": "Match the polite forms.",
-        "prompt_hi": "औपचारिक रूपों का मिलान करें।",
-        "pairs_japanese": [
-          "行きます",
-          "食べます"
-        ],
-        "pairs_english": [
-          "To go (polite)",
-          "To eat (polite)"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u10_l02_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Conjugate taberu to polite form: たべ___ (eat)",
-        "question_hi": "taberu को औपचारिक रूप में बदलें: たべ___ (खाना)",
-        "correct_answer": "ます",
-        "correct_answer_romaji": "masu",
-        "hint_en": "masu",
-        "hint_hi": "मासु",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_ikimasu"
       ],

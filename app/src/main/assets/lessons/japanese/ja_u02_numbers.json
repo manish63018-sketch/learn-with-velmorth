@@ -120,54 +120,6 @@
           "context_note": "Simple sequential counting."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u02_l01_ex1",
-        "type": "multiple_choice",
-        "question_en": "What is 'five (5)' in Japanese?",
-        "question_hi": "जापानी में 'पाँच (5)' क्या है?",
-        "options": [
-          "ご",
-          "さん",
-          "いち"
-        ],
-        "options_romaji": [
-          "go",
-          "san",
-          "ichi"
-        ],
-        "correct_option_index": 0,
-        "explanation_en": "'Go' represents five.",
-        "explanation_hi": "'Go' का अर्थ पाँच है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u02_l01_ex2",
-        "type": "match",
-        "prompt_en": "Match the numbers.",
-        "prompt_hi": "संख्याओं का मिलान करें।",
-        "pairs_japanese": [
-          "一",
-          "二",
-          "三"
-        ],
-        "pairs_english": [
-          "One (1)",
-          "Two (2)",
-          "Three (3)"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u02_l01_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the blank: 一, 二, 三, 四, ___ (Write hiragana for 5)",
-        "question_hi": "रिक्त स्थान भरें: 一, 二, 三, 四, ___ (५ के लिए हीरागाना लिखें)",
-        "correct_answer": "ご",
-        "correct_answer_romaji": "go",
-        "hint_en": "Go",
-        "hint_hi": "गो",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_ichi",
         "ja_vocab_go"
@@ -254,52 +206,6 @@
           "context_note": "Telling your age."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u02_l02_ex1",
-        "type": "multiple_choice",
-        "question_en": "How do you say 'twenty-one (21)'?",
-        "question_hi": "'इक्कीस (21)' कैसे कहेंगे?",
-        "options": [
-          "にじゅういち",
-          "じゅうにいち",
-          "いちじゅうに"
-        ],
-        "options_romaji": [
-          "nijuuichi",
-          "juuniichi",
-          "ichijuuni"
-        ],
-        "correct_option_index": 0,
-        "explanation_en": "Ni-juu-ichi = 2-10-1 = 21.",
-        "explanation_hi": "Ni-juu-ichi = २-१०-१ = २१।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u02_l02_ex2",
-        "type": "match",
-        "prompt_en": "Match the numbers.",
-        "prompt_hi": "संख्याओं का मिलान करें।",
-        "pairs_japanese": [
-          "十一",
-          "二十"
-        ],
-        "pairs_english": [
-          "Eleven (11)",
-          "Twenty (20)"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u02_l02_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Write 11 in Hiragana (juu ichi):",
-        "question_hi": "हीरागाना में ११ लिखें (juu ichi):",
-        "correct_answer": "じゅういち",
-        "correct_answer_romaji": "juuichi",
-        "hint_en": "ten + one",
-        "hint_hi": "दस + एक",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_ni_juu"
       ],

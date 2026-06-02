@@ -8,26 +8,24 @@ import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import com.velmorth.app.MainActivity
+import com.velmorth.app.R
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.repository.FirestoreProgressRepository
 import com.velmorth.app.ui.auth.LoginActivity
@@ -42,31 +40,16 @@ class SplashActivity : ComponentActivity() {
             SplashContent()
         }
     }
-
     @Composable
     private fun SplashContent() {
         var startAnimation by remember { mutableStateOf(false) }
         var progress by remember { mutableStateOf(0f) }
 
-        // Logo scale animation
-        val scale by animateFloatAsState(
-            targetValue = if (startAnimation) 1f else 0.75f,
-            animationSpec = tween(durationMillis = 1200, easing = FastOutSlowInEasing),
-            label = "logoScale"
-        )
-
-        // Logo alpha animation
-        val alpha by animateFloatAsState(
+        // Breathtaking fade-in for the splash screen mascot and background
+        val backgroundAlpha by animateFloatAsState(
             targetValue = if (startAnimation) 1f else 0f,
-            animationSpec = tween(durationMillis = 900, easing = FastOutSlowInEasing),
-            label = "logoAlpha"
-        )
-
-        // Text slide-in alpha
-        val textAlpha by animateFloatAsState(
-            targetValue = if (startAnimation) 1f else 0f,
-            animationSpec = tween(durationMillis = 1200, delayMillis = 400, easing = FastOutSlowInEasing),
-            label = "textAlpha"
+            animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
+            label = "backgroundAlpha"
         )
 
         LaunchedEffect(Unit) {
@@ -112,125 +95,87 @@ class SplashActivity : ComponentActivity() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            Color(0xFF0D2B1C), // Deep forest night
-                            Color(0xFF1B4332), // Forest green
-                            Color(0xFF2D6A4F)  // Mid green
-                        )
-                    )
-                ),
-            contentAlignment = Alignment.Center
+                .background(Color(0xFF0F2218)) // Dark forest green background color matching the image
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
+            // Full Screen Background Image with subtle fade-in transition
+            Image(
+                painter = painterResource(id = R.drawable.splash_bg),
+                contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp)
-            ) {
+                    .alpha(backgroundAlpha),
+                contentScale = ContentScale.Crop
+            )
 
-                // ── Logo Circle ───────────────────────────────────────────────
-                Box(
-                    modifier = Modifier
-                        .size(140.dp)
-                        .scale(scale)
-                        .alpha(alpha)
-                        .clip(CircleShape)
-                        .background(
-                            Brush.radialGradient(
-                                colors = listOf(
-                                    Color(0xFF52B788).copy(alpha = 0.3f),
-                                    Color(0xFF1B4332).copy(alpha = 0.1f)
-                                )
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Outer glow ring
-                    Box(
-                        modifier = Modifier
-                            .size(120.dp)
-                            .clip(CircleShape)
-                            .background(
-                                Brush.linearGradient(
-                                    colors = listOf(Color(0xFF52B788), Color(0xFF2D6A4F))
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "🌱",
-                            fontSize = 56.sp
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(28.dp))
-
-                // ── App Title ─────────────────────────────────────────────────
-                Text(
-                    text = "Learn With Velmorth",
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.alpha(textAlpha)
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // ── Tagline ───────────────────────────────────────────────────
-                Text(
-                    text = "Plant the Seed of Learning",
-                    color = Color(0xFF95D5B2),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.alpha(textAlpha)
-                )
-
-                Spacer(modifier = Modifier.height(60.dp))
-
-                // ── Animated Loading Bar ──────────────────────────────────────
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.alpha(textAlpha)
-                ) {
-                    LinearProgressIndicator(
-                        progress = { progress },
-                        color = Color(0xFF52B788),
-                        trackColor = Color.White.copy(alpha = 0.12f),
-                        modifier = Modifier
-                            .fillMaxWidth(0.55f)
-                            .height(5.dp)
-                            .clip(RoundedCornerShape(50))
-                    )
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = if (progress < 0.95f) "Loading..." else "Ready!",
-                        color = Color(0xFF95D5B2).copy(alpha = 0.7f),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-            }
-
-            // ── Bottom footer ─────────────────────────────────────────────────
+            // Dynamic progress bar and thumb
+            // Positioned exactly at 76.7% from top (bias = 0.534f)
             Column(
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 32.dp)
-                    .alpha(textAlpha),
+                    .fillMaxWidth()
+                    .align(BiasAlignment(0f, 0.534f))
+                    .alpha(backgroundAlpha),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "by Velmorth",
-                    color = Color.White.copy(alpha = 0.3f),
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Light
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.58f)
+                        .height(36.dp),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    // Track capsule
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .background(
+                                color = Color(0xFF071911), // Extra dark green track background
+                                shape = RoundedCornerShape(50)
+                            )
+                            .border(
+                                width = 1.dp,
+                                color = Color(0xFF52B788).copy(alpha = 0.35f), // Glowing light green border
+                                shape = RoundedCornerShape(50)
+                            ),
+                        contentAlignment = Alignment.CenterStart
+                    ) {
+                        // Progress fill capsule
+                        if (progress > 0f) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth(progress)
+                                    .fillMaxHeight()
+                                    .background(
+                                        brush = Brush.horizontalGradient(
+                                            colors = listOf(
+                                                Color(0xFF1B4332), // Forest green
+                                                Color(0xFF2D6A4F), // Mid green
+                                                Color(0xFF52B788)  // Glowing light green
+                                            )
+                                        ),
+                                        shape = RoundedCornerShape(50)
+                                    )
+                            )
+                        }
+                    }
+
+                    // Leaf thumb at the end of progress
+                    if (progress > 0f) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth(progress)
+                                .fillMaxHeight(),
+                            contentAlignment = Alignment.CenterEnd
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.splash_leaf),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(24.dp)
+                                    .offset(x = 12.dp) // Center the leaf thumb at the progress edge
+                            )
+                        }
+                    }
+                }
             }
         }
     }

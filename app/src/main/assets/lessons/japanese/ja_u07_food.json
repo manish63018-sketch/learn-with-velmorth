@@ -77,52 +77,6 @@
           "context_note": "Simple eating routine."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u07_l01_ex1",
-        "type": "multiple_choice",
-        "question_en": "What is the direct object marking particle?",
-        "question_hi": "प्रत्यक्ष कर्म को दर्शाने वाला कण कौन सा है?",
-        "options": [
-          "を",
-          "は",
-          "が"
-        ],
-        "options_romaji": [
-          "wo",
-          "wa",
-          "ga"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "'wo' is the direct object particle.",
-        "explanation_hi": "'wo' प्रत्यक्ष कर्म कण है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u07_l01_ex2",
-        "type": "match",
-        "prompt_en": "Match the items.",
-        "prompt_hi": "वस्तुओं का मिलान करें।",
-        "pairs_japanese": [
-          "ご飯",
-          "水"
-        ],
-        "pairs_english": [
-          "Rice / Meal",
-          "Water"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u07_l01_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in: 水を ___ ます (I drink water - write nomimasu base 'nomi')",
-        "question_hi": "भरें: 水を ___ ます (मैं पानी पीता हूँ - नोमी लिखें)",
-        "correct_answer": "のみ",
-        "correct_answer_romaji": "nomi",
-        "hint_en": "nomi",
-        "hint_hi": "नोमी",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_gohan"
       ],
@@ -209,52 +163,6 @@
           "context_note": "Ordering at table."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u07_l02_ex1",
-        "type": "multiple_choice",
-        "question_en": "How do you politely request something?",
-        "question_hi": "किसी चीज़ के लिए विनम्रतापूर्वक अनुरोध कैसे करते हैं?",
-        "options": [
-          "ください",
-          "ありがとう",
-          "すみません"
-        ],
-        "options_romaji": [
-          "kudasai",
-          "arigatou",
-          "sumimasen"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "'Kudasai' is please give me.",
-        "explanation_hi": "'Kudasai' का अर्थ कृपया मुझे दें होता है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u07_l02_ex2",
-        "type": "match",
-        "prompt_en": "Match the words.",
-        "prompt_hi": "शब्दों का मिलान करें।",
-        "pairs_japanese": [
-          "ください",
-          "おいしい"
-        ],
-        "pairs_english": [
-          "Please give me",
-          "Delicious"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u07_l02_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in for 'Water, please': 水 ___ ください。",
-        "question_hi": "रिक्त स्थान भरें: 水 ___ ください。",
-        "correct_answer": "を",
-        "correct_answer_romaji": "wo",
-        "hint_en": "offering",
-        "hint_hi": "प्रस्तावित वस्तु",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_kudasai"
       ],

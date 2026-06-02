@@ -257,20 +257,22 @@ class LessonPlayerActivity : ComponentActivity() {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Sticky Bottom Button
-            Button(
-                onClick = onStartQuiz,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
-                shape = RoundedCornerShape(24.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-            ) {
-                Text(
-                    text = if (isHindi) "क्विज अभ्यास शुरू करें ➔" else "Start Practice Quiz ➔",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+            if (lesson.exercises.isNotEmpty()) {
+                Button(
+                    onClick = onStartQuiz,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+                    shape = RoundedCornerShape(24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Text(
+                        text = if (isHindi) "क्विज अभ्यास शुरू करें ➔" else "Start Practice Quiz ➔",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
@@ -655,6 +657,21 @@ class LessonPlayerActivity : ComponentActivity() {
         onExit: () -> Unit
     ) {
         val exercises = lesson.exercises
+        if (exercises.isEmpty()) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = "No exercises available.", color = Color.Gray)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Button(onClick = onExit) {
+                        Text(text = "Go Back")
+                    }
+                }
+            }
+            return
+        }
         var currentIndex by rememberSaveable { mutableIntStateOf(0) }
         val currentExercise = exercises[currentIndex]
 

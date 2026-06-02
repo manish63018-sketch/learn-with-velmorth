@@ -1,11 +1,13 @@
 package com.velmorth.app.data.repository
 
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import com.velmorth.app.utils.XPManager
 
 /**
@@ -476,5 +478,58 @@ object FirestoreProgressRepository {
             .update("language", languageId)
             .addOnFailureListener { e -> Log.w(TAG, "Settings language save failed: ${e.message}") }
     }
+
+    // ── Firebase Storage: Profile Photo Upload ─────────────────────────────────
+
+    /**
+     * Uploads a profile photo URI (from gallery or camera) to Firebase Storage,
+     * then updates the users/{uid} document with the download URL.
+     *
+     * @param imageUri  Content or file URI of the selected image.
+     * @param onSuccess Called with the download URL on success.
+     * @param onFailure Called with an error message on failure.
+     */
+    fun uploadProfilePhoto(
+        imageUri: Uri,
+        onSuccess: (downloadUrl: String) -> Unit,
+        onFailure: (errorMsg: String) -> Unit
+    ) {
+        val uid = currentUid() ?: run {
+            onFailure("Not signed in")
+            return
+        }
+        val storageRef = try {
+            FirebaseStorage.getInstance()
+                .reference
+                .child("profile_photos/$uid/avatar.jpg")
+        } catch (e: Exception) {
+            onFailure("Storage unavailable: ${e.message}")
+            return
+        }
+
+        storageRef.putFile(imageUri)
+            .addOnSuccessListener {
+                storageRef.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        val downloadUrl = uri.toString()
+                        // Persist to Firestore
+                        getDb()?.collection(USERS)?.document(uid)
+                            ?.update("profileImage", downloadUrl)
+                            ?.addOnFailureListener { e ->
+                                Log.w(TAG, "Failed to save profile image URL: ${e.message}")
+                            }
+                        Log.d(TAG, "Profile photo uploaded: $downloadUrl")
+                        onSuccess(downloadUrl)
+                    }
+                    .addOnFailureListener { e ->
+                        onFailure("Failed to get download URL: ${e.message}")
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Profile photo upload failed: ${e.message}")
+                onFailure("Upload failed: ${e.message}")
+            }
+    }
 }
+
 

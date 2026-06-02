@@ -108,6 +108,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.storage)
 
     // WorkManager (daily notifications)
     implementation(libs.androidx.work.runtime.ktx)

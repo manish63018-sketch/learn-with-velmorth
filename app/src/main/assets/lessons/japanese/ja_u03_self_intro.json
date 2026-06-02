@@ -76,52 +76,6 @@
           "context_note": "A perfect opening line when meeting someone."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u03_l01_ex1",
-        "type": "multiple_choice",
-        "question_en": "How do you say 'I' or 'me' politely?",
-        "question_hi": "औपचारिक तरीके से 'मैं' या 'मुझे' कैसे कहेंगे?",
-        "options": [
-          "わたし",
-          "なまえ",
-          "あなた"
-        ],
-        "options_romaji": [
-          "watashi",
-          "namae",
-          "anata"
-        ],
-        "correct_option_index": 0,
-        "explanation_en": "'Watashi' is the polite pronoun for I.",
-        "explanation_hi": "'Watashi' 'मैं' के लिए औपचारिक सर्वनाम है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u03_l01_ex2",
-        "type": "match",
-        "prompt_en": "Match pronouns and nouns.",
-        "prompt_hi": "सर्वनाम और संज्ञा का मिलान करें।",
-        "pairs_japanese": [
-          "私",
-          "名前"
-        ],
-        "pairs_english": [
-          "I / me",
-          "Name"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u03_l01_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the blank: 私はラヴィ ___ (I am Ravi)",
-        "question_hi": "रिक्त स्थान भरें: 私はラヴィ ___ (मैं रवि हूँ)",
-        "correct_answer": "です",
-        "correct_answer_romaji": "desu",
-        "hint_en": "is / am",
-        "hint_hi": "हूँ",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_watashi"
       ],
@@ -225,54 +179,6 @@
           "context_note": "Stating details about yourself."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u03_l02_ex1",
-        "type": "multiple_choice",
-        "question_en": "How do you say 'Indian person (nationality)' in Japanese?",
-        "question_hi": "जापानी में 'भारतीय व्यक्ति (राष्ट्रीयता)' कैसे कहेंगे?",
-        "options": [
-          "インドじん",
-          "にほんじん",
-          "いんどご"
-        ],
-        "options_romaji": [
-          "indojin",
-          "nihonjin",
-          "indogo"
-        ],
-        "correct_option_index": 0,
-        "explanation_en": "Indo + jin = Indojin (Indian person).",
-        "explanation_hi": "Indo + jin = Indojin (भारतीय व्यक्ति)।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u03_l02_ex2",
-        "type": "match",
-        "prompt_en": "Match country and suffix.",
-        "prompt_hi": "देश और प्रत्यय का मिलान करें।",
-        "pairs_japanese": [
-          "インド",
-          "人",
-          "歳"
-        ],
-        "pairs_english": [
-          "India",
-          "Nationality suffix",
-          "Years old suffix"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u03_l02_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the nationality suffix for Indian (インド___):",
-        "question_hi": "भारतीय (インド___) के लिए राष्ट्रीयता प्रत्यय भरें:",
-        "correct_answer": "人",
-        "correct_answer_romaji": "jin",
-        "hint_en": "person / jin kanji",
-        "hint_hi": "व्यक्ति / जिन कांजी",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_jin"
       ],
@@ -373,54 +279,6 @@
           "context_note": "Talking about reading."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u03_l03_ex1",
-        "type": "multiple_choice",
-        "question_en": "What does 'shumi' mean?",
-        "question_hi": "'shumi' का क्या अर्थ है?",
-        "options": [
-          "Hobby",
-          "Name",
-          "Country"
-        ],
-        "options_romaji": [
-          "Hobby",
-          "Name",
-          "Country"
-        ],
-        "correct_option_index": 0,
-        "explanation_en": "'Shumi' translates to hobby.",
-        "explanation_hi": "'Shumi' का अनुवाद शौक होता है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u03_l03_ex2",
-        "type": "match",
-        "prompt_en": "Match the hobbies.",
-        "prompt_hi": "शौक का मिलान करें।",
-        "pairs_japanese": [
-          "しゅみ",
-          "おんがく",
-          "どくしょ"
-        ],
-        "pairs_english": [
-          "Hobby",
-          "Music",
-          "Reading"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u03_l03_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the blank for music: 趣味は ___ です。",
-        "question_hi": "संगीत के लिए रिक्त स्थान भरें: 趣味は ___ です。",
-        "correct_answer": "おんがく",
-        "correct_answer_romaji": "ongaku",
-        "hint_en": "ongaku",
-        "hint_hi": "ओनगाकु",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_shumi"
       ],

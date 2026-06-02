@@ -489,12 +489,29 @@ private fun HeroHeader(
     LaunchedEffect(photoUrl) {
         if (photoUrl.isNotEmpty()) {
             try {
-                val uri = android.net.Uri.parse(photoUrl)
-                context.contentResolver.openInputStream(uri)?.use { stream ->
-                    bitmap = android.graphics.BitmapFactory.decodeStream(stream)
+                if (photoUrl.startsWith("http://") || photoUrl.startsWith("https://")) {
+                    kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                        runCatching {
+                            val url = java.net.URL(photoUrl)
+                            url.openStream()?.use { stream ->
+                                android.graphics.BitmapFactory.decodeStream(stream)
+                            }
+                        }.getOrNull()
+                    }?.let { bmp ->
+                        bitmap = bmp
+                    }
+                } else {
+                    val uri = android.net.Uri.parse(photoUrl)
+                    context.contentResolver.openInputStream(uri)?.use { stream ->
+                        bitmap = android.graphics.BitmapFactory.decodeStream(stream)
+                    }
                 }
-            } catch (e: Exception) { e.printStackTrace() }
-        } else { bitmap = null }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            bitmap = null
+        }
     }
 
     Box(

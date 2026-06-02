@@ -90,54 +90,6 @@
           "context_note": "Describing a color."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u08_l01_ex1",
-        "type": "multiple_choice",
-        "question_en": "What color is 'aka'?",
-        "question_hi": "'aka' कौन सा रंग है?",
-        "options": [
-          "Red",
-          "Blue",
-          "White"
-        ],
-        "options_romaji": [
-          "Red",
-          "Blue",
-          "White"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "Aka is red.",
-        "explanation_hi": "Aka का अर्थ लाल होता है।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u08_l01_ex2",
-        "type": "match",
-        "prompt_en": "Match the colors.",
-        "prompt_hi": "रंगों का मिलान करें।",
-        "pairs_japanese": [
-          "赤",
-          "青",
-          "白"
-        ],
-        "pairs_english": [
-          "Red",
-          "Blue",
-          "White"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u08_l01_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the blank for white: これは ___ です。",
-        "question_hi": "सफेद के लिए रिक्त स्थान भरें: これは ___ です。",
-        "correct_answer": "しろ",
-        "correct_answer_romaji": "shiro",
-        "hint_en": "shiro",
-        "hint_hi": "शिरो",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_aka"
       ],
@@ -223,52 +175,6 @@
           "context_note": "Describing a pen."
         }
       ],
-      "exercise_1": {
-        "exercise_id": "ja_u08_l02_ex1",
-        "type": "multiple_choice",
-        "question_en": "How do you say 'red book'?",
-        "question_hi": "'लाल किताब' कैसे कहेंगे?",
-        "options": [
-          "あかいほん",
-          "あかほん",
-          "ほんあかい"
-        ],
-        "options_romaji": [
-          "akaihon",
-          "akahon",
-          "honakai"
-        ],
-        "correctOptionIndex": 0,
-        "explanation_en": "Akai + hon = Akai hon.",
-        "explanation_hi": "Akai + hon = Akai hon (लाल किताब)।",
-        "xp_reward": 3
-      },
-      "exercise_2": {
-        "exercise_id": "ja_u08_l02_ex2",
-        "type": "match",
-        "prompt_en": "Match the adjectives.",
-        "prompt_hi": "विशेषणों का मिलान करें।",
-        "pairs_japanese": [
-          "赤い",
-          "青い"
-        ],
-        "pairs_english": [
-          "Red (modifying)",
-          "Blue (modifying)"
-        ],
-        "xp_reward": 3
-      },
-      "exercise_3": {
-        "exercise_id": "ja_u08_l02_ex3",
-        "type": "fill_in_blank",
-        "question_en": "Fill in the blank for blue book (aoi hon): ___ ほんです。",
-        "question_hi": "नीली किताब के लिए रिक्त स्थान भरें: ___ ほんです。",
-        "correct_answer": "あおい",
-        "correct_answer_romaji": "aoi",
-        "hint_en": "aoi",
-        "hint_hi": "आओई",
-        "xp_reward": 4
-      },
       "review_words": [
         "ja_vocab_akai"
       ],

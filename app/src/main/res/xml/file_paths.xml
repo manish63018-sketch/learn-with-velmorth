@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <!-- Shared external storage for camera-captured photos -->
+    <external-path name="velmorth_photos" path="Pictures/Velmorth/" />
+    <!-- Internal cache for temp photos -->
+    <cache-path name="velmorth_cache" path="images/" />
+</paths>
