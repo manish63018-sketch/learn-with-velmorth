@@ -77,11 +77,11 @@ class MainActivity : FragmentActivity() {
 
         // Add tabs programmatically
         bottomNav.menu.apply {
-            add(0, 1, 0, "Home").setIcon(android.R.drawable.ic_menu_today)
-            add(0, 2, 1, "Lessons").setIcon(android.R.drawable.ic_menu_compass)
-            add(0, 3, 2, "Review").setIcon(android.R.drawable.ic_menu_edit)
-            add(0, 4, 3, "Shop").setIcon(android.R.drawable.ic_menu_slideshow)
-            add(0, 5, 4, "Profile").setIcon(android.R.drawable.ic_menu_myplaces)
+            add(0, 1, 0, "Home").setIcon(R.drawable.ic_nav_home)
+            add(0, 2, 1, "Learn").setIcon(R.drawable.ic_nav_learn)
+            add(0, 3, 2, "Practice").setIcon(R.drawable.ic_nav_practice)
+            add(0, 4, 3, "Store").setIcon(R.drawable.ic_nav_store)
+            add(0, 5, 4, "Profile").setIcon(R.drawable.ic_nav_profile)
         }
 
         rootLayout.addView(fragmentContainer)

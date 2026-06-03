@@ -110,6 +110,12 @@ class LocaleViewModel @Inject constructor(
                 displayName = "Hindi",
                 flag        = "🇮🇳",
                 localeTag   = "hi"
+            ),
+            SupportedLanguage(
+                id          = "japanese",
+                displayName = "Japanese",
+                flag        = "🇯🇵",
+                localeTag   = "ja"
             )
         )
 

@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
@@ -37,6 +39,15 @@ import com.velmorth.app.data.repository.FirestoreProgressRepository
 import com.velmorth.app.data.repository.LessonRepository
 import com.velmorth.app.data.repository.UserRepository
 import com.velmorth.app.ui.lessons.LessonPlayerActivity
+import com.velmorth.app.ui.profile.UserViewModel
+import com.velmorth.app.ui.lessons.ProgressViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayCircle
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 /**
@@ -44,11 +55,15 @@ import java.util.Calendar
  * Layout: greeting header → stats row → Continue Learning card
  * → Daily Streak card (with Collect button) → Current Course card → Banner ad
  */
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var userRepository: UserRepository
     private lateinit var lessonRepository: LessonRepository
     private lateinit var prefsManager: PrefsManager
+
+    private val userViewModel: UserViewModel by viewModels()
+    private val progressViewModel: ProgressViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,37 +89,23 @@ class HomeFragment : Fragment() {
 
     @Composable
     private fun HomeScreenContent() {
-        val user            = userRepository.getUser()
-        val progress        = lessonRepository.getProgress()
-        val allLessons      = lessonRepository.getUnits().flatMap { it.lessons }
-        val completedCount  = lessonRepository.getCompletedLessons().size
-        val totalLessons    = allLessons.size
-        val progressFraction = if (totalLessons > 0) completedCount.toFloat() / totalLessons else 0f
-        val hasStarted      = progress.completedLessons.isNotEmpty()
-        val selectedLang    = prefsManager.selectedLanguage
+        val userState by userViewModel.userState.collectAsState()
+        val progressState by progressViewModel.progressState.collectAsState()
 
-        // Streak card state (checked against Firestore on composition)
-        var streakCollected by remember { mutableStateOf(false) }
-        var currentStreak   by remember { mutableIntStateOf(user.streak) }
-        var currentLeaves   by remember { mutableIntStateOf(user.leaves) }
-        var streakLoading   by remember { mutableStateOf(true) }
-
-        LaunchedEffect(Unit) {
-            FirestoreProgressRepository.claimStreakCheckin { result, newStreak, newLeaves ->
-                if (result == FirestoreProgressRepository.StreakCheckinResult.ALREADY_CLAIMED) {
-                    streakCollected = true
-                } else {
-                    // CLAIMED or RESET — update local prefs too
-                    prefsManager.streak = newStreak
-                    prefsManager.leaves = newLeaves
-                    currentStreak = newStreak
-                    currentLeaves = newLeaves
-                }
-                if (newStreak > 0) currentStreak = newStreak
-                if (newLeaves > 0) currentLeaves = newLeaves
-                streakLoading = false
-            }
+        val allLessons = remember(userState.selectedLanguage) {
+            lessonRepository.getUnits().flatMap { it.lessons }
         }
+        val totalLessons = allLessons.size
+        val completedCount = progressState.completedCount
+        val progressFraction = if (totalLessons > 0) completedCount.toFloat() / totalLessons else 0f
+        val progressPercent = (progressFraction * 100).toInt()
+
+        val nextLessonId = lessonRepository.getProgress().currentLesson
+        val nextLesson = remember(nextLessonId) {
+            lessonRepository.getLessonById(nextLessonId)
+        }
+        val nextLessonTitle = nextLesson?.title ?: "No lessons left!"
+        val selectedLang = userState.selectedLanguage.ifEmpty { prefsManager.selectedLanguage }
 
         val greeting = when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
             in 0..11  -> "Good morning"
@@ -121,121 +122,193 @@ class HomeFragment : Fragment() {
             else       -> "🌍"
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color(0xFFF0F4F1))
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            // ── Header ────────────────────────────────────────────────────────
-            HomeHeader(
-                greeting    = greeting,
-                displayName = user.displayName.ifBlank { "Learner" },
-                onAvatarClick = {
-                    (requireActivity() as? MainActivity)?.let { act ->
-                        act.bottomNav.selectedItemId = 5
-                    }
+        // Streak checkin (runs in background and syncs reactively)
+        LaunchedEffect(Unit) {
+            FirestoreProgressRepository.claimStreakCheckin { result, newStreak, newLeaves ->
+                if (result != FirestoreProgressRepository.StreakCheckinResult.ALREADY_CLAIMED) {
+                    userViewModel.updateStreak(newStreak, newLeaves)
                 }
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // ── Stats Row ─────────────────────────────────────────────────────
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                StatCard(icon = "⭐", value = "${user.xp}", label = "XP", modifier = Modifier.weight(1f))
-                StatCard(icon = "🍃", value = "$currentLeaves", label = "Leaves", modifier = Modifier.weight(1f))
-                StatCard(icon = "🔥", value = "$currentStreak", label = "Streak", modifier = Modifier.weight(1f))
             }
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        // Pull-to-refresh logic
+        var isRefreshing by remember { mutableStateOf(false) }
+        val scope = rememberCoroutineScope()
 
-            // ── Continue Learning Card ─────────────────────────────────────────
-            ContinueLearningCard(
-                hasStarted = hasStarted,
-                langFlag   = langFlag,
-                langName   = langDisplay,
-                onClick    = {
-                    val nextLessonId = progress.currentLesson
-                    val nextLesson   = lessonRepository.getLessonById(nextLessonId)
+        val recommendedActions = remember(progressState, userState, nextLessonTitle) {
+            val list = mutableListOf<Map<String, String>>()
+            if (nextLesson != null) {
+                list.add(mapOf(
+                    "title" to "Continue Course: ${nextLesson.title}",
+                    "reason" to "Resume where you left off",
+                    "actionType" to "lesson",
+                    "payload" to nextLesson.id
+                ))
+            }
+            if (progressState.reviewQueueSize > 0) {
+                list.add(mapOf(
+                    "title" to "Review Practice",
+                    "reason" to "${progressState.reviewQueueSize} weak items waiting",
+                    "actionType" to "review",
+                    "payload" to ""
+                ))
+            } else {
+                list.add(mapOf(
+                    "title" to "Practice Session",
+                    "reason" to "Strengthen your daily habit",
+                    "actionType" to "review",
+                    "payload" to ""
+                ))
+            }
+            if (userState.leafBalance > 0) {
+                list.add(mapOf(
+                    "title" to "Visit Shop",
+                    "reason" to "Spend your ${userState.leafBalance} leaves on power-ups",
+                    "actionType" to "shop",
+                    "payload" to ""
+                ))
+            }
+            list
+        }
 
-                    if (nextLesson != null) {
-                        startActivity(
-                            Intent(requireContext(), LessonPlayerActivity::class.java).apply {
-                                putExtra("LESSON_ID", nextLesson.id)
-                            }
-                        )
-                    } else {
-                        val firstId = lessonRepository.getUnits()
-                            .firstOrNull()?.lessons?.firstOrNull()?.id
-                        if (firstId != null) {
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                userViewModel.refreshFromFirestore()
+                progressViewModel.refresh()
+                scope.launch {
+                    delay(1000)
+                    isRefreshing = false
+                }
+            },
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0xFFF0F4F1))
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // ── Header ────────────────────────────────────────────────────────
+                HomeHeader(
+                    greeting    = greeting,
+                    displayName = userState.name.ifBlank { "Learner" },
+                    onAvatarClick = {
+                        (requireActivity() as? MainActivity)?.let { act ->
+                            act.bottomNav.selectedItemId = 5
+                        }
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // ── Stats Row ─────────────────────────────────────────────────────
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    StatCard(icon = "⭐", value = "${userState.xp}", label = "XP", modifier = Modifier.weight(1f))
+                    StatCard(icon = "🌿", value = "${userState.leafBalance}", label = "Leaves", modifier = Modifier.weight(1f))
+                    StatCard(icon = "🔥", value = "${userState.streak}", label = "Streak", modifier = Modifier.weight(1f))
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // ── Continue Learning Card ─────────────────────────────────────────
+                ContinueLearningCard(
+                    langFlag = langFlag,
+                    langName = langDisplay,
+                    lessonTitle = nextLessonTitle,
+                    progressPercent = progressPercent,
+                    onClick = {
+                        if (nextLesson != null) {
                             startActivity(
                                 Intent(requireContext(), LessonPlayerActivity::class.java).apply {
-                                    putExtra("LESSON_ID", firstId)
+                                    putExtra("LESSON_ID", nextLesson.id)
                                 }
                             )
-                        }
-                    }
-                }
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // ── Daily Streak Card ─────────────────────────────────────────────
-            DailyStreakCard(
-                streak          = currentStreak,
-                isCollected     = streakCollected,
-                isLoading       = streakLoading,
-                onCollect       = {
-                    streakLoading = true
-                    FirestoreProgressRepository.claimStreakCheckin { result, newStreak, newLeaves ->
-                        when (result) {
-                            FirestoreProgressRepository.StreakCheckinResult.ALREADY_CLAIMED -> {
-                                streakCollected = true
-                            }
-                            else -> {
-                                prefsManager.streak = newStreak
-                                prefsManager.leaves = newLeaves
-                                currentStreak = newStreak
-                                currentLeaves = newLeaves
-                                streakCollected = true
+                        } else {
+                            val firstId = lessonRepository.getUnits()
+                                .firstOrNull()?.lessons?.firstOrNull()?.id
+                            if (firstId != null) {
+                                startActivity(
+                                    Intent(requireContext(), LessonPlayerActivity::class.java).apply {
+                                        putExtra("LESSON_ID", firstId)
+                                    }
+                                )
                             }
                         }
-                        streakLoading = false
                     }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // ── Daily Goal Card ───────────────────────────────────────────────
+                DailyGoalCard(
+                    currentXp = progressState.dailyXpEarned,
+                    targetXp = progressState.dailyGoal,
+                    isCompleted = progressState.isDailyGoalComplete
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // ── Recommended Actions ───────────────────────────────────────────
+                Text(
+                    text = "Continue where you left off",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF1A1A1A),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 12.dp)
+                )
+
+                recommendedActions.forEach { action ->
+                    val title = action["title"] ?: ""
+                    val reason = action["reason"] ?: ""
+                    val type = action["actionType"] ?: ""
+                    val payload = action["payload"] ?: ""
+
+                    RecommendedActionTile(
+                        title = title,
+                        reason = reason,
+                        onClick = {
+                            when (type) {
+                                "lesson" -> {
+                                    startActivity(
+                                        Intent(requireContext(), LessonPlayerActivity::class.java).apply {
+                                            putExtra("LESSON_ID", payload)
+                                        }
+                                    )
+                                }
+                                "review" -> {
+                                    (requireActivity() as? MainActivity)?.let { act ->
+                                        act.bottomNav.selectedItemId = 3
+                                    }
+                                }
+                                "shop" -> {
+                                    (requireActivity() as? MainActivity)?.let { act ->
+                                        act.bottomNav.selectedItemId = 4
+                                    }
+                                }
+                            }
+                        }
+                    )
                 }
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // ── Current Course Card ───────────────────────────────────────────
-            CurrentCourseCard(
-                langFlag         = langFlag,
-                langName         = langDisplay,
-                progressFraction = progressFraction,
-                completedCount   = completedCount,
-                totalLessons     = totalLessons,
-                onBrowseCourses  = {
-                    (requireActivity() as? MainActivity)?.let { act ->
-                        act.bottomNav.selectedItemId = 2
-                    }
+                // ── Banner Ad ─────────────────────────────────────────────────────
+                if (!userState.isPremium) {
+                    Spacer(Modifier.height(16.dp))
+                    BannerAdView()
                 }
-            )
 
-            // ── Banner Ad ─────────────────────────────────────────────────────
-            if (!user.isPremium) {
-                Spacer(Modifier.height(16.dp))
-                BannerAdView()
+                Spacer(modifier = Modifier.height(20.dp))
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 
@@ -330,9 +403,10 @@ class HomeFragment : Fragment() {
 
     @Composable
     private fun ContinueLearningCard(
-        hasStarted: Boolean,
         langFlag: String,
         langName: String,
+        lessonTitle: String,
+        progressPercent: Int,
         onClick: () -> Unit
     ) {
         Card(
@@ -354,23 +428,48 @@ class HomeFragment : Fragment() {
                     .padding(20.dp)
             ) {
                 Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = langFlag, fontSize = 28.sp)
-                        Spacer(Modifier.width(10.dp))
-                        Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(text = langFlag, fontSize = 28.sp)
+                            Spacer(Modifier.width(10.dp))
+                            Column {
+                                Text(
+                                    text = "Continue Learning",
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = Color.White
+                                )
+                                Text(
+                                    text = "$langName Course",
+                                    fontSize = 13.sp,
+                                    color = Color(0xFFB7E4C7)
+                                )
+                            }
+                        }
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color(0xFF52B788).copy(alpha = 0.25f)
+                        ) {
                             Text(
-                                text = if (hasStarted) "Continue Learning" else "Start Learning",
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                color = Color.White
-                            )
-                            Text(
-                                text = "$langName Course",
+                                text = "$progressPercent%",
                                 fontSize = 13.sp,
-                                color = Color(0xFFB7E4C7)
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color(0xFFB7E4C7),
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                             )
                         }
                     }
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = lessonTitle,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.White.copy(alpha = 0.9f)
+                    )
                     Spacer(Modifier.height(16.dp))
                     Button(
                         onClick = onClick,
@@ -381,7 +480,7 @@ class HomeFragment : Fragment() {
                             .height(48.dp)
                     ) {
                         Text(
-                            text = if (hasStarted) "Resume Lesson →" else "Begin Now →",
+                            text = "Resume Lesson →",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
@@ -393,109 +492,12 @@ class HomeFragment : Fragment() {
     }
 
     @Composable
-    private fun DailyStreakCard(
-        streak: Int,
-        isCollected: Boolean,
-        isLoading: Boolean,
-        onCollect: () -> Unit
+    private fun DailyGoalCard(
+        currentXp: Int,
+        targetXp: Int,
+        isCompleted: Boolean
     ) {
-        val stateLabel = when {
-            isLoading   -> "Checking..."
-            isCollected -> "Collected Today ✓"
-            else        -> "Collect Daily Reward"
-        }
-        val stateBg = if (isCollected) Color(0xFF52B788) else Color(0xFFF4A261)
-
-        Card(
-            shape     = RoundedCornerShape(20.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
-            elevation = CardDefaults.cardElevation(2.dp),
-            modifier  = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Flame circle
-                Box(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                        .background(Color(0xFFFFF3E0)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("🔥", fontSize = 30.sp)
-                }
-
-                Spacer(Modifier.width(14.dp))
-
-                Column(Modifier.weight(1f)) {
-                    Text(
-                        text = "Daily Streak",
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1B4332)
-                    )
-                    Text(
-                        text = "$streak day${if (streak == 1) "" else "s"} in a row",
-                        fontSize = 13.sp,
-                        color = Color(0xFF6B7280)
-                    )
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        text = "Reward: +5 🍃 leaves",
-                        fontSize = 11.sp,
-                        color = Color(0xFFF4A261),
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-
-                Spacer(Modifier.width(10.dp))
-
-                Button(
-                    onClick  = { if (!isCollected && !isLoading) onCollect() },
-                    enabled  = !isCollected && !isLoading,
-                    colors   = ButtonDefaults.buttonColors(
-                        containerColor = stateBg,
-                        disabledContainerColor = if (isCollected) Color(0xFF52B788) else Color(0xFFD1D5DB)
-                    ),
-                    shape    = RoundedCornerShape(20.dp),
-                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
-                ) {
-                    if (isLoading) {
-                        CircularProgressIndicator(
-                            color = Color.White,
-                            strokeWidth = 2.dp,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    } else {
-                        Text(
-                            text = if (isCollected) "✓ Done" else "Collect",
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun CurrentCourseCard(
-        langFlag: String,
-        langName: String,
-        progressFraction: Float,
-        completedCount: Int,
-        totalLessons: Int,
-        onBrowseCourses: () -> Unit
-    ) {
-        val progressPercent = (progressFraction * 100).toInt()
-
+        val progressFraction = if (targetXp > 0) (currentXp.toFloat() / targetXp).coerceIn(0f, 1f) else 0f
         Card(
             shape     = RoundedCornerShape(20.dp),
             colors    = CardDefaults.cardColors(containerColor = Color.White),
@@ -511,38 +513,36 @@ class HomeFragment : Fragment() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(text = langFlag, fontSize = 22.sp)
+                        Text(text = "🎯", fontSize = 22.sp)
                         Spacer(Modifier.width(8.dp))
                         Column {
                             Text(
-                                text = "Current Course",
-                                fontSize = 11.sp,
-                                color = Color(0xFF6B7280)
-                            )
-                            Text(
-                                text = langName,
-                                fontSize = 16.sp,
+                                text = "Daily Goal",
+                                fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xFF1B4332)
+                            )
+                            Text(
+                                text = if (isCompleted) "Goal Met! 🎉" else "Keep going!",
+                                fontSize = 12.sp,
+                                color = Color(0xFF6B7280)
                             )
                         }
                     }
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFFE8F5E9)
+                        color = if (isCompleted) Color(0xFFE8F5E9) else Color(0xFFFFF3E0)
                     ) {
                         Text(
-                            text = "$progressPercent%",
+                            text = "$currentXp / $targetXp XP",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = Color(0xFF2D6A4F),
+                            color = if (isCompleted) Color(0xFF2D6A4F) else Color(0xFFF4A261),
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
                 }
-
                 Spacer(Modifier.height(12.dp))
-
                 // Progress bar
                 Box(
                     modifier = Modifier
@@ -563,31 +563,57 @@ class HomeFragment : Fragment() {
                             )
                     )
                 }
+            }
+        }
+    }
 
-                Spacer(Modifier.height(8.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+    @Composable
+    private fun RecommendedActionTile(
+        title: String,
+        reason: String,
+        onClick: () -> Unit
+    ) {
+        Card(
+            shape     = RoundedCornerShape(14.dp),
+            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(1.dp),
+            modifier  = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 5.dp)
+                .clickable { onClick() }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(14.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.PlayCircle,
+                    contentDescription = null,
+                    tint = Color(0xFF2D6A4F),
+                    modifier = Modifier.size(32.dp)
+                )
+                Spacer(Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "$completedCount of $totalLessons lessons",
-                        fontSize = 12.sp,
-                        color = Color(0xFF6B7280)
+                        text = title,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF1A1A1A)
                     )
-                    TextButton(
-                        onClick = onBrowseCourses,
-                        contentPadding = PaddingValues(0.dp)
-                    ) {
-                        Text(
-                            text = "Browse All →",
-                            fontSize = 12.sp,
-                            color = Color(0xFF2D6A4F),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    Text(
+                        text = reason,
+                        fontSize = 12.sp,
+                        color = Color(0xFF888888)
+                    )
                 }
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                    tint = Color(0xFFBBBBBB),
+                    modifier = Modifier.size(24.dp)
+                )
             }
         }
     }

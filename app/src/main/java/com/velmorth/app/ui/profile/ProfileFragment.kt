@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.repository.FirestoreProgressRepository
@@ -48,6 +49,10 @@ import com.velmorth.app.data.repository.LessonRepository
 import com.velmorth.app.data.repository.UserRepository
 import com.velmorth.app.ui.premium.PremiumActivity
 import com.velmorth.app.ui.settings.SettingsActivity
+import com.velmorth.app.ui.settings.LocaleViewModel
+import com.velmorth.app.ui.settings.SupportedLanguage
+import com.velmorth.app.ui.lessons.ProgressViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 // ── Brand palette ──────────────────────────────────────────────────────────────
 private val DarkGreen    = Color(0xFF1B4332)
@@ -69,20 +74,18 @@ private val LANGUAGES = listOf(
 )
 
 /**
- * Full-featured Profile screen with:
- *  - Hero header (avatar, name, @username, premium badge, stat pills, Edit Profile button)
- *  - Account card (email, Google account info)
- *  - Language settings card (switcher between all 4 languages)
- *  - Progress card with animated bar
- *  - Badges grid
- *  - Support (Instagram only)
- *  - Premium upsell banner
+ * Full-featured Profile screen with Hilt ViewModel integration.
  */
+@AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
     private lateinit var userRepository: UserRepository
     private lateinit var lessonRepository: LessonRepository
     private lateinit var prefsManager: PrefsManager
+
+    private val userViewModel: UserViewModel by viewModels()
+    private val progressViewModel: ProgressViewModel by viewModels()
+    private val localeViewModel: LocaleViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,48 +102,32 @@ class ProfileFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        FirestoreProgressRepository.fetchUserData { data ->
-            if (data != null) {
-                val xp     = (data["xp"]       as? Long)?.toInt() ?: prefsManager.xp
-                val level  = (data["level"]    as? Long)?.toInt() ?: prefsManager.level
-                val streak = (data["streak"]   as? Long)?.toInt() ?: prefsManager.streak
-                val leaves = (data["leafBalance"] as? Long)?.toInt() ?: prefsManager.leaves
-                val name   = (data["name"]     as? String) ?: prefsManager.userName
-                val uname  = (data["username"] as? String) ?: prefsManager.username
-                val lang   = (data["activeLanguageId"] as? String) ?: prefsManager.selectedLanguage
-
-                prefsManager.xp      = xp
-                prefsManager.level   = level
-                prefsManager.streak  = streak
-                prefsManager.leaves  = leaves
-                prefsManager.selectedLanguage = lang
-                if (name.isNotBlank())  prefsManager.userName = name
-                if (uname.isNotBlank()) prefsManager.username = uname
-            }
-            activity?.runOnUiThread {
-                (view as? ComposeView)?.setContent { ProfileScreen() }
-            }
-        }
+        userViewModel.refreshFromFirestore()
     }
 
     // ── Root ──────────────────────────────────────────────────────────────────
 
     @Composable
     private fun ProfileScreen() {
-        val user             = userRepository.getUser()
-        val allLessons       = lessonRepository.getUnits().flatMap { it.lessons }
-        val completedCount   = lessonRepository.getCompletedLessons().size
-        val totalLessons     = allLessons.size
-        val progressFraction = if (totalLessons > 0) completedCount.toFloat() / totalLessons else 0f
-        val progressPercent  = (progressFraction * 100).toInt()
+        val userState by userViewModel.userState.collectAsState()
+        val progressState by progressViewModel.progressState.collectAsState()
+        val nativeLangState by localeViewModel.nativeLanguage.collectAsState()
 
-        val username         = prefsManager.username.ifBlank {
-            user.displayName.lowercase().replace(" ", "")
+        val allLessons = remember(userState.selectedLanguage) {
+            lessonRepository.getUnits().flatMap { it.lessons }
         }
-        var selectedLang by remember { mutableStateOf(prefsManager.selectedLanguage) }
+        val totalLessons = allLessons.size
+        val completedCount = progressState.completedCount
+        val progressFraction = if (totalLessons > 0) completedCount.toFloat() / totalLessons else 0f
+        val progressPercent = (progressFraction * 100).toInt()
 
-        val earnedBadges = buildAchievements(user, completedCount)
-        val earnedCount  = earnedBadges.count { it.unlocked }
+        val username = userState.username.ifBlank {
+            userState.name.lowercase().replace(" ", "")
+        }
+        val selectedLang = userState.selectedLanguage.ifEmpty { prefsManager.selectedLanguage }
+
+        val earnedBadges = buildAchievements(userState, completedCount)
+        val earnedCount = earnedBadges.count { it.unlocked }
 
         // Google account info
         val googleUser = FirebaseAuth.getInstance().currentUser
@@ -155,14 +142,14 @@ class ProfileFragment : Fragment() {
 
             // ── Hero Header ───────────────────────────────────────────────────
             HeroHeader(
-                displayName   = user.displayName,
+                displayName   = userState.name,
                 username      = username,
-                isPremium     = user.isPremium,
-                streak        = user.streak,
-                leaves        = user.leaves,
-                xp            = user.xp,
-                joinedAt      = user.joinedAt,
-                photoUrl      = user.photoUrl,
+                isPremium     = userState.isPremium,
+                streak        = userState.streak,
+                leaves        = userState.leafBalance,
+                xp            = userState.xp,
+                joinedAt      = userState.joinedAt,
+                photoUrl      = userState.photoUrl,
                 onSettings    = {
                     startActivity(Intent(requireContext(), SettingsActivity::class.java))
                 },
@@ -176,7 +163,7 @@ class ProfileFragment : Fragment() {
             // ── Account Card ──────────────────────────────────────────────────
             SectionHeader("👤  Account")
             AccountCard(
-                email          = prefsManager.userEmail.ifBlank { googleUser?.email ?: "—" },
+                email          = userState.email.ifBlank { googleUser?.email ?: "—" },
                 isGoogleLinked = isGoogleLinked,
                 googleEmail    = if (isGoogleLinked) googleUser?.email else null,
                 googlePhotoUrl = if (isGoogleLinked) googleUser?.photoUrl?.toString() else null,
@@ -188,13 +175,25 @@ class ProfileFragment : Fragment() {
             Spacer(Modifier.height(20.dp))
 
             // ── Language Settings ─────────────────────────────────────────────
-            SectionHeader("🌍  Language Settings")
+            SectionHeader("🌍  Learning Course Settings")
             LanguageCard(
                 selectedLang = selectedLang,
                 onLanguageSelected = { lang ->
-                    selectedLang = lang
-                    prefsManager.selectedLanguage = lang
-                    FirestoreProgressRepository.saveActiveLanguage(lang)
+                    localeViewModel.setSelectedLanguage(lang)
+                }
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // ── App Language Settings ─────────────────────────────────────────
+            SectionHeader("🗣️  App Translation Language")
+            AppLanguageCard(
+                currentLangTag = nativeLangState.localeTag,
+                onLanguageSelected = { tag ->
+                    val matchedLang = LocaleViewModel.SUPPORTED_NATIVE_LANGUAGES.firstOrNull { it.localeTag == tag }
+                    if (matchedLang != null) {
+                        localeViewModel.setNativeLanguage(matchedLang.id)
+                    }
                 }
             )
 
@@ -228,7 +227,7 @@ class ProfileFragment : Fragment() {
             )
 
             // ── Premium banner ────────────────────────────────────────────────
-            if (!user.isPremium) {
+            if (!userState.isPremium) {
                 Spacer(Modifier.height(20.dp))
                 PremiumBanner {
                     startActivity(Intent(requireContext(), PremiumActivity::class.java))
@@ -236,6 +235,65 @@ class ProfileFragment : Fragment() {
             }
 
             Spacer(Modifier.height(40.dp))
+        }
+    }
+
+    @Composable
+    private fun AppLanguageCard(
+        currentLangTag: String,
+        onLanguageSelected: (String) -> Unit
+    ) {
+        Card(
+            shape     = RoundedCornerShape(20.dp),
+            colors    = CardDefaults.cardColors(containerColor = CardWhite),
+            elevation = CardDefaults.cardElevation(2.dp),
+            modifier  = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+        ) {
+            Column(Modifier.padding(18.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Language,
+                        contentDescription = null,
+                        tint = PrimaryGreen,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = "App Language",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = TextDark
+                    )
+                }
+                Spacer(Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    LocaleViewModel.SUPPORTED_NATIVE_LANGUAGES.forEach { lang ->
+                        val isSelected = currentLangTag == lang.localeTag
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = { onLanguageSelected(lang.localeTag) },
+                            label = {
+                                Text(
+                                    text = "${lang.flag} ${lang.displayName}",
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 13.sp
+                                )
+                            },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = PrimaryGreen,
+                                selectedLabelColor = Color.White,
+                                containerColor = BgCream,
+                                labelColor = TextDark
+                            )
+                        )
+                    }
+                }
+            }
         }
     }
 
