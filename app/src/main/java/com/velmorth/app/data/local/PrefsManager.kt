@@ -45,6 +45,10 @@ class PrefsManager(context: Context) {
         private const val KEY_PHOTO_URL            = "PHOTO_URL"
         private const val KEY_LAST_CHECKIN_DATE    = "LAST_CHECKIN_DATE"
         private const val KEY_UID                  = "FIREBASE_UID"
+
+        // Daily XP tracking for ProgressViewModel (Flutter: ProgressProvider)
+        private const val KEY_DAILY_XP_EARNED      = "DAILY_XP_EARNED"
+        private const val KEY_DAILY_XP_DATE        = "DAILY_XP_DATE"
     }
 
     var userName: String
@@ -170,6 +174,16 @@ class PrefsManager(context: Context) {
     var uid: String
         get() = prefs.getString(KEY_UID, "") ?: ""
         set(value) = prefs.edit().putString(KEY_UID, value).apply()
+
+    /** XP earned today (resets when [dailyXpDate] changes). */
+    var dailyXpEarned: Int
+        get() = prefs.getInt(KEY_DAILY_XP_EARNED, 0)
+        set(value) = prefs.edit().putInt(KEY_DAILY_XP_EARNED, value).apply()
+
+    /** ISO date string "yyyy-MM-dd" when [dailyXpEarned] was last written. */
+    var dailyXpDate: String
+        get() = prefs.getString(KEY_DAILY_XP_DATE, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_DAILY_XP_DATE, value).apply()
 
     /**
      * Clears all user-related state (useful for Log Out).

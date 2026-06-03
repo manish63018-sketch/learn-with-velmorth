@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.animateFloatAsState
@@ -23,23 +24,145 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.google.firebase.auth.FirebaseAuth
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.velmorth.app.MainActivity
 import com.velmorth.app.R
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.repository.FirestoreProgressRepository
+import com.velmorth.app.ui.auth.AuthState
+import com.velmorth.app.ui.auth.AuthStateViewModel
 import com.velmorth.app.ui.auth.LoginActivity
 import com.velmorth.app.ui.onboarding.OnboardingActivity
 import com.velmorth.app.ui.permissions.PermissionsActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+/**
+ * Entry-point Activity — shows a branded splash animation, then routes to the
+ * correct destination based on reactive auth state.
+ *
+ * Flutter equivalent:
+ * ```dart
+ * home: StreamBuilder(
+ *   stream: AuthService().authStateChanges,
+ *   builder: (context, snapshot) {
+ *     if (snapshot.connectionState == ConnectionState.waiting) return SplashScreen();
+ *     if (snapshot.hasData) return MainScreen();
+ *     return LoginScreen();
+ *   },
+ * )
+ * ```
+ *
+ * Routing logic:
+ *  [AuthState.Loading]          → keep showing splash (animation plays)
+ *  [AuthState.Unauthenticated]  → LoginActivity (after animation completes)
+ *  [AuthState.Authenticated]    → OnboardingActivity (new user) or MainActivity (returning)
+ */
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
+
+    // Equivalent to Flutter's authStateChanges StreamBuilder — injected by Hilt
+    private val authViewModel: AuthStateViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             SplashContent()
         }
+
+        // Observe auth state reactively — equivalent to Flutter's StreamBuilder
+        // Uses repeatOnLifecycle so we stop collecting when Activity is stopped
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.authState.collect { state ->
+                    // Only navigate when the splash animation has finished
+                    // (animationComplete flag is set inside the Composable via LaunchedEffect)
+                    handleAuthState(state)
+                }
+            }
+        }
     }
+
+    /**
+     * Tracks whether the splash animation has finished playing.
+     * Navigation is deferred until both conditions are true:
+     *   1. Auth state is resolved (not Loading)
+     *   2. Splash animation has played
+     */
+    private var animationComplete = false
+    private var pendingAuthState: AuthState? = null
+
+    /**
+     * Routes to the appropriate screen once the auth state is known AND the
+     * splash animation has finished. Called both from the auth state collector
+     * and from the animation's LaunchedEffect.
+     */
+    internal fun onAnimationFinished() {
+        animationComplete = true
+        pendingAuthState?.let { navigateTo(it) }
+    }
+
+    private fun handleAuthState(state: AuthState) {
+        when (state) {
+            is AuthState.Loading -> {
+                // Auth check still in progress — keep showing splash
+                // This is the equivalent of ConnectionState.waiting in Flutter
+            }
+            is AuthState.Authenticated, AuthState.Unauthenticated -> {
+                if (animationComplete) {
+                    navigateTo(state)
+                } else {
+                    // Store and navigate once animation finishes
+                    pendingAuthState = state
+                }
+            }
+        }
+    }
+
+    private fun navigateTo(state: AuthState) {
+        val prefs = PrefsManager(this)
+
+        val intent = when {
+            // First ever launch → show permissions flow (regardless of auth)
+            prefs.isFirstLaunch -> {
+                prefs.isFirstLaunch = false
+                Intent(this, PermissionsActivity::class.java)
+            }
+            // Not signed in → Login screen
+            state is AuthState.Unauthenticated -> {
+                Intent(this, LoginActivity::class.java)
+            }
+            // Signed in but not onboarded → Onboarding
+            !prefs.isOnboarded -> {
+                // Fire-and-forget Firestore init in background
+                lifecycleScope.launch {
+                    FirestoreProgressRepository.ensureUserDocExists()
+                    FirestoreProgressRepository.ensureSettingsDocExists()
+                    FirestoreProgressRepository.ensureLanguageLessonsExist()
+                }
+                Intent(this, OnboardingActivity::class.java)
+            }
+            // Signed in + onboarded → Main app
+            else -> {
+                lifecycleScope.launch {
+                    FirestoreProgressRepository.ensureUserDocExists()
+                    FirestoreProgressRepository.ensureSettingsDocExists()
+                    FirestoreProgressRepository.ensureLanguageLessonsExist()
+                }
+                Intent(this, MainActivity::class.java)
+            }
+        }
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
+    }
+
+    // ── Splash UI (unchanged from original) ───────────────────────────────────
+
     @Composable
     private fun SplashContent() {
         var startAnimation by remember { mutableStateOf(false) }
@@ -67,28 +190,8 @@ class SplashActivity : ComponentActivity() {
             // Brief pause at 100% for premium feel
             delay(200)
 
-            // Run Firestore initialization in background (non-blocking)
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser != null) {
-                FirestoreProgressRepository.ensureUserDocExists()
-                FirestoreProgressRepository.ensureSettingsDocExists()
-                FirestoreProgressRepository.ensureLanguageLessonsExist()
-            }
-
-            val prefs = PrefsManager(this@SplashActivity)
-
-            val intent = when {
-                prefs.isFirstLaunch -> {
-                    prefs.isFirstLaunch = false
-                    Intent(this@SplashActivity, PermissionsActivity::class.java)
-                }
-                currentUser == null  -> Intent(this@SplashActivity, LoginActivity::class.java)
-                !prefs.isOnboarded   -> Intent(this@SplashActivity, OnboardingActivity::class.java)
-                else                 -> Intent(this@SplashActivity, MainActivity::class.java)
-            }
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            // Signal that the animation is done — routing will proceed
+            onAnimationFinished()
         }
 
         // ── UI ────────────────────────────────────────────────────────────────
@@ -180,3 +283,5 @@ class SplashActivity : ComponentActivity() {
         }
     }
 }
+
+

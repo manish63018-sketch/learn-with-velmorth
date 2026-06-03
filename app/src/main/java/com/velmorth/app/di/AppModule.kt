@@ -1,6 +1,8 @@
-﻿package com.velmorth.app.di
+package com.velmorth.app.di
 
 import android.content.Context
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.velmorth.app.data.local.LessonLoader
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.repository.CategoryRepository
@@ -50,4 +52,18 @@ object AppModule {
     fun provideCategoryRepository(@ApplicationContext context: Context): CategoryRepository {
         return CategoryRepository(context)
     }
+
+    // ── Firebase singletons ───────────────────────────────────────────────────
+    // These are required by AuthStateViewModel (Flutter: AuthService().authStateChanges)
+    // and future ViewModels that need direct Firebase access.
+    // FirebaseApp is guaranteed to be initialised in VelmorthApp.onCreate() before
+    // any ViewModel is first requested.
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirebaseFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
 }
