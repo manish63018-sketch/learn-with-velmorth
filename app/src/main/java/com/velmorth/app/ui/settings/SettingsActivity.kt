@@ -42,17 +42,35 @@ import com.velmorth.app.ui.premium.PremiumActivity
 import com.velmorth.app.ui.splash.SplashActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.velmorth.app.utils.NotificationScheduler
+import com.velmorth.app.theme.LearnWithVelmorthTheme
 
 // ── Colors ────────────────────────────────────────────────────────────────────
-private val BgCream        = Color(0xFFF8F5EE)
-private val DarkGreen      = Color(0xFF1B4332)
-private val PrimaryGreen   = Color(0xFF2D6A4F)
-private val AccentGreen    = Color(0xFF52B788)
-private val TextDark       = Color(0xFF1C1C1E)
-private val TextMuted      = Color(0xFF6B7280)
-private val CardWhite      = Color(0xFFFFFFFF)
-private val DividerColor   = Color(0xFFF0EDE8)
-private val DangerRed      = Color(0xFFE53935)
+private val BgCream: Color
+    @Composable get() = MaterialTheme.colorScheme.background
+
+private val DarkGreen: Color
+    @Composable get() = MaterialTheme.colorScheme.primary
+
+private val PrimaryGreen: Color
+    @Composable get() = MaterialTheme.colorScheme.primary
+
+private val AccentGreen: Color
+    @Composable get() = MaterialTheme.colorScheme.secondary
+
+private val TextDark: Color
+    @Composable get() = MaterialTheme.colorScheme.onSurface
+
+private val TextMuted: Color
+    @Composable get() = MaterialTheme.colorScheme.onSurfaceVariant
+
+private val CardWhite: Color
+    @Composable get() = MaterialTheme.colorScheme.surface
+
+private val DividerColor: Color
+    @Composable get() = MaterialTheme.colorScheme.outlineVariant
+
+private val DangerRed: Color
+    @Composable get() = MaterialTheme.colorScheme.error
 
 /**
  * Full-featured Settings screen with Firestore sync.
@@ -62,7 +80,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val prefs = PrefsManager(this)
-        setContent { SettingsScreen(prefs) }
+        setContent {
+            LearnWithVelmorthTheme {
+                SettingsScreen(prefs)
+            }
+        }
     }
 
     @Composable
@@ -350,13 +372,13 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     Surface(
                         shape  = RoundedCornerShape(20.dp),
-                        color  = if (prefs.isPremium) Color(0xFFFFF3CD) else Color(0xFFE8F5E9)
+                        color  = if (prefs.isPremium) MaterialTheme.colorScheme.tertiaryContainer else MaterialTheme.colorScheme.secondaryContainer
                     ) {
                         Text(
                             text     = if (prefs.isPremium) "PREMIUM" else "FREE",
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Bold,
-                            color    = if (prefs.isPremium) Color(0xFF856404) else PrimaryGreen,
+                            color    = if (prefs.isPremium) MaterialTheme.colorScheme.onTertiaryContainer else PrimaryGreen,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
@@ -366,7 +388,7 @@ class SettingsActivity : AppCompatActivity() {
                     icon     = Icons.Default.Star,
                     title    = "Upgrade to Premium",
                     subtitle = "Unlimited leaves, dark mode & more",
-                    iconTint = Color(0xFFD4AC0D),
+                    iconTint = MaterialTheme.colorScheme.tertiary,
                     onClick  = { startActivity(Intent(this@SettingsActivity, PremiumActivity::class.java)) }
                 )
             }
@@ -472,7 +494,7 @@ private fun SettingsTopBar(onBack: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF1B4332))
+            .background(MaterialTheme.colorScheme.primary)
             .padding(horizontal = 8.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -480,14 +502,14 @@ private fun SettingsTopBar(onBack: () -> Unit) {
             Icon(
                 imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint               = Color.White
+                tint               = MaterialTheme.colorScheme.onPrimary
             )
         }
         Text(
             text       = "Settings",
             fontSize   = 20.sp,
             fontWeight = FontWeight.Bold,
-            color      = Color.White
+            color      = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -498,7 +520,7 @@ private fun SectionHeader(title: String) {
         text     = title.uppercase(),
         fontSize = 11.sp,
         fontWeight = FontWeight.Bold,
-        color    = Color(0xFF2D6A4F),
+        color    = PrimaryGreen,
         letterSpacing = 1.sp,
         modifier = Modifier
             .fillMaxWidth()
@@ -534,11 +556,14 @@ private fun SettingsRow(
     icon       : ImageVector,
     title      : String,
     subtitle   : String  = "",
-    titleColor : Color   = TextDark,
-    iconTint   : Color   = Color(0xFF2D6A4F),
+    titleColor : Color   = Color.Unspecified,
+    iconTint   : Color   = Color.Unspecified,
     showArrow  : Boolean = true,
     onClick    : (() -> Unit)? = null
 ) {
+    val resolvedTitleColor = if (titleColor == Color.Unspecified) TextDark else titleColor
+    val resolvedIconTint = if (iconTint == Color.Unspecified) PrimaryGreen else iconTint
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -549,12 +574,12 @@ private fun SettingsRow(
         Icon(
             imageVector        = icon,
             contentDescription = null,
-            tint               = iconTint,
+            tint               = resolvedIconTint,
             modifier           = Modifier.size(22.dp)
         )
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
-            Text(title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = titleColor)
+            Text(title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = resolvedTitleColor)
             if (subtitle.isNotBlank())
                 Text(subtitle, fontSize = 12.sp, color = TextMuted)
         }
@@ -583,7 +608,7 @@ private fun SwitchRow(
             .padding(horizontal = 16.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(icon, contentDescription = null, tint = Color(0xFF2D6A4F), modifier = Modifier.size(22.dp))
+        Icon(icon, contentDescription = null, tint = PrimaryGreen, modifier = Modifier.size(22.dp))
         Spacer(Modifier.width(14.dp))
         Column(Modifier.weight(1f)) {
             Text(title, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextDark)
@@ -593,8 +618,8 @@ private fun SwitchRow(
             checked         = checked,
             onCheckedChange = onToggle,
             colors          = SwitchDefaults.colors(
-                checkedThumbColor  = Color.White,
-                checkedTrackColor  = Color(0xFF2D6A4F)
+                checkedThumbColor  = CardWhite,
+                checkedTrackColor  = PrimaryGreen
             )
         )
     }
@@ -614,13 +639,13 @@ private fun ThemeOptionRow(
             .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(icon, contentDescription = null, tint = Color(0xFF2D6A4F), modifier = Modifier.size(22.dp))
+        Icon(icon, contentDescription = null, tint = PrimaryGreen, modifier = Modifier.size(22.dp))
         Spacer(Modifier.width(14.dp))
         Text(label, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = TextDark, modifier = Modifier.weight(1f))
         RadioButton(
             selected = selected,
             onClick  = onClick,
-            colors   = RadioButtonDefaults.colors(selectedColor = Color(0xFF2D6A4F))
+            colors   = RadioButtonDefaults.colors(selectedColor = PrimaryGreen)
         )
     }
 }
@@ -653,9 +678,9 @@ private fun EditFieldDialog(
                     singleLine    = true,
                     modifier      = Modifier.fillMaxWidth(),
                     colors        = OutlinedTextFieldDefaults.colors(
-                        focusedBorderColor   = Color(0xFF2D6A4F),
-                        focusedLabelColor    = Color(0xFF2D6A4F),
-                        unfocusedBorderColor = Color(0xFFE5E7EB)
+                        focusedBorderColor   = PrimaryGreen,
+                        focusedLabelColor    = PrimaryGreen,
+                        unfocusedBorderColor = DividerColor
                     )
                 )
                 Spacer(Modifier.height(20.dp))
@@ -667,10 +692,13 @@ private fun EditFieldDialog(
                     ) { Text("Cancel") }
                     Button(
                         onClick  = { if (text.isNotBlank()) onSave(text.trim()) },
-                        colors   = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+                        colors   = ButtonDefaults.buttonColors(
+                            containerColor = PrimaryGreen,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
                         shape    = RoundedCornerShape(24.dp),
                         modifier = Modifier.weight(1f)
-                    ) { Text("Save", color = Color.White) }
+                    ) { Text("Save", color = MaterialTheme.colorScheme.onPrimary) }
                 }
             }
         }

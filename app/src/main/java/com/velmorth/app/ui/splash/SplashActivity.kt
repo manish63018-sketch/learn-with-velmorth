@@ -61,6 +61,8 @@ import kotlinx.coroutines.launch
  *  [AuthState.Unauthenticated]  → LoginActivity (after animation completes)
  *  [AuthState.Authenticated]    → OnboardingActivity (new user) or MainActivity (returning)
  */
+import com.velmorth.app.theme.LearnWithVelmorthTheme
+
 @AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
 
@@ -70,7 +72,9 @@ class SplashActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            SplashContent()
+            LearnWithVelmorthTheme {
+                SplashContent()
+            }
         }
 
         // Observe auth state reactively — equivalent to Flutter's StreamBuilder

@@ -77,9 +77,6 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
     var googleLoading     by remember { mutableStateOf(false) }
     var errorMessage      by remember { mutableStateOf("") }
 
-    val green     = Color(0xFF2D6A4F)
-    val cream     = Color(0xFFF8F5EE)
-    val darkGreen = Color(0xFF1B4332)
 
     // Google Sign-In client
     val gso = remember {
@@ -172,7 +169,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(cream),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -187,7 +184,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                 text       = stringResource(R.string.app_name),
                 fontSize   = 36.sp,
                 fontWeight = FontWeight.Bold,
-                color      = darkGreen
+                color      = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
@@ -217,13 +214,13 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFD1CFC8))
+                HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outlineVariant)
                 Text(
                     text = "  or continue with email  ",
                     fontSize = 12.sp,
-                    color = Color(0xFF9CA3AF)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color(0xFFD1CFC8))
+                HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.outlineVariant)
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -232,7 +229,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFE8E0D0), RoundedCornerShape(50))
+                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(50))
                     .padding(4.dp)
             ) {
                 listOf(true to "Log In", false to "Sign Up")
@@ -241,7 +238,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                         modifier = Modifier
                             .weight(1f)
                             .background(
-                                if (isLogin == isLoginTab) green else Color.Transparent,
+                                if (isLogin == isLoginTab) MaterialTheme.colorScheme.primary else Color.Transparent,
                                 RoundedCornerShape(50)
                             )
                             .clickable { isLogin = isLoginTab; errorMessage = "" }
@@ -250,7 +247,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     ) {
                         Text(
                             text       = label,
-                            color      = if (isLogin == isLoginTab) Color.White else Color.Gray,
+                            color      = if (isLogin == isLoginTab) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.SemiBold,
                             fontSize   = 14.sp
                         )
@@ -303,7 +300,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                             .addOnSuccessListener { errorMessage = "✓ Password reset email sent to $email" }
                             .addOnFailureListener { errorMessage = it.localizedMessage ?: "Reset failed." }
                     }) {
-                        Text("Forgot Password?", color = green, fontSize = 13.sp)
+                        Text("Forgot Password?", color = MaterialTheme.colorScheme.primary, fontSize = 13.sp)
                     }
                 }
             }
@@ -313,13 +310,13 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                     colors   = CardDefaults.cardColors(
-                        containerColor = if (errorMessage.startsWith("✓")) Color(0xFFE8F5E9) else Color(0xFFFFEBEB)
+                        containerColor = if (errorMessage.startsWith("✓")) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
                     ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
                         text     = errorMessage,
-                        color    = if (errorMessage.startsWith("✓")) Color(0xFF2D6A4F) else Color(0xFFB00020),
+                        color    = if (errorMessage.startsWith("✓")) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer,
                         modifier = Modifier.padding(12.dp),
                         fontSize = 13.sp
                     )
@@ -392,7 +389,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
                     }
                 },
                 modifier = Modifier.fillMaxWidth().height(52.dp),
-                colors   = ButtonDefaults.buttonColors(containerColor = green),
+                colors   = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape    = RoundedCornerShape(14.dp),
                 enabled  = !isLoading && !googleLoading
             ) {
@@ -412,7 +409,7 @@ fun AuthScreen(onAuthSuccess: (Boolean) -> Unit) {
             Text(
                 text     = "By continuing, you agree to our Privacy Policy.",
                 fontSize = 11.sp,
-                color    = Color.Gray,
+                color    = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }
@@ -430,11 +427,11 @@ private fun GoogleSignInButton(isLoading: Boolean, onClick: () -> Unit) {
             .fillMaxWidth()
             .height(52.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.White,
-            disabledContainerColor = Color(0xFFF5F5F5)
+            containerColor = MaterialTheme.colorScheme.surface,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         shape = RoundedCornerShape(14.dp),
-        border = BorderStroke(1.dp, Color(0xFFDADCE0)),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = ButtonDefaults.buttonElevation(defaultElevation = 1.dp)
     ) {
         if (isLoading) {
@@ -465,7 +462,7 @@ private fun GoogleSignInButton(isLoading: Boolean, onClick: () -> Unit) {
                     text       = "Continue with Google",
                     fontSize   = 15.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color      = Color(0xFF3C4043)
+                    color      = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
@@ -501,8 +498,8 @@ fun AuthTextField(value: String, onValueChange: (String) -> Unit, label: String,
         shape         = RoundedCornerShape(12.dp),
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color(0xFF2D6A4F),
-            focusedLabelColor  = Color(0xFF2D6A4F)
+            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor  = MaterialTheme.colorScheme.primary
         )
     )
 }
@@ -523,7 +520,7 @@ fun PasswordField(value: String, onValueChange: (String) -> Unit, label: String,
                 Icon(
                     imageVector = if (visible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
                     contentDescription = if (visible) "Hide password" else "Show password",
-                    tint = Color(0xFF2D6A4F)
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         },

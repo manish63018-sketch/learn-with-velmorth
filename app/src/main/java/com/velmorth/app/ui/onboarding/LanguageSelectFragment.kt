@@ -52,6 +52,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import com.velmorth.app.data.local.PrefsManager
+import androidx.compose.material3.MaterialTheme
+import com.velmorth.app.theme.LearnWithVelmorthTheme
 
 /**
  * Screen 2: Choose Your Language fragment.
@@ -69,12 +71,14 @@ class LanguageSelectFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                LanguageSelectScreen(
-                    onLanguageSelected = { selectedLang ->
-                        prefs.selectedLanguage = selectedLang.lowercase()
-                        activity.nextStage()
-                    }
-                )
+                LearnWithVelmorthTheme {
+                    LanguageSelectScreen(
+                        onLanguageSelected = { selectedLang ->
+                            prefs.selectedLanguage = selectedLang.lowercase()
+                            activity.nextStage()
+                        }
+                    )
+                }
             }
         }
     }
@@ -100,7 +104,7 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F5EE)) // Cream background
+            .background(MaterialTheme.colorScheme.background) // Cream background
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -111,14 +115,14 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
                 text = "Choose Your Language",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B4332), // Dark Green
+                color = MaterialTheme.colorScheme.primary, // Dark Green
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Select the language you want to master beautifully.",
                 fontSize = 14.sp,
-                color = Color(0xFF6B7280), // Text muted
+                color = MaterialTheme.colorScheme.onSurfaceVariant, // Text muted
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -134,7 +138,7 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
                     val isSelected = lang.name == selectedLangName
                     Card(
                         colors = CardDefaults.cardColors(
-                            containerColor = if (isSelected) Color(0xFFB7E4C7) else Color.White
+                            containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
                         ),
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier
@@ -142,7 +146,7 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
                             .height(100.dp)
                             .border(
                                 width = if (isSelected) 2.dp else 1.dp,
-                                color = if (isSelected) Color(0xFF2D6A4F) else Color(0xFFE5E7EB),
+                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                                 shape = RoundedCornerShape(16.dp)
                             )
                             .clickable {
@@ -160,7 +164,7 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
                                 text = lang.name,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF1C1C1E)
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
@@ -170,7 +174,10 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
 
         Button(
             onClick = { onLanguageSelected(selectedLangName) },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -180,7 +187,7 @@ fun LanguageSelectScreen(onLanguageSelected: (String) -> Unit) {
                 text = "Next",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -198,7 +205,9 @@ class WelcomeOnboardingFragment : Fragment() {
         val activity = requireActivity() as OnboardingActivity
         return ComposeView(requireContext()).apply {
             setContent {
-                WelcomeScreen(onNext = { activity.nextStage() })
+                LearnWithVelmorthTheme {
+                    WelcomeScreen(onNext = { activity.nextStage() })
+                }
             }
         }
     }
@@ -209,7 +218,7 @@ fun WelcomeScreen(onNext: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F5EE))
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -228,14 +237,14 @@ fun WelcomeScreen(onNext: () -> Unit) {
                 text = "Learn With Velmorth",
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B4332),
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(12.dp))
             Text(
                 text = "Your premium companion for acquiring beautiful new languages. Simple. Interactive. Immersive.",
                 fontSize = 16.sp,
-                color = Color(0xFF6B7280),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
@@ -243,7 +252,10 @@ fun WelcomeScreen(onNext: () -> Unit) {
 
         Button(
             onClick = onNext,
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -253,7 +265,7 @@ fun WelcomeScreen(onNext: () -> Unit) {
                 text = "Get Started",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
@@ -272,13 +284,15 @@ class GoalOnboardingFragment : Fragment() {
         val activity = requireActivity() as OnboardingActivity
         return ComposeView(requireContext()).apply {
             setContent {
-                GoalScreen(
-                    onFinish = { goalXp, nativeLang ->
-                        prefs.dailyGoal = goalXp
-                        prefs.nativeLanguage = nativeLang
-                        activity.nextStage()
-                    }
-                )
+                LearnWithVelmorthTheme {
+                    GoalScreen(
+                        onFinish = { goalXp, nativeLang ->
+                            prefs.dailyGoal = goalXp
+                            prefs.nativeLanguage = nativeLang
+                            activity.nextStage()
+                        }
+                    )
+                }
             }
         }
     }
@@ -301,7 +315,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F5EE))
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
@@ -315,14 +329,14 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                 text = "Set Your Commitment",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF1B4332),
+                color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Establish a learning habit. You can modify this in settings later.",
                 fontSize = 14.sp,
-                color = Color(0xFF6B7280),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(32.dp))
@@ -332,7 +346,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                 text = "Choose Daily Goal",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1C1C1E),
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
@@ -342,7 +356,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                 val isSelected = idx == selectedGoalIdx
                 Card(
                     colors = CardDefaults.cardColors(
-                        containerColor = if (isSelected) Color(0xFFB7E4C7) else Color.White
+                        containerColor = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
                     ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier
@@ -350,7 +364,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                         .padding(vertical = 6.dp)
                         .border(
                             width = 1.dp,
-                            color = if (isSelected) Color(0xFF2D6A4F) else Color(0xFFE5E7EB),
+                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                             shape = RoundedCornerShape(12.dp)
                         )
                         .clickable { selectedGoalIdx = idx }
@@ -365,7 +379,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                             selected = isSelected,
                             onClick = { selectedGoalIdx = idx },
                             colors = RadioButtonDefaults.colors(
-                                selectedColor = Color(0xFF2D6A4F)
+                                selectedColor = MaterialTheme.colorScheme.primary
                             )
                         )
                         Spacer(modifier = Modifier.width(8.dp))
@@ -373,7 +387,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                             text = pair.first,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xFF1C1C1E)
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -386,7 +400,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                 text = "Choose Your Native Language",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.SemiBold,
-                color = Color(0xFF1C1C1E),
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
@@ -406,8 +420,8 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                         .fillMaxWidth()
                         .menuAnchor(),
                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color(0xFF2D6A4F),
-                        unfocusedBorderColor = Color(0xFF6B7280)
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
                     )
                 )
                 ExposedDropdownMenu(
@@ -429,7 +443,10 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
 
         Button(
             onClick = { onFinish(goals[selectedGoalIdx].second, nativeLang) },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -439,7 +456,7 @@ fun GoalScreen(onFinish: (Int, String) -> Unit) {
                 text = "Finish",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
     }
