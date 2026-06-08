@@ -50,6 +50,7 @@ class DailyReminderWorker(
     private fun showNotification() {
         val tapIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            setPackage(context.packageName)
         }
         val pendingIntent = PendingIntent.getActivity(
             context, 0, tapIntent,
