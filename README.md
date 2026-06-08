@@ -1,243 +1,194 @@
-# 🌿 Learn With Velmorth
+# LEARN WITH VELMORTH
+## Complete System Design & Architecture Documentation
 
-> A beautiful, offline-first Android language learning app with a forest theme, companion mascot, and gamified lessons.
+**Version**: 1.0.0 | **Status**: Production Blueprint | **Date**: June 2026
 
----
-
-## 📸 Screenshots
-
-### Home Screen
-![Home Screen](screen.png)
-
-### Lesson Player & Quiz
-![Lesson Player](screen2.png)
+> *"The next-generation evolution of language learning — AI-native, scientifically-grounded, obsessively personalized."*
 
 ---
 
-## ✨ Features
+## 📚 Documentation Index
 
-- 🌿 **Forest-themed UI** — Deep green Material 3 design with warm cream tones
-- 🦦 **Velmorth Mascot** — Interactive companion with moods (Happy, Excited, Hungry, Sleepy)
-- 📚 **Lesson Path** — Chapter-based language lessons with vocabulary & grammar
-- 🎯 **Quiz Mode** — Multiple choice, fill-in, and audio recognition questions
-- 🌸 **Review Garden** — Spaced repetition flashcard system
-- 🍃 **Leaf Economy** — Earn leaves for completing lessons, spend in the shop
-- 🔥 **Daily Streaks** — Motivation tracking with streak protection
-- 🎤 **AI Speaker** — Pronunciation practice (Premium feature)
-- 💎 **Premium Paywall** — Unlock advanced content and features
-- 👤 **Profile & Stats** — XP, level, badges, and learning history
-- ⚙️ **Settings** — Theme, notifications, language preferences
-- 📴 **Offline-first** — Room database, works without internet
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Language | Kotlin |
-| UI Framework | Jetpack Compose + Material 3 |
-| Navigation | Navigation3 (alpha) |
-| DI | Hilt |
-| Local DB | Room |
-| Async | Kotlin Coroutines + Flow |
-| Image Loading | Coil |
-| Animations | Lottie + Compose Animations |
-| Preferences | DataStore |
-| Background | WorkManager |
-| Fonts | Google Fonts (Playfair Display, Nunito) |
-| Authentication | Firebase Auth (in progress) |
-| Cloud Sync | Firestore (planned) |
-| AI Integration | Gemini API (planned) |
-
----
-
-## 🏗️ Project Structure
-
-```
-LearnWithVelmorth/
-├── app/src/main/java/com/example/learnwithvelmorth/
-│   ├── MainActivity.kt
-│   ├── VelmorthApplication.kt
-│   ├── Navigation.kt          ← NavDisplay + bottom bar
-│   ├── NavigationKeys.kt      ← Type-safe nav keys
-│   ├── data/
-│   │   ├── local/
-│   │   │   ├── db/            ← Room database
-│   │   │   ├── dao/           ← DAOs
-│   │   │   ├── entities/      ← Room entities
-│   │   │   └── auth/          ← Firebase Auth service
-│   │   └── repository/        ← Repository implementations
-│   ├── domain/
-│   │   ├── model/             ← Domain models (User, Lesson, etc.)
-│   │   └── repository/        ← Repository interfaces
-│   ├── di/                    ← Hilt modules
-│   ├── theme/                 ← Colors, Typography, Shapes
-│   └── ui/
-│       ├── components/        ← Shared UI components
-│       └── screens/           ← 12 screens
-│           ├── splash/
-│           ├── onboarding/
-│           ├── auth/          ← Login/Register screens
-│           ├── home/
-│           ├── lessons/
-│           ├── lessonplayer/
-│           ├── quiz/
-│           ├── review/
-│           ├── aispeaker/
-│           ├── shop/
-│           ├── premium/
-│           ├── profile/
-│           └── settings/
-├── app/src/main/assets/
-│   └── db/lessons_seed.json   ← Seed data
-└── .github/workflows/         ← CI/CD pipelines
-    ├── build.yml              ← Build & test checks
-    └── lint.yml               ← Code quality
-```
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Android Studio Ladybug (2024.2.1) or newer
-- JDK 17+ (bundled with Android Studio)
-- Android SDK 36
-- Min SDK: Android 7.0 (API 24)
-
-### Setup
-
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/manish63018-sketch/learn-with-velmorth.git
-   cd learn-with-velmorth
-   ```
-
-2. **Set up API keys**
-   ```bash
-   # Copy the example file
-   cp apikey.properties.example apikey.properties
-   # Edit apikey.properties and add your real keys
-   ```
-
-3. **Open in Android Studio**
-   - File → Open → select the project folder
-   - Let Gradle sync complete
-
-4. **Run the app**
-   - Connect a device or start an emulator
-   - Press ▶ Run
-
-> **Note:** `local.properties`, `apikey.properties`, and `google-services.json` are in `.gitignore` and must never be committed.
-
----
-
-## 🔐 Security
-
-This project follows secure credential management:
-
-| File | Status | Reason |
+| Section | Document | Coverage |
 |---|---|---|
-| `local.properties` | 🚫 gitignored | Contains local SDK path |
-| `apikey.properties` | 🚫 gitignored | Contains real API keys |
-| `google-services.json` | 🚫 gitignored | Firebase config with keys |
-| `serviceAccountKey.json` | 🚫 gitignored | Firebase admin secret |
-| `*.jks` / `*.keystore` | 🚫 gitignored | Release signing key |
-| `apikey.properties.example` | ✅ committed | Placeholder template only |
-
-**If you accidentally commit a secret:**
-1. Immediately revoke/rotate the key in its dashboard
-2. Remove it from git history: `git filter-branch` or BFG Repo Cleaner
-3. Force push the cleaned history
-
----
-
-## 🌱 Roadmap
-
-### ✅ Completed
-- [x] Forest theme + Material 3 design system
-- [x] 12 screens (Splash → Settings)
-- [x] Room database with seed data
-- [x] Navigation3 with bottom nav
-- [x] Hilt dependency injection
-- [x] Velmorth mascot with mood system
-
-### 🔄 In Progress
-- [ ] Firebase Authentication module (feature/firebase-auth)
-- [ ] GitHub Actions CI/CD workflows (chore/cleanup-and-docs)
-- [ ] Authentication UI screens (Login, Register, Reset Password)
-
-### 📋 Planned
-- [ ] Cloud sync (Firestore)
-- [ ] Real AI Speaker (Gemini API)
-- [ ] Push notifications (streak reminders)
-- [ ] Unit & integration tests
-- [ ] Play Store release
+| 01 | [Product Vision](docs/01_PRODUCT_VISION.md) | Mission, Philosophy, User Journey, Methodology, Competitive Analysis |
+| 02 | [System Architecture](docs/02_SYSTEM_ARCHITECTURE.md) | All layers: Frontend, Backend, AI, Analytics, Gamification, Real-Time, Security, DR, Scaling |
+| 03 | [Frontend Architecture](docs/03_FRONTEND_ARCHITECTURE.md) | Flutter structure, State management, Offline mode, Navigation, Performance |
+| 04 | [UI/UX Design System](docs/04_UI_UX_DESIGN_SYSTEM.md) | Brand identity, Color palette, Typography, Components, Microinteractions, Dark mode |
+| 05 | [User Flow](docs/05_USER_FLOW.md) | Every screen detailed — Splash to Analytics (19 screens) |
+| 06 | [Learning Engine](docs/06_LEARNING_ENGINE.md) | SRS algorithm, Knowledge Graph, Learning DNA, Mastery Engine, Prediction |
+| 07 | [Gamification](docs/07_GAMIFICATION.md) | XP, Levels, Ranks, Guilds, Raids, Boss Battles, Season Pass, Events |
+| 08 | [AI System](docs/08_AI_SYSTEM.md) | 11 AI agents: Tutor, Coach, Generator, Voice, Recommendation, Prediction, Twin |
+| 09 | [Database Architecture](docs/09_DATABASE_ARCHITECTURE.md) | Complete PostgreSQL schema — 30+ tables, indexes, partitioning |
+| 10 | [API Architecture](docs/10_API_ARCHITECTURE.md) | REST, WebSocket, GraphQL — full request/response examples |
+| 11 | [Backend Architecture](docs/11_BACKEND_ARCHITECTURE.md) | NestJS services, Docker, Kubernetes, CI/CD |
+| 12-17 | [Security + Analytics + Monetization + Deployment + Future + AI Prompt](docs/12-17_SECURITY_ANALYTICS_MONETIZATION_DEPLOYMENT_FUTURE_PROMPT.md) | Complete production coverage of final 6 sections |
 
 ---
 
-## 🧪 Testing
+## 🏗️ Tech Stack Summary
 
-### Run Local Tests
+### Frontend
+```
+Flutter 3.x (iOS, Android, Web, Desktop)
+Riverpod 2.0 (State Management)
+GoRouter (Navigation)
+Hive + Drift (Local Storage)
+TensorFlow Lite (On-device AI)
+```
+
+### Backend
+```
+NestJS (TypeScript) — All microservices
+Python FastAPI — AI Orchestration Service
+PostgreSQL 16 — Primary OLTP database
+Redis Cluster — Caching + Sessions + Leaderboards
+Apache Kafka — Event streaming (100+ topics)
+Elasticsearch 8 — Full-text search
+ClickHouse — Analytics (time-series)
+Neo4j 5 — Knowledge Graph
+MinIO / GCS — Object storage
+```
+
+### AI Stack
+```
+Gemini 2.5 Pro — Primary reasoning + content generation
+Gemini 2.0 Flash — Real-time recommendation
+Whisper Large v3 — Speech-to-text
+LangGraph — Agent orchestration
+TensorFlow Serving — Custom ML models
+Sentence-BERT — Semantic similarity
+```
+
+### Infrastructure
+```
+Google Kubernetes Engine (GKE Autopilot)
+Cloud SQL (PostgreSQL) — 3 regions
+Istio Service Mesh — mTLS + circuit breaking
+Kong API Gateway — Rate limiting + routing
+Cloud Armor — WAF + DDoS protection
+Prometheus + Grafana — Observability
+Jaeger — Distributed tracing
+```
+
+---
+
+## 🎯 Key Differentiators
+
+| Feature | Duolingo | Velmorth |
+|---|---|---|
+| Personalization | Course-level | Atomic item-level (per cognitive fingerprint) |
+| AI Integration | Bolt-on | Native at every architectural layer |
+| Curriculum | Fixed paths | Dynamically generated per learner |
+| Social | Leaderboard | Guild ecosystem + live raids + boss battles |
+| Voice | Basic comparison | Phoneme-level prosody + fluency analysis |
+| Analytics | Streaks/XP only | Full cognitive analytics dashboard |
+| Offline | Limited | Full AI-powered offline mode |
+| Business | B2C | B2C + B2B + B2G + Enterprise |
+| Memory Science | SM-2 based | FSRS 5.0 + SM-18 ensemble + emotional encoding |
+| Learning Moat | None | Learning DNA that compounds with every session |
+
+---
+
+## 📊 Scale Targets
+
+- **Users**: 100 million (design target)
+- **Concurrent**: 1 million simultaneous
+- **API Latency**: < 100ms P95 for REST, < 2s for AI
+- **Uptime SLA**: 99.95%
+- **Languages**: 100+ supported
+- **Content**: Infinite (AI-generated + human-authored)
+- **Data Residency**: GDPR compliant, regional data sovereignty
+
+---
+
+## 🎨 Design Identity
+
+- **Brand**: Luminary Design — illumination, neural connection, cosmic depth
+- **Colors**: Electric Indigo (#5B4FD4) × Teal Mint (#00C9A7) × Coral Fire (#FF6B6B)
+- **Typography**: Nunito (display) + Inter (UI)
+- **Motion**: Spring physics, micro-interactions, Lottie animations
+- **Accessibility**: WCAG 2.1 AA + dyslexia mode + color blind modes
+
+---
+
+## 💰 Monetization
+
+| Plan | Price | Key Feature |
+|---|---|---|
+| Free | $0 | 5 hearts, 1 language, 3 AI messages/day |
+| Premium Monthly | $9.99/mo | Unlimited everything + 1.2× XP |
+| Premium Annual | $79.99/yr | Save 33% + 2,000 bonus gems |
+| Family | $14.99/mo | 6 members + family dashboard |
+| School | $4.99/student/mo | Teacher dashboard + assignments |
+| Enterprise | Custom | SSO + custom content + private cloud |
+
+---
+
+## 🚀 Product Roadmap
+
+| Phase | Timeline | Milestone |
+|---|---|---|
+| 1: Core Excellence | 2025-2026 | 10 languages, 1M DAU, Learning DNA v1 |
+| 2: Scale & B2B | 2026-2027 | 30 languages, 10M DAU, Enterprise launch |
+| 3: Deep Intelligence | 2027-2028 | AI Teacher Cloning, 50M DAU, IPO ready |
+| 4: Immersive Reality | 2028-2029 | Full VR classrooms, 100M DAU |
+| 5: Platform of Record | 2029-2030 | Global certification standard, UNESCO partnership |
+
+---
+
+## 📁 Repository Structure
+
+```
+learn-with-velmorth/
+├── docs/                    # This documentation
+│   ├── 01_PRODUCT_VISION.md
+│   ├── 02_SYSTEM_ARCHITECTURE.md
+│   ├── 03_FRONTEND_ARCHITECTURE.md
+│   ├── 04_UI_UX_DESIGN_SYSTEM.md
+│   ├── 05_USER_FLOW.md
+│   ├── 06_LEARNING_ENGINE.md
+│   ├── 07_GAMIFICATION.md
+│   ├── 08_AI_SYSTEM.md
+│   ├── 09_DATABASE_ARCHITECTURE.md
+│   ├── 10_API_ARCHITECTURE.md
+│   ├── 11_BACKEND_ARCHITECTURE.md
+│   └── 12-17_SECURITY_ANALYTICS_MONETIZATION_DEPLOYMENT_FUTURE_PROMPT.md
+├── velmorth-mobile/         # Flutter mobile app (to be created)
+├── velmorth-backend/        # NestJS microservices (to be created)
+├── velmorth-ai/             # Python AI service (to be created)
+├── velmorth-web/            # Next.js web app (to be created)
+└── README.md                # This file
+```
+
+---
+
+## ⚡ Quick Start (Future Development)
+
 ```bash
-./gradlew test
-```
+# Clone the repository
+git clone https://github.com/your-org/learn-with-velmorth
 
-### Run Instrumented Tests (Android device/emulator)
-```bash
-./gradlew connectedAndroidTest
-```
+# Start local infrastructure
+docker compose -f docker/docker-compose.yml up -d
 
-### Run Linter
-```bash
-./gradlew detekt
-```
+# Start backend services
+cd velmorth-backend
+npm install && npm run dev:all
 
-### Generate Coverage Report
-```bash
-./gradlew testDebugUnitTestCoverage
-```
+# Start AI service
+cd velmorth-ai
+pip install -r requirements.txt && uvicorn main:app --reload
 
----
+# Start mobile app
+cd velmorth-mobile
+flutter pub get && flutter run
 
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
-- Development workflow
-- Commit message conventions
-- Coding standards
-- Pull request process
-- Testing requirements
-
-### Quick Start
-1. Fork the repo
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit with clear messages following our conventions
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request
-
----
-
-## 📄 License
-
-```
-MIT License — see LICENSE file for details
+# Start web app
+cd velmorth-web
+npm install && npm run dev
 ```
 
 ---
 
-## 👤 Author
-
-**Manish Sharma (manish63018-sketch)**  
-Built with 🌿 using Jetpack Compose
-
----
-
-## 🙏 Credits
-
-- **Theme Inspiration:** Forest & nature-based educational apps
-- **Mascot Design:** Velmorth (Custom forest spirit)
-- **Font Family:** Google Fonts (Playfair Display, Nunito)
-- **Icon Resources:** Material Design Icons
+*Learn With Velmorth — Built to serve 100 million learners. Designed to change lives.*

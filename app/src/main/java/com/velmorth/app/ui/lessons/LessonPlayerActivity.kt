@@ -24,6 +24,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.velmorth.app.theme.LearnWithVelmorthTheme
+import com.velmorth.app.theme.velmorthColors
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
+import androidx.compose.ui.draw.scale
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.model.*
 import com.velmorth.app.data.repository.FirestoreProgressRepository
@@ -64,74 +75,76 @@ class LessonPlayerActivity : ComponentActivity() {
         }
 
         setContent {
-            LessonPlayerScreen(
-                lesson = lesson,
-                isReview = isReviewMode,
-                    onComplete = { xpEarned, leavesEarned ->
-                    val user = userRepository.getUser()
-                    val totalXp = user.xp + xpEarned
+            LearnWithVelmorthTheme {
+                LessonPlayerScreen(
+                    lesson = lesson,
+                    isReview = isReviewMode,
+                        onComplete = { xpEarned, leavesEarned ->
+                        val user = userRepository.getUser()
+                        val totalXp = user.xp + xpEarned
 
-                    // Streak increments if daily goal reached
-                    val dailyGoal = prefsManager.dailyGoal
-                    val activeStreak = if (user.xp < dailyGoal && totalXp >= dailyGoal) {
-                        user.streak + 1
-                    } else {
-                        user.streak
-                    }
+                        // Streak increments if daily goal reached
+                        val dailyGoal = prefsManager.dailyGoal
+                        val activeStreak = if (user.xp < dailyGoal && totalXp >= dailyGoal) {
+                            user.streak + 1
+                        } else {
+                            user.streak
+                        }
 
-                    // Leveling checks
-                    val updatedLevel = XPManager.getLevelForXp(totalXp)
+                        // Leveling checks
+                        val updatedLevel = XPManager.getLevelForXp(totalXp)
 
-                    // Leaves: leavesEarned already includes perfect-quiz bonus (set by QuizPlayScreen)
-                    val updatedLeaves = user.leaves + leavesEarned
-                    userRepository.updateStats(totalXp, activeStreak, updatedLevel, updatedLeaves)
+                        // Leaves: leavesEarned already includes perfect-quiz bonus (set by QuizPlayScreen)
+                        val updatedLeaves = user.leaves + leavesEarned
+                        userRepository.updateStats(totalXp, activeStreak, updatedLevel, updatedLeaves)
 
-                    // 7-day streak milestone bonus
-                    val streakBonus = LeafRewardManager.checkStreakBonus(prefsManager, activeStreak)
-                    if (streakBonus > 0) {
-                        Toast.makeText(this, "🔥 7-Day Streak! +$streakBonus bonus leaves! 🍃", Toast.LENGTH_LONG).show()
-                    }
+                        // 7-day streak milestone bonus
+                        val streakBonus = LeafRewardManager.checkStreakBonus(prefsManager, activeStreak)
+                        if (streakBonus > 0) {
+                            Toast.makeText(this, "🔥 7-Day Streak! +$streakBonus bonus leaves! 🍃", Toast.LENGTH_LONG).show()
+                        }
 
-                    if (isReviewMode) {
-                        lessonRepository.removeFromReviewQueue(lesson.id)
-                        Toast.makeText(this, "Watering complete! Lesson refreshed. 🌱", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val wasAlreadyCompleted = lessonRepository.getCompletedLessons().contains(lesson.id)
-                        
-                        lessonRepository.markLessonComplete(lesson.id)
-                        lessonRepository.addToReviewQueue(lesson.id)
-                        val bonusMsg = if (leavesEarned > LeafRewardManager.LESSON_COMPLETE_REWARD) " ✨ Perfect Quiz! +${LeafRewardManager.PERFECT_QUIZ_BONUS} bonus!" else ""
-                        Toast.makeText(this, "Lesson completed! +$xpEarned XP, +$leavesEarned Leaves! 🍃$bonusMsg", Toast.LENGTH_LONG).show()
-                        // ── Firestore sync (online only) ──────────────────────────
-                        if (NetworkUtils.isOnline(this)) {
-                            FirestoreProgressRepository.syncLessonComplete(
-                                lessonId = lesson.id,
-                                xpEarned = xpEarned
-                            )
-                            FirestoreProgressRepository.syncUserStats(
-                                xp = totalXp,
-                                streak = activeStreak,
-                                leafBalance = updatedLeaves
-                            )
-                            // Seed SRS cards for vocab in this lesson (only if first time)
-                            if (!wasAlreadyCompleted) {
-                                val vocabIds = lesson.vocabulary.map { it.vocabId }
-                                if (vocabIds.isNotEmpty()) {
-                                    FirestoreProgressRepository.seedSRSCards(
-                                        lessonId = lesson.id,
-                                        vocabIds = vocabIds
-                                    )
+                        if (isReviewMode) {
+                            lessonRepository.removeFromReviewQueue(lesson.id)
+                            Toast.makeText(this, "Watering complete! Lesson refreshed. 🌱", Toast.LENGTH_SHORT).show()
+                        } else {
+                            val wasAlreadyCompleted = lessonRepository.getCompletedLessons().contains(lesson.id)
+                            
+                            lessonRepository.markLessonComplete(lesson.id)
+                            lessonRepository.addToReviewQueue(lesson.id)
+                            val bonusMsg = if (leavesEarned > LeafRewardManager.LESSON_COMPLETE_REWARD) " ✨ Perfect Quiz! +${LeafRewardManager.PERFECT_QUIZ_BONUS} bonus!" else ""
+                            Toast.makeText(this, "Lesson completed! +$xpEarned XP, +$leavesEarned Leaves! 🍃$bonusMsg", Toast.LENGTH_LONG).show()
+                            // ── Firestore sync (online only) ──────────────────────────
+                            if (NetworkUtils.isOnline(this)) {
+                                FirestoreProgressRepository.syncLessonComplete(
+                                    lessonId = lesson.id,
+                                    xpEarned = xpEarned
+                                )
+                                FirestoreProgressRepository.syncUserStats(
+                                    xp = totalXp,
+                                    streak = activeStreak,
+                                    leafBalance = updatedLeaves
+                                )
+                                // Seed SRS cards for vocab in this lesson (only if first time)
+                                if (!wasAlreadyCompleted) {
+                                    val vocabIds = lesson.vocabulary.map { it.vocabId }
+                                    if (vocabIds.isNotEmpty()) {
+                                        FirestoreProgressRepository.seedSRSCards(
+                                            lessonId = lesson.id,
+                                            vocabIds = vocabIds
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    finish()
-                },
-                onExit = {
-                    finish()
-                }
-            )
+                        finish()
+                    },
+                    onExit = {
+                        finish()
+                    }
+                )
+            }
         }
     }
 
@@ -698,6 +711,20 @@ class LessonPlayerActivity : ComponentActivity() {
         var userLeaves by rememberSaveable { mutableIntStateOf(prefsManager.leaves) }
         val isPremium = prefsManager.isPremium
 
+        val scale = remember { Animatable(0f) }
+        LaunchedEffect(hasChecked) {
+            if (hasChecked) {
+                scale.snapTo(0f)
+                scale.animateTo(
+                    targetValue = 1f,
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
+            }
+        }
+
         // Speak when exercise changes
         DisposableEffect(currentIndex) {
             val jpText = when (currentExercise.type) {
@@ -718,7 +745,7 @@ class LessonPlayerActivity : ComponentActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF8F5EE))
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -735,7 +762,7 @@ class LessonPlayerActivity : ComponentActivity() {
                         text = if (isHindi) "✕ बाहर निकलें" else "✕ Quit",
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF6B7280),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.clickable { onExit() }
                     )
 
@@ -743,7 +770,7 @@ class LessonPlayerActivity : ComponentActivity() {
                     Row(
                         modifier = Modifier
                             .clip(RoundedCornerShape(12.dp))
-                            .background(Color(0xFFE3F0E9))
+                            .background(MaterialTheme.colorScheme.primaryContainer)
                             .padding(horizontal = 10.dp, vertical = 5.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -753,7 +780,7 @@ class LessonPlayerActivity : ComponentActivity() {
                             text = if (isPremium) "∞" else "$userLeaves",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF2D6A4F)
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -768,8 +795,8 @@ class LessonPlayerActivity : ComponentActivity() {
                         .fillMaxWidth()
                         .height(6.dp)
                         .clip(CircleShape),
-                    color = Color(0xFF2D6A4F),
-                    trackColor = Color(0xFFE5E7EB)
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
                 )
             }
 
@@ -784,7 +811,7 @@ class LessonPlayerActivity : ComponentActivity() {
                     text = (if (isHindi) "अभ्यास " else "Exercise ") + "${currentIndex + 1} / ${exercises.size}",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF52B788),
+                    color = MaterialTheme.colorScheme.secondary,
                     textAlign = TextAlign.Center
                 )
 
@@ -799,7 +826,7 @@ class LessonPlayerActivity : ComponentActivity() {
                     text = questionText,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1B4332),
+                    color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center
                 )
 
@@ -920,40 +947,56 @@ class LessonPlayerActivity : ComponentActivity() {
 
             // Answer checking sheet & continue buttons
             Column(modifier = Modifier.fillMaxWidth()) {
-                if (hasChecked) {
+                AnimatedVisibility(
+                    visible = hasChecked,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut()
+                ) {
                     Card(
                         shape = RoundedCornerShape(16.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = if (isCorrect) Color(0xFFE3F0E9) else Color(0xFFFCEADE)
+                            containerColor = if (isCorrect) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
                         ),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 16.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text(
-                                text = if (isCorrect) {
-                                    if (isHindi) "उत्कृष्ट! सही है! 🎉" else "Excellent! Correct! 🎉"
-                                } else {
-                                    if (isHindi) "गलत उत्तर ✕" else "Incorrect answer ✕"
-                                },
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isCorrect) Color(0xFF2D6A4F) else Color(0xFFE76F51)
-                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Text(
+                                    text = if (isCorrect) "✓" else "✕",
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.ExtraBold,
+                                    color = if (isCorrect) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+                                    modifier = Modifier.scale(scale.value)
+                                )
+                                Text(
+                                    text = if (isCorrect) {
+                                        if (isHindi) "उत्कृष्ट! सही है! 🎉" else "Excellent! Correct! 🎉"
+                                    } else {
+                                        if (isHindi) "गलत उत्तर" else "Incorrect answer"
+                                    },
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isCorrect) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                                )
+                            }
                             Spacer(modifier = Modifier.height(4.dp))
                             
                             if (currentExercise.type != "match") {
                                 Text(
                                     text = (if (isHindi) "सही उत्तर: " else "Correct answer: ") + currentExercise.answer,
                                     fontSize = 13.sp,
-                                    color = Color(0xFF1C1C1E)
+                                    color = if (isCorrect) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer
                                 )
                             } else {
                                 Text(
                                     text = if (isHindi) "सभी जोड़े सफलतापूर्वक मिल गए हैं!" else "All pairs matched successfully!",
                                     fontSize = 13.sp,
-                                    color = Color(0xFF1C1C1E)
+                                    color = if (isCorrect) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer
                                 )
                             }
 
@@ -967,7 +1010,7 @@ class LessonPlayerActivity : ComponentActivity() {
                                 Text(
                                     text = explanationText,
                                     fontSize = 12.sp,
-                                    color = Color(0xFF4A5C4E)
+                                    color = if (isCorrect) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.8f)
                                 )
                             }
 
@@ -981,7 +1024,7 @@ class LessonPlayerActivity : ComponentActivity() {
                                 Text(
                                     text = (if (isHindi) "संकेत: " else "Hint: ") + hintText,
                                     fontSize = 11.sp,
-                                    color = Color(0xFF6B7280)
+                                    color = if (isCorrect) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onErrorContainer.copy(alpha = 0.6f)
                                 )
                             }
                         }
@@ -1089,16 +1132,16 @@ class LessonPlayerActivity : ComponentActivity() {
                     val isIncorrect = incorrectPair?.first == jpWord
 
                     val bgColor = when {
-                        isMatched -> Color(0xFFD8F3DC)
-                        isIncorrect -> Color(0xFFFCEADE)
-                        isSelected -> Color(0xFFB7E4C7)
-                        else -> Color.White
+                        isMatched -> MaterialTheme.colorScheme.primaryContainer
+                        isIncorrect -> MaterialTheme.colorScheme.errorContainer
+                        isSelected -> MaterialTheme.colorScheme.secondaryContainer
+                        else -> MaterialTheme.colorScheme.surface
                     }
                     val borderColor = when {
-                        isMatched -> Color(0xFF2D6A4F)
-                        isIncorrect -> Color(0xFFE76F51)
-                        isSelected -> Color(0xFF1B4332)
-                        else -> Color(0xFFE5E7EB)
+                        isMatched -> MaterialTheme.colorScheme.primary
+                        isIncorrect -> MaterialTheme.colorScheme.error
+                        isSelected -> MaterialTheme.colorScheme.secondary
+                        else -> MaterialTheme.colorScheme.outlineVariant
                     }
 
                     Card(
@@ -1133,7 +1176,7 @@ class LessonPlayerActivity : ComponentActivity() {
                             text = jpWord,
                             fontSize = 15.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xFF1C2B1E),
+                            color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(14.dp),
                             textAlign = TextAlign.Center
                         )
@@ -1152,16 +1195,16 @@ class LessonPlayerActivity : ComponentActivity() {
                     val isIncorrect = incorrectPair?.second == enWord
 
                     val bgColor = when {
-                        isMatched -> Color(0xFFD8F3DC)
-                        isIncorrect -> Color(0xFFFCEADE)
-                        isSelected -> Color(0xFFB7E4C7)
-                        else -> Color.White
+                        isMatched -> MaterialTheme.colorScheme.primaryContainer
+                        isIncorrect -> MaterialTheme.colorScheme.errorContainer
+                        isSelected -> MaterialTheme.colorScheme.secondaryContainer
+                        else -> MaterialTheme.colorScheme.surface
                     }
                     val borderColor = when {
-                        isMatched -> Color(0xFF2D6A4F)
-                        isIncorrect -> Color(0xFFE76F51)
-                        isSelected -> Color(0xFF1B4332)
-                        else -> Color(0xFFE5E7EB)
+                        isMatched -> MaterialTheme.colorScheme.primary
+                        isIncorrect -> MaterialTheme.colorScheme.error
+                        isSelected -> MaterialTheme.colorScheme.secondary
+                        else -> MaterialTheme.colorScheme.outlineVariant
                     }
 
                     Card(
@@ -1196,7 +1239,7 @@ class LessonPlayerActivity : ComponentActivity() {
                             text = enWord,
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
-                            color = Color(0xFF1C2B1E),
+                            color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(14.dp),
                             textAlign = TextAlign.Center
                         )

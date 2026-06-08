@@ -74,7 +74,7 @@
     <string name="achievements_title">Milestones &amp; Achievements</string>
     <string name="course_path">Course Path</string>
     <string name="language_label">Language: %s</string>
-    <string name="progress_label">%d of %d lessons completed</string>
+    <string name="progress_label">%1$d of %2$d lessons completed</string>
     <string name="learning_curriculum">Learning Curriculum</string>
     <string name="upgrade_banner">Upgrade to Premium! 👑</string>
     <string name="upgrade_tagline">Unlimited leaves, ad-free experience, &amp; AI feedback</string>
@@ -92,7 +92,7 @@
     <string name="purchase_success">Successfully purchased %s! 🍃</string>
     <string name="purchase_insufficient">You don\'t have enough leaves! Keep learning to earn more.</string>
     <string name="confirm_purchase">Confirm Purchase</string>
-    <string name="confirm_message">Buy %s for %d leaves?</string>
+    <string name="confirm_message">Buy %1$s for %2$d leaves?</string>
     <string name="confirm_yes">Buy Now</string>
     <string name="confirm_no">Cancel</string>
 
@@ -107,7 +107,7 @@
     <string name="item_theme_ocean_desc">Unlocks the serene Ocean Blue premium theme for your dashboard.</string>
 
     <!-- Lesson Player -->
-    <string name="exercise_counter">Exercise %d of %d</string>
+    <string name="exercise_counter">Exercise %1$d of %2$d</string>
     <string name="check">Check</string>
     <string name="continue_btn">Continue</string>
     <string name="quit">✕ Quit</string>
@@ -118,7 +118,7 @@
     <string name="hint_label">Hint: %s</string>
     <string name="enter_translation">Enter Translation</string>
     <string name="fill_missing_word">Fill the missing word</string>
-    <string name="lesson_complete_toast">Lesson completed! +%d XP, +%d Leaves! 🍃</string>
+    <string name="lesson_complete_toast">Lesson completed! +%1$d XP, +%2$d Leaves! 🍃</string>
     <string name="review_complete_toast">Watering complete! Lesson refreshed. 🌱</string>
     <string name="lesson_not_found">Lesson not found!</string>
     <string name="locked_lesson_msg">Complete previous lessons to unlock this one.</string>

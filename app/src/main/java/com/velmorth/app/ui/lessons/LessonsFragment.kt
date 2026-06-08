@@ -33,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.velmorth.app.theme.LearnWithVelmorthTheme
+import com.velmorth.app.theme.velmorthColors
 import androidx.fragment.app.Fragment
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.model.Lesson
@@ -40,17 +42,7 @@ import com.velmorth.app.data.model.LessonCategory
 import com.velmorth.app.data.repository.CategoryRepository
 import com.velmorth.app.data.repository.LessonRepository
 
-// ── Brand palette ─────────────────────────────────────────────────────────────
-private val DarkGreen    = Color(0xFF1B4332)
-private val PrimaryGreen = Color(0xFF2D6A4F)
-private val AccentGreen  = Color(0xFF52B788)
-private val LightGreen   = Color(0xFFB7E4C7)
-private val BgCream      = Color(0xFFF8F5EE)
-private val CardWhite    = Color(0xFFFFFFFF)
-private val TextDark     = Color(0xFF1C1C1E)
-private val TextMuted    = Color(0xFF6B7280)
-private val GoldColor    = Color(0xFFF4A261)
-private val LockedGray   = Color(0xFFE5E7EB)
+// Brand palette is now resolved dynamically from MaterialTheme.colorScheme and MaterialTheme.velmorthColors.
 
 /**
  * Lessons screen — two-level hierarchy:
@@ -74,13 +66,21 @@ class LessonsFragment : Fragment() {
         categoryRepository = CategoryRepository(requireContext())
         prefsManager       = PrefsManager(requireContext())
         return ComposeView(requireContext()).apply {
-            setContent { LessonsScreen() }
+            setContent {
+                LearnWithVelmorthTheme {
+                    LessonsScreen()
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        (view as? ComposeView)?.setContent { LessonsScreen() }
+        (view as? ComposeView)?.setContent {
+            LearnWithVelmorthTheme {
+                LessonsScreen()
+            }
+        }
     }
 
     // ── Root screen ───────────────────────────────────────────────────────────
@@ -93,22 +93,30 @@ class LessonsFragment : Fragment() {
         val isHindi      = prefsManager.nativeLanguage.equals("Hindi", ignoreCase = true)
         val isPremium    = prefsManager.isPremium
 
+        // Determine dark theme dynamically
+        val isDark = MaterialTheme.colorScheme.primary == Color(0xFF74C69D)
+
+        val headerGradient = if (isDark) {
+            Brush.verticalGradient(listOf(Color(0xFF0D2418), Color(0xFF1B4332)))
+        } else {
+            Brush.verticalGradient(listOf(Color(0xFF1B4332), Color(0xFF2D6A4F)))
+        }
+        val headerSubtitleColor = if (isDark) Color(0xFF74C69D) else Color(0xFFB7E4C7)
+
         // Track which category is expanded (null = all collapsed)
         var expandedCategoryId by remember { mutableStateOf<String?>(null) }
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BgCream)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
             // ── Header ────────────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(
-                        Brush.verticalGradient(listOf(DarkGreen, PrimaryGreen))
-                    )
+                    .background(headerGradient)
                     .padding(horizontal = 20.dp, vertical = 20.dp)
             ) {
                 Column {
@@ -123,7 +131,7 @@ class LessonsFragment : Fragment() {
                         "🇯🇵 ${prefsManager.selectedLanguage.replaceFirstChar { it.uppercase() }} · " +
                         "${completedSet.size} lessons completed",
                         fontSize = 13.sp,
-                        color    = LightGreen.copy(alpha = 0.9f)
+                        color    = headerSubtitleColor.copy(alpha = 0.9f)
                     )
                 }
             }
@@ -202,9 +210,9 @@ class LessonsFragment : Fragment() {
         ) {
             // ── Category header card ──────────────────────────────────────────
             Card(
-                shape     = RoundedCornerShape(if (isExpanded) 20.dp else 20.dp),
+                shape     = RoundedCornerShape(20.dp),
                 colors    = CardDefaults.cardColors(
-                    containerColor = if (allCompleted) Color(0xFFE8F5E9) else CardWhite
+                    containerColor = if (allCompleted) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface
                 ),
                 elevation = CardDefaults.cardElevation(2.dp),
                 modifier  = Modifier
@@ -222,7 +230,7 @@ class LessonsFragment : Fragment() {
                                 .size(52.dp)
                                 .clip(CircleShape)
                                 .background(
-                                    if (allCompleted) Color(0xFFB7E4C7) else Color(0xFFE8F5E9)
+                                    if (allCompleted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer
                                 ),
                             contentAlignment = Alignment.Center
                         ) {
@@ -240,7 +248,7 @@ class LessonsFragment : Fragment() {
                                     category.categoryTitle,
                                     fontSize   = 17.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color      = TextDark,
+                                    color      = if (allCompleted) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface,
                                     maxLines   = 1,
                                     overflow   = TextOverflow.Ellipsis
                                 )
@@ -249,20 +257,25 @@ class LessonsFragment : Fragment() {
                                     Spacer(Modifier.width(6.dp))
                                     Surface(
                                         shape = RoundedCornerShape(20.dp),
-                                        color = Color(0xFFFFF3CD)
+                                        color = MaterialTheme.velmorthColors.leafGold.copy(alpha = 0.2f)
                                     ) {
                                         Text(
                                             "👑 Premium",
                                             fontSize   = 10.sp,
                                             fontWeight = FontWeight.Bold,
-                                            color      = Color(0xFF856404),
+                                            color      = MaterialTheme.velmorthColors.leafGoldDark,
                                             modifier   = Modifier.padding(horizontal = 7.dp, vertical = 2.dp)
                                         )
                                     }
                                 }
                             }
                             Spacer(Modifier.height(2.dp))
-                            Text(description, fontSize = 12.sp, color = TextMuted, maxLines = 2)
+                            Text(
+                                description,
+                                fontSize = 12.sp,
+                                color = if (allCompleted) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 2
+                            )
                             Spacer(Modifier.height(8.dp))
 
                             // Progress bar
@@ -271,7 +284,7 @@ class LessonsFragment : Fragment() {
                                     .fillMaxWidth()
                                     .height(6.dp)
                                     .clip(CircleShape)
-                                    .background(LockedGray)
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
                             ) {
                                 Box(
                                     modifier = Modifier
@@ -280,7 +293,7 @@ class LessonsFragment : Fragment() {
                                         .clip(CircleShape)
                                         .background(
                                             Brush.horizontalGradient(
-                                                listOf(AccentGreen, PrimaryGreen)
+                                                listOf(MaterialTheme.colorScheme.secondary, MaterialTheme.colorScheme.primary)
                                             )
                                         )
                                 )
@@ -294,13 +307,24 @@ class LessonsFragment : Fragment() {
                             ) {
                                 Text(
                                     "$completedCount / ${category.totalLessons} lessons",
-                                    fontSize = 11.sp, color = TextMuted
+                                    fontSize = 11.sp,
+                                    color = if (allCompleted) MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f) else MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    if (category.freeLessons > 0)
-                                        StatChip("${category.freeLessons} Free", Color(0xFFE8F5E9), PrimaryGreen)
-                                    if (category.premiumLessons > 0)
-                                        StatChip("${category.premiumLessons} 👑", Color(0xFFFFF3CD), Color(0xFF856404))
+                                    if (category.freeLessons > 0) {
+                                        StatChip(
+                                            "${category.freeLessons} Free",
+                                            MaterialTheme.colorScheme.primaryContainer,
+                                            MaterialTheme.colorScheme.primary
+                                        )
+                                    }
+                                    if (category.premiumLessons > 0) {
+                                        StatChip(
+                                            "${category.premiumLessons} 👑",
+                                            MaterialTheme.velmorthColors.leafGold.copy(alpha = 0.2f),
+                                            MaterialTheme.velmorthColors.leafGoldDark
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -311,7 +335,7 @@ class LessonsFragment : Fragment() {
                         Icon(
                             imageVector        = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                             contentDescription = if (isExpanded) "Collapse" else "Expand",
-                            tint               = TextMuted,
+                            tint               = if (allCompleted) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier           = Modifier.size(22.dp)
                         )
                     }
@@ -333,13 +357,13 @@ class LessonsFragment : Fragment() {
                     if (lessons.isEmpty()) {
                         Card(
                             shape     = RoundedCornerShape(16.dp),
-                            colors    = CardDefaults.cardColors(containerColor = CardWhite),
+                            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                             modifier  = Modifier.fillMaxWidth()
                         ) {
                             Text(
                                 "Lessons coming soon for this category!",
                                 modifier  = Modifier.padding(16.dp),
-                                color     = TextMuted,
+                                color     = MaterialTheme.colorScheme.onSurfaceVariant,
                                 fontSize  = 14.sp,
                                 textAlign = TextAlign.Center
                             )
@@ -380,20 +404,20 @@ class LessonsFragment : Fragment() {
         onClick     : () -> Unit
     ) {
         val bg = when {
-            isCompleted -> Color(0xFFE8F5E9)
-            isCurrent   -> PrimaryGreen
-            isLocked    -> LockedGray
-            else        -> CardWhite
+            isCompleted -> MaterialTheme.colorScheme.primaryContainer
+            isCurrent   -> MaterialTheme.colorScheme.primary
+            isLocked    -> MaterialTheme.colorScheme.surfaceVariant
+            else        -> MaterialTheme.colorScheme.surface
         }
         val titleColor = when {
-            isCurrent -> Color.White
-            isLocked  -> Color(0xFFADB5BD)
-            else      -> TextDark
+            isCurrent -> MaterialTheme.colorScheme.onPrimary
+            isLocked  -> MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            else      -> MaterialTheme.colorScheme.onSurface
         }
-        val subColor   = if (isCurrent) LightGreen.copy(0.85f) else TextMuted
+        val subColor   = if (isCurrent) MaterialTheme.colorScheme.onPrimary.copy(0.85f) else MaterialTheme.colorScheme.onSurfaceVariant
         val borderColor = when {
-            isCurrent   -> DarkGreen
-            isCompleted -> AccentGreen
+            isCurrent   -> MaterialTheme.colorScheme.outline
+            isCompleted -> MaterialTheme.colorScheme.primary
             else        -> Color.Transparent
         }
 
@@ -423,10 +447,10 @@ class LessonsFragment : Fragment() {
                         .clip(CircleShape)
                         .background(
                             when {
-                                isCompleted -> AccentGreen
-                                isCurrent   -> DarkGreen
-                                isLocked    -> Color(0xFFCBD5E1)
-                                else        -> Color(0xFFE8F5E9)
+                                isCompleted -> MaterialTheme.colorScheme.primary
+                                isCurrent   -> MaterialTheme.colorScheme.primaryContainer
+                                isLocked    -> MaterialTheme.colorScheme.outline
+                                else        -> MaterialTheme.colorScheme.primaryContainer
                             }
                         ),
                     contentAlignment = Alignment.Center
@@ -440,7 +464,7 @@ class LessonsFragment : Fragment() {
                         },
                         fontSize   = if (isCompleted || isLocked) 16.sp else 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color      = if (isCompleted || isCurrent) Color.White else TextMuted
+                        color      = if (isCompleted) MaterialTheme.colorScheme.onPrimary else if (isCurrent) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
 
@@ -458,19 +482,19 @@ class LessonsFragment : Fragment() {
                     Spacer(Modifier.height(2.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text("+${lesson.xpReward} XP", fontSize = 11.sp, color = subColor)
-                        if (lesson.isPremium) Text("👑 Premium", fontSize = 11.sp, color = GoldColor)
+                        if (lesson.isPremium) Text("👑 Premium", fontSize = 11.sp, color = MaterialTheme.velmorthColors.leafGold)
                     }
                 }
 
                 // Difficulty chip
                 Surface(
                     shape = RoundedCornerShape(10.dp),
-                    color = if (isCurrent) Color.White.copy(0.2f) else Color(0xFFF0F4F0)
+                    color = if (isCurrent) MaterialTheme.colorScheme.onPrimary.copy(0.2f) else MaterialTheme.colorScheme.surfaceVariant
                 ) {
                     Text(
                         lesson.difficulty.replace("-", " "),
                         fontSize = 10.sp,
-                        color    = if (isCurrent) Color.White else TextMuted,
+                        color    = if (isCurrent) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp)
                     )
                 }
@@ -499,11 +523,11 @@ class LessonsFragment : Fragment() {
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(14.dp))
-                            .background(PrimaryGreen)
+                            .background(MaterialTheme.colorScheme.primary)
                             .padding(14.dp)
                     ) {
                         Text(unit.title, fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold, color = Color.White)
+                            fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                     }
                     Spacer(Modifier.height(8.dp))
                     unit.lessons.forEachIndexed { idx, lesson ->

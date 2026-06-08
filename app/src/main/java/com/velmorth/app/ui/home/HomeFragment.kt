@@ -28,6 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import com.velmorth.app.theme.LearnWithVelmorthTheme
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
@@ -74,19 +76,29 @@ class HomeFragment : Fragment() {
         prefsManager = PrefsManager(requireContext())
         MobileAds.initialize(requireContext()) {}
         return ComposeView(requireContext()).apply {
-            setContent { HomeScreenContent() }
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                LearnWithVelmorthTheme {
+                    HomeScreenContent()
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         view?.let {
-            (it as ComposeView).setContent { HomeScreenContent() }
+            (it as ComposeView).setContent {
+                LearnWithVelmorthTheme {
+                    HomeScreenContent()
+                }
+            }
         }
     }
 
     // ── Root composable ───────────────────────────────────────────────────────
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun HomeScreenContent() {
         val userState by userViewModel.userState.collectAsState()
@@ -187,7 +199,7 @@ class HomeFragment : Fragment() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFFF0F4F1))
+                    .background(MaterialTheme.colorScheme.background)
                     .verticalScroll(rememberScrollState())
                     .padding(bottom = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -262,7 +274,7 @@ class HomeFragment : Fragment() {
                     text = "Continue where you left off",
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1A1A1A),
+                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp, vertical = 12.dp)
@@ -383,7 +395,7 @@ class HomeFragment : Fragment() {
     private fun StatCard(icon: String, value: String, label: String, modifier: Modifier = Modifier) {
         Card(
             shape  = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(2.dp),
             modifier = modifier
         ) {
@@ -395,8 +407,8 @@ class HomeFragment : Fragment() {
             ) {
                 Text(text = icon, fontSize = 22.sp)
                 Spacer(Modifier.height(4.dp))
-                Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = Color(0xFF1B4332))
-                Text(text = label, fontSize = 11.sp, color = Color(0xFF6B7280))
+                Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold, color = MaterialTheme.colorScheme.primary)
+                Text(text = label, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }
@@ -411,7 +423,7 @@ class HomeFragment : Fragment() {
     ) {
         Card(
             shape     = RoundedCornerShape(20.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(3.dp),
             modifier  = Modifier
                 .fillMaxWidth()
@@ -500,7 +512,7 @@ class HomeFragment : Fragment() {
         val progressFraction = if (targetXp > 0) (currentXp.toFloat() / targetXp).coerceIn(0f, 1f) else 0f
         Card(
             shape     = RoundedCornerShape(20.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(2.dp),
             modifier  = Modifier
                 .fillMaxWidth()
@@ -520,24 +532,24 @@ class HomeFragment : Fragment() {
                                 text = "Daily Goal",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF1B4332)
+                                color = MaterialTheme.colorScheme.primary
                             )
                             Text(
                                 text = if (isCompleted) "Goal Met! 🎉" else "Keep going!",
                                 fontSize = 12.sp,
-                                color = Color(0xFF6B7280)
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = if (isCompleted) Color(0xFFE8F5E9) else Color(0xFFFFF3E0)
+                        color = if (isCompleted) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.tertiaryContainer
                     ) {
                         Text(
                             text = "$currentXp / $targetXp XP",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = if (isCompleted) Color(0xFF2D6A4F) else Color(0xFFF4A261),
+                            color = if (isCompleted) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onTertiaryContainer,
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
@@ -549,7 +561,7 @@ class HomeFragment : Fragment() {
                         .fillMaxWidth()
                         .height(8.dp)
                         .clip(CircleShape)
-                        .background(Color(0xFFE5E7EB))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
                 ) {
                     Box(
                         modifier = Modifier
@@ -575,7 +587,7 @@ class HomeFragment : Fragment() {
     ) {
         Card(
             shape     = RoundedCornerShape(14.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(1.dp),
             modifier  = Modifier
                 .fillMaxWidth()
@@ -591,7 +603,7 @@ class HomeFragment : Fragment() {
                 Icon(
                     imageVector = Icons.Default.PlayCircle,
                     contentDescription = null,
-                    tint = Color(0xFF2D6A4F),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.size(32.dp)
                 )
                 Spacer(Modifier.width(12.dp))
@@ -600,12 +612,12 @@ class HomeFragment : Fragment() {
                         text = title,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF1A1A1A)
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
                         text = reason,
                         fontSize = 12.sp,
-                        color = Color(0xFF888888)
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Icon(

@@ -32,8 +32,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.velmorth.app.data.local.PrefsManager
 import com.velmorth.app.data.repository.UserRepository
+import com.velmorth.app.ui.profile.UserViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import com.velmorth.app.theme.LearnWithVelmorthTheme
+
 
 // ── Colors ────────────────────────────────────────────────────────────────────
 private val DarkGreen    = Color(0xFF1B4332)
@@ -118,10 +123,12 @@ private val EARN_GUIDE = listOf(
  * Leaf Shop fragment — spend earned leaves on in-app perks.
  * Leaves are earned through learning, NOT purchased with real money.
  */
+@AndroidEntryPoint
 class ShopFragment : Fragment() {
 
     private lateinit var userRepository: UserRepository
     private lateinit var prefsManager: PrefsManager
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -130,21 +137,30 @@ class ShopFragment : Fragment() {
         userRepository = UserRepository(requireContext())
         prefsManager   = PrefsManager(requireContext())
         return ComposeView(requireContext()).apply {
-            setContent { ShopScreen() }
+            setContent {
+                LearnWithVelmorthTheme {
+                    ShopScreen()
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        (view as? ComposeView)?.setContent { ShopScreen() }
+        userViewModel.refreshFromFirestore()
+        (view as? ComposeView)?.setContent {
+            LearnWithVelmorthTheme {
+                ShopScreen()
+            }
+        }
     }
 
     // ── Root screen ───────────────────────────────────────────────────────────
 
     @Composable
     private fun ShopScreen() {
-        val user         = userRepository.getUser()
-        var leaves       by remember { mutableStateOf(user.leaves) }
+        val userState by userViewModel.userState.collectAsState()
+        val leaves = userState.leafBalance
         val ownedItems   = prefsManager.ownedShopItems
         val isHindi      = prefsManager.nativeLanguage.equals("Hindi", ignoreCase = true)
 
@@ -156,15 +172,12 @@ class ShopFragment : Fragment() {
                 item     = item,
                 canAfford = leaves >= item.costLeaves,
                 onConfirm = {
-                    val current = prefsManager.leaves
-                    if (current >= item.costLeaves) {
-                        prefsManager.leaves = current - item.costLeaves
+                    if (leaves >= item.costLeaves) {
+                        userViewModel.updateLeaves(-item.costLeaves)
                         val owned = prefsManager.ownedShopItems.toMutableSet()
                         owned.add(item.id)
                         prefsManager.ownedShopItems = owned
-                        leaves = prefsManager.leaves
                         Toast.makeText(requireContext(), "Purchased ${item.title}! 🍃", Toast.LENGTH_SHORT).show()
-                        (view as? ComposeView)?.setContent { ShopScreen() }
                     } else {
                         Toast.makeText(requireContext(), "Not enough leaves! Keep learning. 🌱", Toast.LENGTH_LONG).show()
                     }
@@ -177,7 +190,7 @@ class ShopFragment : Fragment() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BgCream)
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
         ) {
 
@@ -222,14 +235,18 @@ class ShopFragment : Fragment() {
 
 @Composable
 private fun ShopHeader(leaves: Int) {
+    val isDark = MaterialTheme.colorScheme.primary == Color(0xFF74C69D)
+    val headerGradient = if (isDark) {
+        Brush.verticalGradient(listOf(Color(0xFF0D2418), Color(0xFF1B4332)))
+    } else {
+        Brush.verticalGradient(listOf(Color(0xFF1B4332), Color(0xFF2D6A4F)))
+    }
+    val subtitleColor = if (isDark) Color(0xFF74C69D) else Color(0xFFB7E4C7)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                Brush.verticalGradient(
-                    listOf(Color(0xFF1B4332), Color(0xFF2D6A4F))
-                )
-            )
+            .background(headerGradient)
             .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
         Column {
@@ -238,7 +255,7 @@ private fun ShopHeader(leaves: Int) {
             Text(
                 "Spend leaves earned from learning — never real money!",
                 fontSize  = 13.sp,
-                color     = Color(0xFFB7E4C7),
+                color     = subtitleColor,
                 fontStyle = FontStyle.Italic
             )
             Spacer(Modifier.height(16.dp))
@@ -246,7 +263,7 @@ private fun ShopHeader(leaves: Int) {
             // Balance pill
             Surface(
                 shape = RoundedCornerShape(20.dp),
-                color = Color.White.copy(alpha = 0.18f)
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.18f)
             ) {
                 Row(
                     modifier            = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
@@ -261,7 +278,7 @@ private fun ShopHeader(leaves: Int) {
                             fontWeight = FontWeight.ExtraBold,
                             color      = Color.White
                         )
-                        Text("Your balance", fontSize = 11.sp, color = Color(0xFFB7E4C7))
+                        Text("Your balance", fontSize = 11.sp, color = subtitleColor)
                     }
                 }
             }
@@ -277,7 +294,7 @@ private fun SectionLabel(text: String) {
         text       = text,
         fontSize   = 15.sp,
         fontWeight = FontWeight.Bold,
-        color      = Color(0xFF1B4332),
+        color      = MaterialTheme.colorScheme.primary,
         modifier   = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 4.dp)
@@ -291,7 +308,7 @@ private fun SectionLabel(text: String) {
 private fun EarnGuideCard() {
     Card(
         shape     = RoundedCornerShape(20.dp),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(2.dp),
         modifier  = Modifier
             .fillMaxWidth()
@@ -308,7 +325,7 @@ private fun EarnGuideCard() {
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFE8F5E9)),
+                            .background(MaterialTheme.colorScheme.primaryContainer),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(entry.emoji, fontSize = 20.sp)
@@ -318,24 +335,24 @@ private fun EarnGuideCard() {
                         entry.how,
                         fontSize   = 14.sp,
                         fontWeight = FontWeight.SemiBold,
-                        color      = TextDark,
+                        color      = MaterialTheme.colorScheme.onSurface,
                         modifier   = Modifier.weight(1f)
                     )
                     Surface(
                         shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFFE8F5E9)
+                        color = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Text(
                             entry.reward,
                             fontSize   = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color      = PrimaryGreen,
+                            color      = MaterialTheme.colorScheme.primary,
                             modifier   = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                         )
                     }
                 }
                 if (entry != EARN_GUIDE.last()) {
-                    HorizontalDivider(color = Color(0xFFF0EDE8), thickness = 0.8.dp)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.8.dp)
                 }
             }
         }
@@ -353,14 +370,14 @@ private fun ShopItemCard(
     onBuy      : () -> Unit
 ) {
     val borderColor = when {
-        isOwned   -> Color(0xFF52B788)
+        isOwned   -> MaterialTheme.colorScheme.primary
         canAfford -> item.accentColor.copy(alpha = 0.3f)
-        else      -> Color(0xFFE5E7EB)
+        else      -> MaterialTheme.colorScheme.outlineVariant
     }
 
     Card(
         shape     = RoundedCornerShape(20.dp),
-        colors    = CardDefaults.cardColors(containerColor = CardWhite),
+        colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(if (isOwned) 0.dp else 2.dp),
         modifier  = Modifier
             .fillMaxWidth()
@@ -393,19 +410,19 @@ private fun ShopItemCard(
                         item.title,
                         fontSize   = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color      = TextDark
+                        color      = MaterialTheme.colorScheme.onSurface
                     )
                     // Cost chip
                     if (!isOwned) {
                         Surface(
                             shape = RoundedCornerShape(12.dp),
-                            color = if (canAfford) Color(0xFFE8F5E9) else Color(0xFFFCEADE)
+                            color = if (canAfford) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer
                         ) {
                             Text(
                                 "${item.costLeaves} 🍃",
                                 fontSize   = 13.sp,
                                 fontWeight = FontWeight.ExtraBold,
-                                color      = if (canAfford) PrimaryGreen else DangerRed,
+                                color      = if (canAfford) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                                 modifier   = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
                             )
                         }
@@ -418,13 +435,13 @@ private fun ShopItemCard(
                 Text(
                     if (isHindi) item.descHi else item.descEn,
                     fontSize = 13.sp,
-                    color    = TextMuted
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 // Show both languages if Hindi user
                 if (isHindi) {
                     Spacer(Modifier.height(2.dp))
-                    Text(item.descEn, fontSize = 11.sp, color = TextMuted.copy(alpha = 0.65f))
+                    Text(item.descEn, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.65f))
                 }
 
                 Spacer(Modifier.height(12.dp))
@@ -432,23 +449,23 @@ private fun ShopItemCard(
                 if (isOwned) {
                     Surface(
                         shape = RoundedCornerShape(20.dp),
-                        color = Color(0xFFE8F5E9)
+                        color = MaterialTheme.colorScheme.primaryContainer
                     ) {
                         Row(
                             Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Icon(Icons.Default.CheckCircle, null,
-                                tint = PrimaryGreen, modifier = Modifier.size(16.dp))
+                                tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(16.dp))
                             Spacer(Modifier.width(4.dp))
-                            Text("Owned", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = PrimaryGreen)
+                            Text("Owned", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                         }
                     }
                 } else {
                     Button(
                         onClick  = onBuy,
                         colors   = ButtonDefaults.buttonColors(
-                            containerColor = if (canAfford) PrimaryGreen else Color(0xFF9CA3AF)
+                            containerColor = if (canAfford) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
                         ),
                         shape    = RoundedCornerShape(16.dp),
                         enabled  = canAfford,
@@ -458,7 +475,7 @@ private fun ShopItemCard(
                             if (canAfford) "Buy 🍃" else "Need ${item.costLeaves} 🍃",
                             fontSize   = 14.sp,
                             fontWeight = FontWeight.Bold,
-                            color      = Color.White
+                            color      = if (canAfford) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -483,23 +500,23 @@ private fun PurchaseDialog(
             Text(
                 "Buy ${item.title}?",
                 fontWeight = FontWeight.Bold,
-                color      = TextDark,
+                color      = MaterialTheme.colorScheme.onSurface,
                 textAlign  = TextAlign.Center
             )
         },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(item.descEn, color = TextMuted, textAlign = TextAlign.Center)
+                Text(item.descEn, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(12.dp))
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = Color(0xFFE8F5E9)
+                    color = MaterialTheme.colorScheme.primaryContainer
                 ) {
                     Text(
                         "Cost: ${item.costLeaves} 🍃",
                         fontSize   = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color      = PrimaryGreen,
+                        color      = MaterialTheme.colorScheme.primary,
                         modifier   = Modifier.padding(horizontal = 14.dp, vertical = 6.dp)
                     )
                 }
@@ -508,7 +525,7 @@ private fun PurchaseDialog(
         confirmButton = {
             Button(
                 onClick  = onConfirm,
-                colors   = ButtonDefaults.buttonColors(containerColor = PrimaryGreen),
+                colors   = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 shape    = RoundedCornerShape(24.dp)
             ) {
                 Text("Buy Now", color = Color.White, fontWeight = FontWeight.Bold)
@@ -522,7 +539,7 @@ private fun PurchaseDialog(
                 Text("Cancel")
             }
         },
-        containerColor = CardWhite,
+        containerColor = MaterialTheme.colorScheme.surface,
         shape          = RoundedCornerShape(20.dp)
     )
 }

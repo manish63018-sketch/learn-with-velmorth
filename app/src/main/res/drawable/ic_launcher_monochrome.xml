@@ -1,0 +1,62 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Velmorth Mascot Body / Face Blob -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,37 C67,37 77,47 77,60 C77,73 67,83 54,83 C41,83 31,73 31,60 C31,47 41,37 54,37 Z" />
+
+    <!-- Crown of Leaves -->
+    <!-- Left-Outer Leaf -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 40,43 C 34,40 31,34 29,32 C 33,33 38,37 40,43 Z" />
+    <!-- Right-Outer Leaf -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 68,43 C 74,40 77,34 79,32 C 75,33 70,37 68,43 Z" />
+    <!-- Left-Middle Leaf -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 47,40 C 42,36 39,29 38,27 C 43,28 47,33 47,40 Z" />
+    <!-- Right-Middle Leaf -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 61,40 C 66,36 69,29 70,27 C 65,28 61,33 61,40 Z" />
+    <!-- Foreground Center Leaf -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M 54,38 C 50,33 50,26 54,23 C 58,26 58,33 54,38 Z" />
+
+    <!-- Spectacles Bridge -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M 51.5,56 Q 54,57.5 56.5,56" />
+
+    <!-- Smile Mouth -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M 50,65 Q 54,68.5 58,65" />
+
+    <!-- Spectacles Rims (Drawn as transparent holes or stroke) -->
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 43,56 a 8.5,8.5 0 1,0 17,0 a 8.5,8.5 0 1,0 -17,0 Z" />
+    <path
+        android:strokeColor="#000000"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"
+        android:pathData="M 65,56 a 8.5,8.5 0 1,0 17,0 a 8.5,8.5 0 1,0 -17,0 Z" />
+
+</vector>

@@ -30,6 +30,7 @@ import com.velmorth.app.ui.lessons.LessonPlayerActivity
 import com.velmorth.app.utils.AnalyticsManager
 import com.velmorth.app.utils.NetworkUtils
 import com.velmorth.app.utils.SRSManager
+import com.velmorth.app.theme.LearnWithVelmorthTheme
 import com.velmorth.app.utils.SRSManager.SRSCard
 
 /**
@@ -45,12 +46,22 @@ class ReviewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         lessonRepository = LessonRepository(requireContext())
-        return ComposeView(requireContext()).apply { setContent { ReviewGardenContent() } }
+        return ComposeView(requireContext()).apply {
+            setContent {
+                LearnWithVelmorthTheme {
+                    ReviewGardenContent()
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        (view as? ComposeView)?.setContent { ReviewGardenContent() }
+        (view as? ComposeView)?.setContent {
+            LearnWithVelmorthTheme {
+                ReviewGardenContent()
+            }
+        }
     }
 
     @Composable
@@ -79,7 +90,7 @@ class ReviewFragment : Fragment() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF8F5EE))
+                .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -96,12 +107,12 @@ class ReviewFragment : Fragment() {
                         text       = "Review Garden",
                         fontSize   = 28.sp,
                         fontWeight = FontWeight.Bold,
-                        color      = Color(0xFF1B4332)
+                        color      = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text     = "Water your skills to keep them evergreen",
                         fontSize = 13.sp,
-                        color    = Color(0xFF6B7280)
+                        color    = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 // Due-word count badge — show after loading
@@ -109,13 +120,13 @@ class ReviewFragment : Fragment() {
                     val dueCount = if (isOnline) srsCards.size else localQueue.size
                     Surface(
                         shape = RoundedCornerShape(20.dp),
-                        color = if (dueCount > 0) Color(0xFF2D6A4F) else Color(0xFFE5E7EB)
+                        color = if (dueCount > 0) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant
                     ) {
                         Text(
                             text = if (dueCount > 0) "$dueCount due" else "All done",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = if (dueCount > 0) Color.White else Color(0xFF6B7280),
+                            color = if (dueCount > 0) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
                         )
                     }
@@ -127,7 +138,7 @@ class ReviewFragment : Fragment() {
             when {
                 isLoading -> {
                     CircularProgressIndicator(
-                        color    = Color(0xFF2D6A4F),
+                        color    = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 48.dp)
                     )
                 }
@@ -174,16 +185,16 @@ class ReviewFragment : Fragment() {
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Card ${current + 1} of $total", fontSize = 13.sp, color = Color(0xFF6B7280))
+                Text("Card ${current + 1} of $total", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 Text("${((current.toFloat() / total) * 100).toInt()}%", fontSize = 13.sp,
-                    color = Color(0xFF2D6A4F), fontWeight = FontWeight.Bold)
+                    color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
             }
             Spacer(Modifier.height(6.dp))
             LinearProgressIndicator(
                 progress          = { current.toFloat() / total },
                 modifier          = Modifier.fillMaxWidth().height(6.dp),
-                color             = Color(0xFF2D6A4F),
-                trackColor        = Color(0xFFD1E8DA),
+                color             = MaterialTheme.colorScheme.primary,
+                trackColor        = MaterialTheme.colorScheme.primaryContainer,
                 strokeCap         = androidx.compose.ui.graphics.StrokeCap.Round
             )
         }
@@ -195,7 +206,7 @@ class ReviewFragment : Fragment() {
 
         Card(
             shape     = RoundedCornerShape(24.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(4.dp),
             modifier  = Modifier.fillMaxWidth()
         ) {
@@ -208,24 +219,24 @@ class ReviewFragment : Fragment() {
                     text       = card.vocabId.replace("_", " "),
                     fontSize   = 26.sp,
                     fontWeight = FontWeight.Bold,
-                    color      = Color(0xFF1B4332),
+                    color      = MaterialTheme.colorScheme.primary,
                     textAlign  = TextAlign.Center
                 )
                 Text(
                     text     = "Interval: ${card.intervalDays}d · ${card.status}",
                     fontSize = 11.sp,
-                    color    = Color(0xFFA0A0A0)
+                    color    = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                 )
-                HorizontalDivider(color = Color(0xFFF0EDE8))
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
                 if (!revealed) {
                     Button(
                         onClick  = { revealed = true },
-                        colors   = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+                        colors   = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                         shape    = RoundedCornerShape(20.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Reveal Meaning 👁️", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text("Reveal Meaning 👁️", color = MaterialTheme.colorScheme.onPrimary, fontWeight = FontWeight.Bold)
                     }
                 } else {
                     AnimatedVisibility(visible = true, enter = fadeIn(), exit = fadeOut()) {
@@ -233,7 +244,7 @@ class ReviewFragment : Fragment() {
                             Text(
                                 "How well did you remember?",
                                 fontSize = 14.sp,
-                                color    = Color(0xFF6B7280),
+                                color    = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
                             )
                             Spacer(Modifier.height(12.dp))
@@ -244,10 +255,16 @@ class ReviewFragment : Fragment() {
                                 // Rating buttons: Again(1), Hard(3), Good(4), Easy(5)
                                 listOf(1 to "Again\n🔄", 3 to "Hard\n😅", 4 to "Good\n✅", 5 to "Easy\n⚡").forEach { (rating, label) ->
                                     val bgColor = when (rating) {
-                                        5    -> Color(0xFF2D6A4F)
-                                        4    -> Color(0xFF52B788)
-                                        3    -> Color(0xFFF59E0B)
-                                        else -> Color(0xFFE53935)
+                                        5    -> MaterialTheme.colorScheme.primary
+                                        4    -> MaterialTheme.colorScheme.secondary
+                                        3    -> MaterialTheme.colorScheme.tertiary
+                                        else -> MaterialTheme.colorScheme.error
+                                    }
+                                    val textColor = when (rating) {
+                                        5    -> MaterialTheme.colorScheme.onPrimary
+                                        4    -> MaterialTheme.colorScheme.onSecondary
+                                        3    -> MaterialTheme.colorScheme.onTertiary
+                                        else -> MaterialTheme.colorScheme.onError
                                     }
                                     Button(
                                         onClick  = { onRate(rating) },
@@ -256,7 +273,7 @@ class ReviewFragment : Fragment() {
                                         modifier = Modifier.weight(1f).height(56.dp),
                                         contentPadding = PaddingValues(4.dp)
                                     ) {
-                                        Text(label, color = Color.White, fontSize = 12.sp,
+                                        Text(label, color = textColor, fontSize = 12.sp,
                                             fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
                                     }
                                 }
@@ -272,7 +289,7 @@ class ReviewFragment : Fragment() {
     private fun SessionCompleteCard() {
         Card(
             shape     = RoundedCornerShape(24.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(2.dp),
             modifier  = Modifier.fillMaxWidth().padding(vertical = 12.dp)
         ) {
@@ -283,11 +300,11 @@ class ReviewFragment : Fragment() {
                 Text("🌸", fontSize = 72.sp)
                 Spacer(Modifier.height(16.dp))
                 Text("Review Complete!", fontSize = 22.sp, fontWeight = FontWeight.Bold,
-                    color = Color(0xFF1B4332), textAlign = TextAlign.Center)
+                    color = MaterialTheme.colorScheme.primary, textAlign = TextAlign.Center)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     "All cards reviewed. Come back tomorrow to keep your garden growing!",
-                    fontSize = 14.sp, color = Color(0xFF6B7280), textAlign = TextAlign.Center
+                    fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center
                 )
             }
         }
@@ -297,13 +314,16 @@ class ReviewFragment : Fragment() {
     private fun OfflineBanner() {
         Card(
             shape  = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFFEF3C7))
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+            )
         ) {
             Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                 Text("📡", fontSize = 20.sp)
                 Spacer(Modifier.width(10.dp))
                 Text("Offline mode — showing local review queue",
-                    fontSize = 13.sp, color = Color(0xFF92400E))
+                    fontSize = 13.sp, color = MaterialTheme.colorScheme.onTertiaryContainer)
             }
         }
     }
@@ -316,7 +336,7 @@ class ReviewFragment : Fragment() {
 
         Card(
             shape     = RoundedCornerShape(24.dp),
-            colors    = CardDefaults.cardColors(containerColor = Color.White),
+            colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(2.dp),
             modifier  = Modifier.fillMaxWidth().padding(vertical = 12.dp)
         ) {
@@ -331,20 +351,20 @@ class ReviewFragment : Fragment() {
                     "Your garden is watered!",
                     fontSize   = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color      = Color(0xFF1B4332),
+                    color      = MaterialTheme.colorScheme.primary,
                     textAlign  = TextAlign.Center
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
                     "No words due for review right now.",
                     fontSize  = 14.sp,
-                    color     = Color(0xFF6B7280),
+                    color     = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
                 )
                 Spacer(Modifier.height(12.dp))
                 Surface(
                     shape = RoundedCornerShape(14.dp),
-                    color = Color(0xFFE8F5E9)
+                    color = MaterialTheme.colorScheme.primaryContainer
                 ) {
                     Text(
                         text = if (completedCount > 0)
@@ -353,7 +373,7 @@ class ReviewFragment : Fragment() {
                             "Complete lessons to add words to your review garden",
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color(0xFF2D6A4F),
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
                     )
@@ -367,7 +387,7 @@ class ReviewFragment : Fragment() {
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Card(
                 shape  = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFE3F0E9)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -375,14 +395,14 @@ class ReviewFragment : Fragment() {
                     Spacer(Modifier.width(12.dp))
                     Text(
                         "You have ${lessons.size} lessons that require watering!",
-                        fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1B4332)
+                        fontSize = 14.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
             lessons.forEach { lesson ->
                 Card(
                     shape     = RoundedCornerShape(16.dp),
-                    colors    = CardDefaults.cardColors(containerColor = Color.White),
+                    colors    = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(2.dp),
                     modifier  = Modifier.fillMaxWidth()
                 ) {
@@ -392,9 +412,9 @@ class ReviewFragment : Fragment() {
                         verticalAlignment     = Alignment.CenterVertically
                     ) {
                         Column {
-                            Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xFF1C1C1E))
+                            Text(lesson.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                             Spacer(Modifier.height(4.dp))
-                            Text("Unit: ${lesson.unitId.replace("_", " ").uppercase()}", fontSize = 12.sp, color = Color(0xFF6B7280))
+                            Text("Unit: ${lesson.unitId.replace("_", " ").uppercase()}", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Button(
                             onClick = {
@@ -405,10 +425,10 @@ class ReviewFragment : Fragment() {
                                     }
                                 )
                             },
-                            colors  = ButtonDefaults.buttonColors(containerColor = Color(0xFF2D6A4F)),
+                            colors  = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             shape   = RoundedCornerShape(16.dp)
                         ) {
-                            Text("Water 💧", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                            Text("Water 💧", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }

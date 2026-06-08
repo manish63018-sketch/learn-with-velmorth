@@ -52,19 +52,21 @@ import com.velmorth.app.ui.settings.SettingsActivity
 import com.velmorth.app.ui.settings.LocaleViewModel
 import com.velmorth.app.ui.settings.SupportedLanguage
 import com.velmorth.app.ui.lessons.ProgressViewModel
+import com.velmorth.app.theme.LearnWithVelmorthTheme
+import com.velmorth.app.theme.velmorthColors
 import dagger.hilt.android.AndroidEntryPoint
 
-// ── Brand palette ──────────────────────────────────────────────────────────────
-private val DarkGreen    = Color(0xFF1B4332)
-private val PrimaryGreen = Color(0xFF2D6A4F)
-private val AccentGreen  = Color(0xFF52B788)
-private val LightGreen   = Color(0xFFB7E4C7)
-private val BgCream      = Color(0xFFF0F4F1)
-private val CardWhite    = Color(0xFFFFFFFF)
-private val TextDark     = Color(0xFF1C1C1E)
-private val TextMuted    = Color(0xFF6B7280)
-private val GoldXP       = Color(0xFFF4A261)
-private val GoldBadge    = Color(0xFFD4AC0D)
+// ── Brand palette Resolved Dynamically ──────────────────────────────────────────
+private val DarkGreen: Color @Composable get() = if (MaterialTheme.colorScheme.primary == Color(0xFF74C69D)) Color(0xFF0D2418) else Color(0xFF1B4332)
+private val PrimaryGreen: Color @Composable get() = MaterialTheme.colorScheme.primary
+private val AccentGreen: Color @Composable get() = MaterialTheme.colorScheme.secondary
+private val LightGreen: Color @Composable get() = MaterialTheme.colorScheme.primaryContainer
+private val BgCream: Color @Composable get() = MaterialTheme.colorScheme.background
+private val CardWhite: Color @Composable get() = MaterialTheme.colorScheme.surface
+private val TextDark: Color @Composable get() = MaterialTheme.colorScheme.onSurface
+private val TextMuted: Color @Composable get() = MaterialTheme.colorScheme.onSurfaceVariant
+private val GoldXP: Color @Composable get() = MaterialTheme.velmorthColors.leafGold
+private val GoldBadge: Color @Composable get() = MaterialTheme.velmorthColors.leafGoldDark
 
 private val LANGUAGES = listOf(
     Triple("japanese", "Japanese",  "🇯🇵"),
@@ -96,13 +98,22 @@ class ProfileFragment : Fragment() {
         prefsManager     = PrefsManager(requireContext())
 
         return ComposeView(requireContext()).apply {
-            setContent { ProfileScreen() }
+            setContent {
+                LearnWithVelmorthTheme {
+                    ProfileScreen()
+                }
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         userViewModel.refreshFromFirestore()
+        (view as? ComposeView)?.setContent {
+            LearnWithVelmorthTheme {
+                ProfileScreen()
+            }
+        }
     }
 
     // ── Root ──────────────────────────────────────────────────────────────────
