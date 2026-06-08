@@ -102,7 +102,12 @@ jobs:
           echo '          "package_name": "com.velmorth.app"' >> app/google-services.json
           echo '        }' >> app/google-services.json
           echo '      },' >> app/google-services.json
-          echo '      "oauth_client": [],' >> app/google-services.json
+          echo '      "oauth_client": [' >> app/google-services.json
+          echo '        {' >> app/google-services.json
+          echo '          "client_id": "mock-client-id.apps.googleusercontent.com",' >> app/google-services.json
+          echo '          "client_type": 3' >> app/google-services.json
+          echo '        }' >> app/google-services.json
+          echo '      ],' >> app/google-services.json
           echo '      "api_key": [' >> app/google-services.json
           echo '        {' >> app/google-services.json
           echo '          "current_key": "mock-api-key"' >> app/google-services.json
